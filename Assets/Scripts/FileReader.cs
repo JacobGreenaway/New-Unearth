@@ -27,9 +27,6 @@ public class FileReader : MonoBehaviour {
         
 		Debug.Log(text);
         string[] lineValues = text.Split(',');
-
-		Debug.Log (lineValues [2]);
-
 		List<ushort> depthData = new List<ushort>();
 
 		foreach (string value in lineValues) {
@@ -44,8 +41,10 @@ public class FileReader : MonoBehaviour {
 		Debug.Log (depthData);
 
 		depthMatrix = new DepthMatrix(depthData.ToArray());
+
+		// Print out for testing
 		int number = 0;
-//		// Print out for testing
+	
 		for (int i = 0; i < depthMatrix.m_matrix.GetLength(0) - 1; i++) {
 			for (int j = 0; j < depthMatrix.m_matrix.GetLength(1) - 1; j++) {
 				number++;
