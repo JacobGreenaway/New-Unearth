@@ -24,7 +24,7 @@ public class FileReader : MonoBehaviour {
         {
             try
             {
-                depth[i,0] = new DepthPoint(i, 0, ushort.Parse(lineValues[i]), depth);
+                depth[i,0] = new DepthPoint(i, 0, ushort.Parse(lineValues[i]));
             }
             catch (Exception ex)
             {
@@ -34,11 +34,6 @@ public class FileReader : MonoBehaviour {
             }
             // depth[i] = Convert.ToUInt16(lineValues[i]);
         }
-		for (int c = 0; c < depth.GetLength(0); c++)
-		{
-			DepthPoint point = depth [c+1, 0];
-			Debug.Log(point.GetLeft());
-		}
         return depth;
     }
 
