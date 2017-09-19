@@ -6,11 +6,14 @@
 //{   
 //	private KinectSensor _Sensor;
 //	private DepthFrameReader _Reader;
-//	private ushort[] _Data;
 //
-//	public ushort[] GetData()
+//	private DepthMatrix depthMatrix;
+//
+//	private ushort[] arrDepth;
+//
+//	public DepthMatrix GetDepthMatrix()
 //	{
-//		return _Data;
+//		return depthMatrix;
 //	}
 //
 //	void Start () 
@@ -20,7 +23,7 @@
 //		if (_Sensor != null) 
 //		{
 //			_Reader = _Sensor.DepthFrameSource.OpenReader();
-//			_Data = new ushort[_Sensor.DepthFrameSource.FrameDescription.LengthInPixels];
+//			arrDepth = new ushort[_Sensor.DepthFrameSource.FrameDescription.LengthInPixels];
 //		}
 //	}
 //
@@ -31,9 +34,11 @@
 //			var frame = _Reader.AcquireLatestFrame();
 //			if (frame != null)
 //			{
-//				frame.CopyFrameDataToArray(_Data);
+//				frame.CopyFrameDataToArray(arrDepth);
 //				frame.Dispose();
 //				frame = null;
+//
+//				depthMatrix = new DepthMatrix (arrDepth);
 //			}
 //		}
 //	}
