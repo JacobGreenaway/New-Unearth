@@ -16,6 +16,7 @@ public class DepthPoint {
         this.x = x;
         this.y = y;
         this.value = value;
+
 	}
 
 	public void AverageWith(DepthPoint otherPoint)
@@ -25,7 +26,8 @@ public class DepthPoint {
 
     public ushort GetValue()
     {
-        return this.value;
+		Debug.Log ("point get value: " + value);
+        return value;
     }
 
 	// Possible extension for easy recursive traversing through DepthMatrix

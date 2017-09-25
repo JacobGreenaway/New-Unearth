@@ -11,6 +11,8 @@ public class FileReader : MonoBehaviour {
 
     public DepthMatrix depthMatrix;
 
+//	public GameObject prefab;
+
 	//Change ME to make it work on a new machine!!!
 	private const string path = "C:\\Users\\jacob\\Documents\\GitHub\\New-Unearth\\ushort.txt"; 
 
@@ -25,7 +27,7 @@ public class FileReader : MonoBehaviour {
 			return null;
 		}
         
-		Debug.Log(text);
+		//Debug.Log(text);
         string[] lineValues = text.Split(',');
 		List<ushort> depthData = new List<ushort>();
 
@@ -38,21 +40,23 @@ public class FileReader : MonoBehaviour {
 			}
 
 		}
-		Debug.Log (depthData);
+		//Debug.Log (depthData);
 
 		depthMatrix = new DepthMatrix(depthData.ToArray());
 
-		// Print out for testing
-		int number = 0;
-	
-		for (int i = 0; i < depthMatrix.m_matrix.GetLength(0) - 1; i++) {
-			for (int j = 0; j < depthMatrix.m_matrix.GetLength(1) - 1; j++) {
-				number++;
-				// Do not put Debug.Log here, breaks unity haha
-			}
-		}
+		//Debug.Log ("from file reader");
+		//Debug.Log (depthMatrix.m_matrix[25,25].GetValue());
 
-		Debug.Log ("this many enteries in matrix: " + number);
+		// Print out for testing
+//		int number = 0;
+//	
+//		for (int i = 0; i < depthMatrix.m_matrix.GetLength(0) - 1; i++) {
+//			for (int j = 0; j < depthMatrix.m_matrix.GetLength(1) - 1; j++) {
+//				//GameObject obj = Instantiate (prefab, new Vector3 (i, 0, j), Quaternion.identity);
+//			}
+//		}
+
+		//Debug.Log ("this many enteries in matrix: " + number);
 
 		return depthMatrix;
     }

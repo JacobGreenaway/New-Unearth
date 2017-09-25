@@ -1,12 +1,21 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\DepthFeedManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ColorView.cs">
     <Files>
-      <File FileName="Assets\Scripts\DepthMatrix.cs" Line="48" Column="59" />
+      <File FileName="Assets\Scripts\DepthMatrix.cs" Line="22" Column="46" />
       <File FileName="Assets\Scripts\DepthSmoother.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\DepthPoint.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\FileReader.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\DepthFeedManager.cs" Line="8" Column="2" />
+      <File FileName="Assets\Scripts\DepthPoint.cs" Line="29" Column="43" />
+      <File FileName="Assets\Scripts\FileReader.cs" Line="30" Column="5" />
+      <File FileName="Assets\Scripts\DepthFeedManager.cs" Line="60" Column="5" />
+      <File FileName="Assets\Scripts\TextureManager.cs" Line="35" Column="69" />
+      <File FileName="Assets\Standard Assets\Windows\Kinect\DepthFrameSource.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Windows\Kinect\DepthFrameReference.cs" Line="1" Column="1" />
+      <File FileName="Assets\Standard Assets\Windows\Kinect\ColorFrameSource.cs" Line="1" Column="1" />
+      <File FileName="Assets\KinectExampleScripts\ColorSourceManager.cs" Line="50" Column="83" />
+      <File FileName="Assets\KinectExampleScripts\ColorSourceView.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\LayerManager.cs" Line="51" Column="3" />
+      <File FileName="Assets\Scripts\Layer.cs" Line="16" Column="32" />
+      <File FileName="Assets\Scripts\ColorView.cs" Line="29" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
