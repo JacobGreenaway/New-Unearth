@@ -4,12 +4,26 @@ using Windows.Kinect;
 
 public class DepthFeedManager : MonoBehaviour
 {   
+	/**
+	 * Reference to a filereader in case the multi source reader doesnt work
+	*/
+	public FileReader fileReader;
+
+	/*
+	 * GameObject with a multisourcemanager component
+	 */
+	public GameObject multiSourceGameObject;
+
+	public bool bSmoothFrames;
+	public int iSmoothFrameRate = 30;
+	private DepthSmoother smoother;
+
+	// Reference to kinect sensor 
 	private KinectSensor _Sensor;
 	private DepthFrameReader _Reader;
 
 	private DepthMatrix depthMatrix;
-
-	public FileReader fileReader;
+	private MultiSourceManager multiSourceManager;
 
 	private ushort[] arrDepth;
 
@@ -20,44 +34,46 @@ public class DepthFeedManager : MonoBehaviour
 	{
 		return depthMatrix;
 	}
-
-	public FrameDescription GetCurrentFrameDesc()
-	{
-		return _Sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Rgba);
-	}
-
-	public ColorFrame GetCurrentColorFrame()
-	{
-		return _Sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color).AcquireLatestFrame().ColorFrameReference.AcquireFrame();
-	}
+		
 
 	void Start () 
 	{
 		_Sensor = KinectSensor.GetDefault();
 
+
 		if (_Sensor != null) 
 		{
-			_Reader = _Sensor.DepthFrameSource.OpenReader();
+			Debug.Log ("Kinect sensor found");
 			arrDepth = new ushort[_Sensor.DepthFrameSource.FrameDescription.LengthInPixels];
 		}
+
+
+		smoother = new DepthSmoother (iSmoothFrameRate);
+
 	}
 
 	void Update () 
 	{
-//		if (_Reader != null) {
-//			var frame = _Reader.AcquireLatestFrame ();
-//
-//			if (frame != null) {
-//				frame.CopyFrameDataToArray (arrDepth);
-//				frame.Dispose ();
-//				frame = null;
-//
-//				depthMatrix = new DepthMatrix (arrDepth);
-//			}
-//		} else {
-			depthMatrix = fileReader.GetData ();
-			Debug.Log ("flip");
-		//}
+		// Get the multi source manager
+		multiSourceManager = multiSourceGameObject.GetComponent<MultiSourceManager>();
+
+		// If we are unable to get the multi source manager, read from the text file
+		if (multiSourceManager == null) {
+			depthMatrix = fileReader.GetData();
+			return;
+		}
+
+		DepthMatrix newMatrix = new DepthMatrix (multiSourceManager.GetDepthData(), Height, Width);
+
+		// If we are smoothing the depth frames
+		if (bSmoothFrames) {
+			smoother.AddDepth (newMatrix);
+			depthMatrix = smoother.GetSmoothDepthMatrix ();
+			return;
+		}
+
+		// Create a new DepthMatrix from the depth data
+		depthMatrix = newMatrix;
 	}
 
 	public int Width

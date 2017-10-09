@@ -1,21 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ColorView.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\DepthSmoother.cs">
     <Files>
-      <File FileName="Assets\Scripts\DepthMatrix.cs" Line="22" Column="46" />
-      <File FileName="Assets\Scripts\DepthSmoother.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\DepthPoint.cs" Line="29" Column="43" />
-      <File FileName="Assets\Scripts\FileReader.cs" Line="30" Column="5" />
-      <File FileName="Assets\Scripts\DepthFeedManager.cs" Line="60" Column="5" />
-      <File FileName="Assets\Scripts\TextureManager.cs" Line="35" Column="69" />
-      <File FileName="Assets\Standard Assets\Windows\Kinect\DepthFrameSource.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Windows\Kinect\DepthFrameReference.cs" Line="1" Column="1" />
-      <File FileName="Assets\Standard Assets\Windows\Kinect\ColorFrameSource.cs" Line="1" Column="1" />
-      <File FileName="Assets\KinectExampleScripts\ColorSourceManager.cs" Line="50" Column="83" />
-      <File FileName="Assets\KinectExampleScripts\ColorSourceView.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\LayerManager.cs" Line="51" Column="3" />
-      <File FileName="Assets\Scripts\Layer.cs" Line="16" Column="32" />
-      <File FileName="Assets\Scripts\ColorView.cs" Line="29" Column="3" />
+      <File FileName="Assets\Scripts\DepthFeedManager.cs" Line="25" Column="33" />
+      <File FileName="Assets\Scripts\DepthMatrix.cs" Line="32" Column="29" />
+      <File FileName="Assets\Scripts\LayerManager.cs" Line="52" Column="29" />
+      <File FileName="Assets\Scripts\DepthSmoother.cs" Line="37" Column="4" />
+      <File FileName="Assets\Scripts\DepthPoint.cs" Line="24" Column="66" />
+      <File FileName="Assets\Scripts\FileReader.cs" Line="42" Column="62" />
+      <File FileName="Assets\Scripts\TextureManager.cs" Line="34" Column="11" />
+      <File FileName="Assets\Scripts\Layer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ColorView.cs" Line="34" Column="67" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

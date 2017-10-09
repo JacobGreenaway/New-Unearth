@@ -20,8 +20,10 @@ public class Layer {
 
 	public bool WithinBounds (ushort value)
 	{
-		Debug.Log ("lowerBound: " + lowerBound + ", upperBound: " + upperBound + ", value: " + value);
-		Debug.Log ((upperBound <= value) && (value <= lowerBound));
-		return ( (upperBound <= value) && (value <= lowerBound));
+//		Debug.Log ("lowerBound: " + lowerBound + ", upperBound: " + upperBound + ", value: " + value);
+//		Debug.Log ((upperBound <= value) && (value <= lowerBound));
+
+		//( (upperBound <= value) && (value <= lowerBound));
+		return ( (upperBound <= value) && (value < lowerBound));
 	}
 }

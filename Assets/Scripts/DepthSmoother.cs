@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DepthSmoother {
 
-	private Queue<DepthMatrix> depthQueue;
+	private Queue<DepthMatrix> depthQueue = new Queue<DepthMatrix>();
 
 	public int frameCount;
 

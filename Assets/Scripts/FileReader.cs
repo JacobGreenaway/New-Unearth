@@ -9,7 +9,7 @@ public class FileReader : MonoBehaviour {
 
 	// Use this for initialization
 
-    public DepthMatrix depthMatrix;
+    public DepthMatrix depthMatrix = null;
 
 //	public GameObject prefab;
 
@@ -18,6 +18,10 @@ public class FileReader : MonoBehaviour {
 
 	public DepthMatrix GetData()
     {
+		if (depthMatrix != null) {
+			return depthMatrix;
+		}
+
 		string text = "";
 		try {
 			text = System.IO.File.ReadAllText(path);
@@ -32,39 +36,15 @@ public class FileReader : MonoBehaviour {
 		List<ushort> depthData = new List<ushort>();
 
 		foreach (string value in lineValues) {
-			try {
-				depthData.Add(ushort.Parse(value));
-			}
-			catch (Exception e){
-				break;
-			}
-
+			depthData.Add(ushort.Parse(value));
 		}
-		//Debug.Log (depthData);
 
-		depthMatrix = new DepthMatrix(depthData.ToArray());
+		depthMatrix = new DepthMatrix(depthData.ToArray(), 424, 512);
 
-		//Debug.Log ("from file reader");
-		//Debug.Log (depthMatrix.m_matrix[25,25].GetValue());
-
-		// Print out for testing
-//		int number = 0;
-//	
-//		for (int i = 0; i < depthMatrix.m_matrix.GetLength(0) - 1; i++) {
-//			for (int j = 0; j < depthMatrix.m_matrix.GetLength(1) - 1; j++) {
-//				//GameObject obj = Instantiate (prefab, new Vector3 (i, 0, j), Quaternion.identity);
-//			}
-//		}
-
-		//Debug.Log ("this many enteries in matrix: " + number);
 
 		return depthMatrix;
     }
-
-	public void Start()
-	{
-		this.GetData();
-	}
+		
 
 
 

@@ -27,7 +27,7 @@ public class LayerManager : MonoBehaviour {
 		// Create the layers based on the LayerHeight
 		for (int layerCount = 0; layerCount < arrLayerNames.Length; layerCount++) 
 		{
-			ushort upperBound = (ushort)(MinDepth + (LayerHeight * layerCount));
+			ushort upperBound = layerCount == 0 ? (ushort)(MinDepth) : (ushort) (MinDepth + (LayerHeight * layerCount));
 			ushort lowerBound = (ushort)(upperBound + LayerHeight);
 
 			string name = arrLayerNames [layerCount];
@@ -38,26 +38,28 @@ public class LayerManager : MonoBehaviour {
 		}
 
 		foreach (Layer layer in arrLayers) {
-			Debug.Log (layer.strName);
+			Debug.Log (layer.strName + " Color(" + layer.color.r + ", " + layer.color.g + ", " + layer.color.b + ", " + layer.color.a + ", ");
+			Debug.Log (layer.strName + " Highest Point: " + layer.upperBound + ", Lowest Point: " + layer.lowerBound);
+
+			ushort testValue = (ushort)200;
+			Debug.Log (layer.WithinBounds(testValue));
+
 		}
+			
 	}
 
 	// Given a depth value, return the layer that this depth belongs to
 	public Layer DetermineLayer(ushort value)
 	{
-		if (arrLayers.Length == 0) {
-			Start ();
-		}
-
 		foreach (Layer layer in arrLayers) 
 		{
 			if (layer.WithinBounds(value))
 			{
-				Debug.Log ("Layer is: " + layer.strName);
+//				Debug.Log ("Layer is: " + layer.strName);
 				return layer; 
 			}
 		}
-
-		return arrLayers[0];
+		return null;
+//		Debug.Log("Returning default layer: " + arrLayers[0].strName);
 	}
 }

@@ -21,12 +21,12 @@ public class DepthPoint {
 
 	public void AverageWith(DepthPoint otherPoint)
 	{
-		this.value = (ushort)((this.value + otherPoint.GetValue ()) / 2);
+		value = (ushort)((value + otherPoint.GetValue ()) / (ushort)2);
 	}
 
     public ushort GetValue()
     {
-		Debug.Log ("point get value: " + value);
+//		Debug.Log ("point get value: " + value);
         return value;
     }
 

@@ -20,6 +20,7 @@ public class DepthSourceManager : MonoBehaviour
         if (_Sensor != null) 
         {
             _Reader = _Sensor.DepthFrameSource.OpenReader();
+			Debug.Log ("Reader is: " + _Reader);
             _Data = new ushort[_Sensor.DepthFrameSource.FrameDescription.LengthInPixels];
         }
     }
@@ -28,7 +29,8 @@ public class DepthSourceManager : MonoBehaviour
     {
         if (_Reader != null)
         {
-            var frame = _Reader.AcquireLatestFrame();
+			DepthFrame frame = _Reader.AcquireLatestFrame();
+			Debug.Log ("Frame is: " + frame);
             if (frame != null)
             {
                 frame.CopyFrameDataToArray(_Data);

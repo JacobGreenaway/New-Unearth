@@ -27,48 +27,51 @@ public class TextureManager : MonoBehaviour
 
 	void Update () 
 	{
+			
 		DepthMatrix depthMatrix = depthFeed.GetDepthMatrix ();
-		Debug.Log (depthMatrix);
 
-		// Create _Data
-		for (int i = 0; i < depthMatrix.m_matrix.GetLength(0) - 1; i++) {
-			for (int j = 0; j < depthMatrix.m_matrix.GetLength(1) - 1; j++) {
+		if (depthMatrix == null) {
+			return;
+		}
+		
+		int iterationCount = 0;
+//
+//			// Create _Data
+		for (int i = 0; i < depthMatrix.matrix.GetLength (0); i++) {
+			for (int j = 0; j < depthMatrix.matrix.GetLength (1); j++) {
+				iterationCount++;
 
-				DepthPoint currentDepthPoint = depthMatrix.m_matrix [i, j];
+				DepthPoint currentDepthPoint = depthMatrix.matrix [i, j];
 
 				if (currentDepthPoint == null) {
-					return;
+					throw new UnityException ("depth point is null");
 				}
 
-				Layer layer = layerManager.DetermineLayer (currentDepthPoint.GetValue ());
+				ushort value = currentDepthPoint.GetValue ();
 
+				if (value == null) {
+					throw new UnityException ("value of depth point is null");
+				}
+
+				Layer layer = layerManager.DetermineLayer(value);
 
 				if (layer != null) {
-					byte r = (byte)layer.color.r;
-					byte g = (byte)layer.color.b;
-					byte b = (byte)layer.color.b;
-					byte a = (byte)layer.color.a;
-
-					_Data [i * j + 0] = r;
-					_Data [i * j + 1] = g;
-					_Data [i * j + 2] = b;
-					_Data [i * j + 3] = a;
+					_Data [((j + (i * depthMatrix.matrix.GetLength (1))) * 4) + 0] = (byte) (layer.color.r * 255);
+					_Data [((j + (i * depthMatrix.matrix.GetLength (1))) * 4) + 1] = (byte) (layer.color.g * 255);
+					_Data [((j + (i * depthMatrix.matrix.GetLength (1))) * 4) + 2] = (byte) (layer.color.b * 255);
+					_Data [((j + (i * depthMatrix.matrix.GetLength (1))) * 4) + 3] = (byte) (layer.color.a);
+				} else {
+					_Data [((j + (i * depthMatrix.matrix.GetLength (1))) * 4) + 0] = (byte) 0;
+					_Data [((j + (i * depthMatrix.matrix.GetLength (1))) * 4) + 1] = (byte) 0;
+					_Data [((j + (i * depthMatrix.matrix.GetLength (1))) * 4) + 2] = (byte) 0;
+					_Data [((j + (i * depthMatrix.matrix.GetLength (1))) * 4) + 3] = (byte) 0;
 				}
-					
-
-//				} else {
-//					_Data [i * j + 0] = (byte)0;
-//					_Data [i * j + 1] = (byte)0;
-//					_Data [i * j + 2] = (byte)0;
-//					_Data [i * j + 3] = (byte)0;
-//				}
-
-
 			}
 		}
 
 		_Texture.LoadRawTextureData(_Data);
 		_Texture.Apply();
+	
 
 	}
 }

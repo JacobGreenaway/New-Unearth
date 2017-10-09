@@ -6,10 +6,11 @@ public class ColorView : MonoBehaviour
 {
 	public GameObject textureManager;
 	private TextureManager _TextureManager;
+	private int count = 0;
 
 	void Start ()
 	{
-		gameObject.GetComponent<Renderer>().material.SetTextureScale("_MainTex", new Vector2(-1, 1));
+		//gameObject.GetComponent<Renderer>().material.SetTextureScale("_MainTex", new Vector2(-1, 1));
 	}
 
 	void Update()
@@ -19,12 +20,19 @@ public class ColorView : MonoBehaviour
 			return;
 		}
 
-		_TextureManager = textureManager.GetComponent<TextureManager>();
-		if (_TextureManager == null)
-		{
+		_TextureManager = textureManager.GetComponent<TextureManager> ();
+		if (_TextureManager == null) {
 			return;
 		}
 
-		gameObject.GetComponent<Renderer>().material.mainTexture = _TextureManager.GetColorTexture();
+		Texture tex = _TextureManager.GetColorTexture ();
+
+		if (tex == null) {
+			return;
+		}
+
+		gameObject.GetComponent<Renderer> ().material.mainTexture = tex;
+		//Debug.Log (_TextureManager.GetColorTexture ());
+		
 	}
 }

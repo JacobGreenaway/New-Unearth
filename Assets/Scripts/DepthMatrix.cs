@@ -5,35 +5,16 @@ using UnityEngine;
 public class DepthMatrix {
 
 	// The 2d array storing the depth points
-	public DepthPoint[,] m_matrix;
+	public DepthPoint[,] matrix;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param ushort[] arrDepthData - An array of ushorts representing all the data for a single kinect frame
 	 */
-	public DepthMatrix(ushort[] arrDepthData)
+	public DepthMatrix(ushort[] arrDepthData, int iHeight, int iWidth)
 	{
-		this.m_matrix = new DepthPoint[512, 424];
-
-		int row = 0;
-		int column = 0;
-
-		for (int i = 0; i < arrDepthData.Length - 1; i++, column++) 
-		{
-			DepthPoint currentDepth = new DepthPoint (row, column, arrDepthData [i]);
-			this.m_matrix [row, column] = currentDepth;
-
-			if (i % (512 - 1) == 0) 
-			{
-				row++;
-			}
-
-			if (column == 424 - 1) 
-			{
-				column = 0;
-			}
-		}
+		this.matrix = Make2DArray(arrDepthData, iHeight, iWidth);
 	}
 
 	/**
@@ -41,15 +22,35 @@ public class DepthMatrix {
 	 */
 	public void AverageWith(DepthMatrix otherMatrix)
 	{
-		for (int row = 0; row < this.m_matrix.GetLength (0); row++) 
+		for (int height = 0; height < this.matrix.GetLength (0); height++) 
 		{
-			for (int column = 0; column < this.m_matrix.GetLength(1); column++)
+			for (int width = 0; width < this.matrix.GetLength(1); width++)
 			{
-				DepthPoint currentPoint = this.m_matrix [row, column];
-				DepthPoint otherPoint = otherMatrix.m_matrix [row, column];
+				DepthPoint currentPoint = this.matrix [height, width];
+				DepthPoint otherPoint = otherMatrix.matrix [height, width];
 				
 				currentPoint.AverageWith (otherPoint);
 			}
 		}
+	}
+
+	/*
+	 * Takes a 1D array and maps it to a 2D array with the specified height and width
+	 * 
+	 * @param ushort[] input - the 1D array of depth data
+	 * @param int height - the height of the matrix
+	 * @param int width - the width of the matrix
+	 */
+	private DepthPoint[,] Make2DArray(ushort[] input, int height, int width)
+	{
+		DepthPoint[,] output = new DepthPoint[height, width];
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				output[i, j] = new DepthPoint(i, j, (ushort)input[i * width + j]);
+			}
+		}
+		return output;
 	}
 }

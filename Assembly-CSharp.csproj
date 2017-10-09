@@ -46,11 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\ColorBasics-WPF\App.xaml.cs" />
-     <Compile Include="Assets\ColorBasics-WPF\MainWindow.xaml.cs" />
-     <Compile Include="Assets\ColorBasics-WPF\Properties\AssemblyInfo.cs" />
-     <Compile Include="Assets\ColorBasics-WPF\Properties\Resources.Designer.cs" />
-     <Compile Include="Assets\ColorBasics-WPF\Properties\Settings.Designer.cs" />
      <Compile Include="Assets\KinectExampleScripts\BodySourceManager.cs" />
      <Compile Include="Assets\KinectExampleScripts\BodySourceView.cs" />
      <Compile Include="Assets\KinectExampleScripts\ColorSourceManager.cs" />
