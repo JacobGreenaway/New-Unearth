@@ -34,6 +34,27 @@ public class DepthMatrix {
 		}
 	}
 
+	public List<DepthPoint> GetAllOnLayer(Layer layer)
+	{
+		// List to store points that belong to the specified layer
+		List<DepthPoint> pointsInLayer = new List<DepthPoint> ();
+
+		for (int height = 0; height < this.matrix.GetLength (0); height++) 
+		{
+			for (int width = 0; width < this.matrix.GetLength(1); width++)
+			{
+				DepthPoint currentPoint = this.matrix [height, width];
+
+				if(layer.WithinBounds(currentPoint.GetValue()))
+				{
+					pointsInLayer.Add(currentPoint);
+				}
+			}
+		}
+
+		return pointsInLayer;
+	}
+
 	/*
 	 * Takes a 1D array and maps it to a 2D array with the specified height and width
 	 * 

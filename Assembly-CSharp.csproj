@@ -57,13 +57,16 @@
      <Compile Include="Assets\KinectExampleScripts\InfraredSourceView.cs" />
      <Compile Include="Assets\KinectExampleScripts\MultiSourceManager.cs" />
      <Compile Include="Assets\Scripts\ColorView.cs" />
-     <Compile Include="Assets\Scripts\DepthFeedManager.cs" />
-     <Compile Include="Assets\Scripts\DepthMatrix.cs" />
-     <Compile Include="Assets\Scripts\DepthPoint.cs" />
-     <Compile Include="Assets\Scripts\DepthSmoother.cs" />
+     <Compile Include="Assets\Scripts\DepthDataFormats\DepthFeedManager.cs" />
+     <Compile Include="Assets\Scripts\DepthDataFormats\DepthMatrix.cs" />
+     <Compile Include="Assets\Scripts\DepthDataFormats\DepthPoint.cs" />
+     <Compile Include="Assets\Scripts\DepthDataFormats\DepthSmoother.cs" />
      <Compile Include="Assets\Scripts\FileReader.cs" />
      <Compile Include="Assets\Scripts\Layer.cs" />
      <Compile Include="Assets\Scripts\LayerManager.cs" />
+     <Compile Include="Assets\Scripts\SpawnManager.cs" />
+     <Compile Include="Assets\Scripts\SpawnPosition.cs" />
+     <Compile Include="Assets\Scripts\Spawnable.cs" />
      <Compile Include="Assets\Scripts\TextureManager.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

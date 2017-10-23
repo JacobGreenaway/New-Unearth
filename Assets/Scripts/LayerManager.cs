@@ -8,6 +8,8 @@ public class LayerManager : MonoBehaviour {
 	// The distance apart of each layer
 	public ushort LayerHeight;
 
+	public ushort layerGap;
+
 	// Repersents the upper bound of the layers (Smaller Depth is higher)
 	public ushort MinDepth;
 
@@ -21,13 +23,18 @@ public class LayerManager : MonoBehaviour {
 	// Create a LayerManager
 	public void Start ()
 	{
+		if (layerGap == null) 
+		{
+			layerGap = (ushort)0;
+		}
+
 		// Initialise layer array
 		arrLayers = new Layer[arrLayerNames.Length];
 
 		// Create the layers based on the LayerHeight
 		for (int layerCount = 0; layerCount < arrLayerNames.Length; layerCount++) 
 		{
-			ushort upperBound = layerCount == 0 ? (ushort)(MinDepth) : (ushort) (MinDepth + (LayerHeight * layerCount));
+			ushort upperBound = layerCount == 0 ? (ushort)(MinDepth) : (ushort) (MinDepth + ((LayerHeight + layerGap) * layerCount));
 			ushort lowerBound = (ushort)(upperBound + LayerHeight);
 
 			string name = arrLayerNames [layerCount];
@@ -36,16 +43,23 @@ public class LayerManager : MonoBehaviour {
 
 			arrLayers [layerCount] = layer;
 		}
-
-		foreach (Layer layer in arrLayers) {
-			Debug.Log (layer.strName + " Color(" + layer.color.r + ", " + layer.color.g + ", " + layer.color.b + ", " + layer.color.a + ", ");
-			Debug.Log (layer.strName + " Highest Point: " + layer.upperBound + ", Lowest Point: " + layer.lowerBound);
-
-			ushort testValue = (ushort)200;
-			Debug.Log (layer.WithinBounds(testValue));
-
-		}
 			
+	}
+
+	//
+	public Layer GetLayer(string strLayerName)
+	{
+		Debug.Log (arrLayers);
+		for (int i = 0; i < arrLayers.Length; i++) 
+		{
+			Layer layer = arrLayers [i];
+
+			if (layer.strName == strLayerName) {
+				return layer;
+			}
+		}
+
+		return null;
 	}
 
 	// Given a depth value, return the layer that this depth belongs to

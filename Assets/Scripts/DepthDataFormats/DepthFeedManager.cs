@@ -59,6 +59,10 @@ public class DepthFeedManager : MonoBehaviour
 
 		// If we are unable to get the multi source manager, read from the text file
 		if (multiSourceManager == null) {
+			return;
+		}
+
+		if (fileReader.GetData () != null) {
 			depthMatrix = fileReader.GetData();
 			return;
 		}

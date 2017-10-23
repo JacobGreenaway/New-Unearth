@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class DepthPoint {
     
-	private int x { get; }
+	public int x;
 
-	private int y { get; }
+	public int y;
 
     // The depth value at this point
 	private ushort value;
 
-	public DepthPoint(int x, int y, ushort value)
+	public DepthPoint(int xPos, int yPos, ushort value)
 	{
-        this.x = x;
-        this.y = y;
+		this.x = xPos;
+        this.y = yPos;
         this.value = value;
 
 	}
