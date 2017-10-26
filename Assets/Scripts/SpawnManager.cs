@@ -45,7 +45,7 @@ public class SpawnManager : MonoBehaviour {
 				DepthPoint depthPoint = GetDepthPointInLayer (currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
 
 				Vector3 position = ConvertDepthPointToVector (depthPoint);
-				Debug.Log("spawning at position");
+                Debug.Log("spawning at position");
 				GameObject fish = spawnable.Spawn (position);
 				fish.transform.parent = spawnObjectParent.transform;
 			}
@@ -69,9 +69,11 @@ public class SpawnManager : MonoBehaviour {
 		int x = depthPoint.y;
 		int z = depthPoint.x;
 
-		int xModifier = (512 / 2) * -1;
+        //Modify the position to turn matrix position into unity position
+		int xModifier = (512 / 2) * 1;
+        int zModifier = (424 / 2) * 1;
 
-		Vector3 position = new Vector3 (x + xModifier, 1, -z);
+        Vector3 position = new Vector3 (xModifier -x, 1, zModifier - z);
 
 		return position;
 	}

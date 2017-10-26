@@ -13,7 +13,7 @@ public class LayerManager : MonoBehaviour {
 	// Repersents the upper bound of the layers (Smaller Depth is higher)
 	public ushort MinDepth;
 
-	public string[] arrLayerNames = { "Volcano", "Snow", "Rock", "Rock", "Forest", "Forest", "Grass", "Grass", "Sand", "Water", "DeepWater", "DeepWater" };
+	public string[] arrLayerNames;
 
 	public Color[] arrColours;
 

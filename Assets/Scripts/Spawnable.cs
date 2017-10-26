@@ -16,9 +16,23 @@ public class Spawnable : MonoBehaviour {
 	public GameObject Spawn(Vector3 position)
 	{
 		GameObject fish = Instantiate (gameObject, position, transform.rotation);
-		Debug.Log (fish);
+		//Debug.Log (fish);
 		return fish;
 	}
+
+    private void Update()
+    {
+        if(Input.GetAxis("Reset all") != 0)
+        {
+            Debug.Log("Die!");
+            Die();
+        }
+    }
+
+    private void Die ()
+    {
+       Destroy(this.gameObject);
+    }
 
 
 }
