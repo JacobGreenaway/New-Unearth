@@ -22,7 +22,7 @@ public class Spawnable : MonoBehaviour {
 
     private void Update()
     {
-        if(Input.GetAxis("Reset all") != 0)
+        if(Input.GetButtonUp("Reset all") == true)
         {
             Debug.Log("Die!");
             Die();

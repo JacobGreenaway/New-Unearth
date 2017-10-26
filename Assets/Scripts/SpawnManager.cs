@@ -18,8 +18,13 @@ public class SpawnManager : MonoBehaviour {
 
 	private DepthMatrix currentDepthMatrix;
 
+    private bool _toggleAnimal;
+    private bool _togglePlant;
+
 	// Use this for initialization
 	void Start () {
+        _toggleAnimal = false;
+        _togglePlant = false;
 
 		spawnables = new Spawnable[spawnableGameObjects.Length];
 
@@ -33,6 +38,16 @@ public class SpawnManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //Check to see if animals and plant modes have been toggled
+        if (Input.GetButtonUp("Toggle plants") == true)
+        {
+            Debug.Log("Plants Toggled!");
+            _togglePlant = !_togglePlant;
+        } else if (Input.GetButtonUp("Toggle animals") == true)
+        {
+            Debug.Log("Animals Toggled");
+            _toggleAnimal = !_toggleAnimal;
+        }
 
 		// Get the latest depth data
 		currentDepthMatrix = depthFeed.GetDepthMatrix();
