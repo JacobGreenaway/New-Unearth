@@ -62,8 +62,8 @@ public class SpawnManager : MonoBehaviour {
 				Vector3 position = ConvertDepthPointToVector (depthPoint);
                 Debug.Log("spawning at position");
 				GameObject fish = spawnable.Spawn (position);
-				fish.transform.parent = spawnObjectParent.transform;
-			}
+                fish.transform.SetParent(spawnObjectParent.transform);
+            }
 
 		}
 	}
