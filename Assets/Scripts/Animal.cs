@@ -37,7 +37,7 @@ public class Animal : MonoBehaviour {
     {
         _direction = Random.Range(1, 10);
 
-        Debug.Log(_direction);
+        //Debug.Log(_direction);
     }
 
     private void Move ()

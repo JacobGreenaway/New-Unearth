@@ -30,9 +30,9 @@ public class SpawnManager : MonoBehaviour {
 
 		for (int i = 0; i < spawnableGameObjects.Length; i++) {
 			GameObject spawnobj = spawnableGameObjects [i];
-
 			Spawnable spawnable = spawnobj.GetComponent<Spawnable> ();
 			spawnables [i] = spawnable;
+            spawnables[i].currentNum = 0;
 		}
 	}
 	
@@ -61,8 +61,17 @@ public class SpawnManager : MonoBehaviour {
 
 				Vector3 position = ConvertDepthPointToVector (depthPoint);
                 Debug.Log("spawning at position");
-				GameObject fish = spawnable.Spawn (position);
-                fish.transform.SetParent(spawnObjectParent.transform);
+                if (spawnable.maxNum > spawnable.currentNum)
+                {
+                    spawnable.currentNum++;
+                    GameObject fish = spawnable.Spawn(position);
+                    fish.transform.SetParent(spawnObjectParent.transform);
+                } else
+                {
+                    Debug.Log("Max reached");
+
+                }
+
             }
 
 		}

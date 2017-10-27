@@ -13,17 +13,17 @@ public class Spawnable : MonoBehaviour {
 	public int spawnFrequency;
 
     public int maxNum;
+    public int currentNum;
 
-    //private int currentNum;
+    void Start()
+    {
+        currentNum = 0;
+    }
 
-
-	public GameObject Spawn(Vector3 position)
+    public GameObject Spawn(Vector3 position)
 	{
-
-		GameObject fish = Instantiate (gameObject, position, transform.rotation);
-        //currentNum++;
-		//Debug.Log (fish);
-		return fish;
+        GameObject fish = Instantiate(gameObject, position, transform.rotation);
+        return fish;
 	}
 
     private void Update()
