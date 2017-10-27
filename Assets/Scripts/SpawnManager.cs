@@ -18,8 +18,8 @@ public class SpawnManager : MonoBehaviour {
 
 	private DepthMatrix currentDepthMatrix;
 
-    private bool _toggleAnimal;
-    private bool _togglePlant;
+    public bool _toggleAnimal;
+    public bool _togglePlant;
 
 	// Use this for initialization
 	void Start () {
@@ -43,30 +43,38 @@ public class SpawnManager : MonoBehaviour {
         {
             Debug.Log("Plants Toggled!");
             _togglePlant = !_togglePlant;
-        } else if (Input.GetButtonUp("Toggle animals") == true)
+        }
+        else if (Input.GetButtonUp("Toggle animals") == true)
         {
             Debug.Log("Animals Toggled");
             _toggleAnimal = !_toggleAnimal;
         }
 
-		// Get the latest depth data
-		currentDepthMatrix = depthFeed.GetDepthMatrix();
+        SpawnAll();
+	}
 
-		for (int i = 0; i < spawnables.Length; i++)
-		{
-			Spawnable spawnable = spawnables [i];
+    void SpawnAll ()
+    {
+        // Get the latest depth data
+        currentDepthMatrix = depthFeed.GetDepthMatrix();
 
-			if (SpawnChance (spawnable.spawnFrequency)) {
-				DepthPoint depthPoint = GetDepthPointInLayer (currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
+        for (int i = 0; i < spawnables.Length; i++)
+        {
+            Spawnable spawnable = spawnables[i];
 
-				Vector3 position = ConvertDepthPointToVector (depthPoint);
+            if (SpawnChance(spawnable.spawnFrequency))
+            {
+                DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
+
+                Vector3 position = ConvertDepthPointToVector(depthPoint);
                 Debug.Log("spawning at position");
                 if (spawnable.maxNum > spawnable.currentNum)
                 {
                     spawnable.currentNum++;
                     GameObject fish = spawnable.Spawn(position);
                     fish.transform.SetParent(spawnObjectParent.transform);
-                } else
+                }
+                else
                 {
                     Debug.Log("Max reached");
 
@@ -74,8 +82,8 @@ public class SpawnManager : MonoBehaviour {
 
             }
 
-		}
-	}
+        }
+    }
 
 	DepthPoint GetDepthPointInLayer(DepthMatrix depthMatrix, Layer layer)
 	{

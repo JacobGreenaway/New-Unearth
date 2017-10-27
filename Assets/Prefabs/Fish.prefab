@@ -86,10 +86,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layerManager: {fileID: 0}
+  isPlant: 0
   strLayer: Water
   spawnFrequency: 5
   maxNum: 10
-  currentNum: 0
+  currentNum: 10
 --- !u!114 &114852209657756390
 MonoBehaviour:
   m_ObjectHideFlags: 1

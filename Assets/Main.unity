@@ -589,7 +589,13 @@ MonoBehaviour:
   spawnObjectParent: {fileID: 1160567148}
   spawnableGameObjects:
   - {fileID: 1263608421905132, guid: 763fa678f46d7b84f94442dbec62110e, type: 2}
+  - {fileID: 1126318008555514, guid: 9d3f788d8f718974588a8189ae47dbab, type: 2}
+  - {fileID: 1715493620964992, guid: dc64396697408714b84e426fdf0fcec0, type: 2}
+  - {fileID: 1785926298227710, guid: ea8b31967b6e3dd488c108d72e51477a, type: 2}
+  - {fileID: 1374886875447454, guid: 8a5acb5230b054c4cb2ef7def1bcfdd8, type: 2}
   layerManager: {fileID: 791472391}
+  _toggleAnimal: 0
+  _togglePlant: 0
 --- !u!4 &1898565528
 Transform:
   m_ObjectHideFlags: 0
