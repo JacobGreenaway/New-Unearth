@@ -121,7 +121,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4862875452419436, guid: 763fa678f46d7b84f94442dbec62110e, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -300
+      value: -311.9
       objectReference: {fileID: 0}
     - target: {fileID: 4862875452419436, guid: 763fa678f46d7b84f94442dbec62110e, type: 2}
       propertyPath: m_LocalPosition.y
@@ -156,6 +156,18 @@ Prefab:
       propertyPath: layerManager
       value: 
       objectReference: {fileID: 791472391}
+    - target: {fileID: 4862875452419436, guid: 763fa678f46d7b84f94442dbec62110e, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862875452419436, guid: 763fa678f46d7b84f94442dbec62110e, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862875452419436, guid: 763fa678f46d7b84f94442dbec62110e, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 763fa678f46d7b84f94442dbec62110e, type: 2}
   m_IsPrefabParent: 0
@@ -620,7 +632,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1898565527
 MonoBehaviour:
   m_ObjectHideFlags: 0

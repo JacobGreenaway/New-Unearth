@@ -35,8 +35,9 @@ public class Animal : MonoBehaviour {
 
     private void ChangeDirection()
     {
-        _direction = Random.Range(0, 10);
+        _direction = Random.Range(1, 10);
 
+        Debug.Log(_direction);
     }
 
     private void Move ()
@@ -44,31 +45,39 @@ public class Animal : MonoBehaviour {
         switch (_direction)
         {
             case 1:
-                transform.Translate(-1, -1, 0);
+                transform.Translate(-1, 0, -1, Space.World);
+                transform.eulerAngles = new Vector3(90, -135, 0);
                 break;
             case 2:
-                transform.Translate(1, -1, 0);
+                transform.Translate(0, 0, -1, Space.World);
+                transform.eulerAngles = new Vector3(90, 180, 0);
                 break;
             case 3:
-                transform.Translate(1, -1, 0);
+                transform.Translate(1, 0, -1, Space.World);
+                transform.eulerAngles = new Vector3(90, -225, 0);
                 break;
             case 4:
-                transform.Translate(-1, 0, 0);
+                transform.Translate(-1, 0, 0, Space.World);
+                transform.eulerAngles = new Vector3(90, -90, 0);
                 break;
             case 5:
                 //Stand still
                 break;
             case 6:
-                transform.Translate(1, 0, 0);
+                transform.Translate(1, 0, 0, Space.World);
+                transform.eulerAngles = new Vector3(90, 90, 0);
                 break;
             case 7:
-                transform.Translate(-1, 1, 0);
+                transform.Translate(-1, 0, 1, Space.World);
+                transform.eulerAngles = new Vector3(90, -45, 0);
                 break;
             case 8:
-                transform.Translate(0, 1, 0);
+                transform.Translate(0, 0, 1, Space.World);
+                transform.eulerAngles = new Vector3(90, 0, 0);
                 break;
             case 9:
-                transform.Translate(1, 1, 0);
+                transform.Translate(1, 0, 1, Space.World);
+                transform.eulerAngles = new Vector3(90, 45, 0);
                 break;
         }
         

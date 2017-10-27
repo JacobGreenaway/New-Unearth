@@ -12,10 +12,16 @@ public class Spawnable : MonoBehaviour {
 
 	public int spawnFrequency;
 
+    public int maxNum;
+
+    //private int currentNum;
+
 
 	public GameObject Spawn(Vector3 position)
 	{
+
 		GameObject fish = Instantiate (gameObject, position, transform.rotation);
+        //currentNum++;
 		//Debug.Log (fish);
 		return fish;
 	}
