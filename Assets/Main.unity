@@ -255,7 +255,7 @@ MonoBehaviour:
   - DeepWater
   - DeepWater1
   arrColours:
-  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 0.894, g: 0, b: 0.1, a: 0}
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0.5661765, g: 0.08199807, b: 0, a: 0}
   - {r: 0, g: 0.5808823, b: 0.10015214, a: 0}
@@ -593,6 +593,7 @@ MonoBehaviour:
   - {fileID: 1715493620964992, guid: dc64396697408714b84e426fdf0fcec0, type: 2}
   - {fileID: 1785926298227710, guid: ea8b31967b6e3dd488c108d72e51477a, type: 2}
   - {fileID: 1374886875447454, guid: 8a5acb5230b054c4cb2ef7def1bcfdd8, type: 2}
+  - {fileID: 1904451511518486, guid: 17b2353ad98a94e44ac343db652cd409, type: 2}
   layerManager: {fileID: 791472391}
   _toggleAnimal: 0
   _togglePlant: 0

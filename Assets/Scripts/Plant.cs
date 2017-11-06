@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour {
 
+
+    //Determin the max size of the object
     public int MaxSize;
 
 	// Use this for initialization
@@ -15,6 +17,7 @@ public class Plant : MonoBehaviour {
 	void Update () {
         Grow();
 	}
+
 
     void Grow()
     {

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour {
 
-	// DepthFeed to use for spawning position
-	public DepthFeedManager depthFeed;
+    // DepthFeed to use for spawning position
+    public DepthFeedManager depthFeed;
 
 	public GameObject spawnObjectParent;
 
@@ -66,7 +66,7 @@ public class SpawnManager : MonoBehaviour {
             {
                 DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
 
-                Vector3 position = ConvertDepthPointToVector(depthPoint);
+                Vector3 position = depthPoint.position;
                 Debug.Log("spawning at position");
                 if (spawnable.maxNum > spawnable.currentNum)
                 {
@@ -85,9 +85,10 @@ public class SpawnManager : MonoBehaviour {
         }
     }
 
-	DepthPoint GetDepthPointInLayer(DepthMatrix depthMatrix, Layer layer)
+    // Select a random point from the depth matrix which is inside the desired layer
+    DepthPoint GetDepthPointInLayer(DepthMatrix depthMatrix, Layer layer)
 	{
-		// Select a random point from the depth matrix which is inside the desired layer
+
 		List<DepthPoint> depthPointsOnLayer = depthMatrix.GetAllOnLayer(layer);
 
 		int length = depthPointsOnLayer.Count;
@@ -96,23 +97,11 @@ public class SpawnManager : MonoBehaviour {
 		return depthPointsOnLayer [randomIndex];
 	}
 
-	Vector3 ConvertDepthPointToVector(DepthPoint depthPoint)
-	{
-		int x = depthPoint.y;
-		int z = depthPoint.x;
-
-        //Modify the position to turn matrix position into unity position
-		int xModifier = (512 / 2) * 1;
-        int zModifier = (424 / 2) * 1;
-
-        Vector3 position = new Vector3 (xModifier -x, 1, zModifier - z);
-
-		return position;
-	}
-
 	bool SpawnChance(int spawnFrequency)
 	{
 		int rand = Random.Range (0, 100);
 		return rand < spawnFrequency;
 	}
+
+
 }
