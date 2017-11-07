@@ -19,6 +19,12 @@ public class LayerManager : MonoBehaviour {
 
 	public Layer[] arrLayers;
 
+	public ushort Max;
+
+	public ushort Min;
+
+	public Dictionary<ushort, Layer> layerMap = new Dictionary<ushort, Layer>();
+
 
 	// Create a LayerManager
 	public void Start ()
@@ -43,6 +49,16 @@ public class LayerManager : MonoBehaviour {
 
 			arrLayers [layerCount] = layer;
 		}
+
+		// Map every valid value to its layer for fast access
+		for (ushort i = MinDepth; i < arrLayers [arrLayers.Length - 1].lowerBound; i++) {
+			layerMap [(ushort)i] = DetermineLayer ((ushort)i);
+		}
+
+		Max = arrLayers [arrLayers.Length - 1].lowerBound;
+		Debug.Log("Max is" + Max);
+		Min = MinDepth;
+		Debug.Log("Min is" + Min);
 			
 	}
 
@@ -73,7 +89,7 @@ public class LayerManager : MonoBehaviour {
 				return layer; 
 			}
 		}
-		return null;
+		return arrLayers[arrLayers.Length - 1];
 //		Debug.Log("Returning default layer: " + arrLayers[0].strName);
 	}
 }

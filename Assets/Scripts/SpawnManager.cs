@@ -57,6 +57,9 @@ public class SpawnManager : MonoBehaviour {
     {
         // Get the latest depth data
         currentDepthMatrix = depthFeed.GetDepthMatrix();
+		if (currentDepthMatrix == null) {
+			return;
+		}
 
         for (int i = 0; i < spawnables.Length; i++)
         {
@@ -87,6 +90,9 @@ public class SpawnManager : MonoBehaviour {
 
 	DepthPoint GetDepthPointInLayer(DepthMatrix depthMatrix, Layer layer)
 	{
+		if (depthMatrix == null) {
+			return null;
+		}
 		// Select a random point from the depth matrix which is inside the desired layer
 		List<DepthPoint> depthPointsOnLayer = depthMatrix.GetAllOnLayer(layer);
 

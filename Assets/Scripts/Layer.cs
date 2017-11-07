@@ -5,7 +5,7 @@ using UnityEngine;
 // Provides public management for Layers - Depth values that map to particular colours
 public class Layer {
 
-	public string strName { get; }
+	public string strName;
 	public ushort upperBound;
 	public ushort lowerBound;
 	public Color color;

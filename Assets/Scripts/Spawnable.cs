@@ -50,12 +50,12 @@ public class Spawnable : MonoBehaviour {
         {
             float x = transform.position.x;
             float z = transform.position.z;
-            transform.position = new Vector3(x, -10, z);
+            transform.position = new Vector3(x, 1, z);
         } else if (!isPlant && !manager._toggleAnimal)
         {
             float x = transform.position.x;
             float z = transform.position.z;
-            transform.position = new Vector3(x, -10, z);
+            transform.position = new Vector3(x, 1, z);
         } else
         {
             float x = transform.position.x;

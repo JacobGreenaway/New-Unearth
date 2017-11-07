@@ -5,8 +5,12 @@ using UnityEngine;
 public class DepthPoint {
     
 	public int x;
-
 	public int y;
+
+	public DepthPoint left;
+	public DepthPoint right;
+	public DepthPoint top;
+	public DepthPoint bottom;
 
     // The depth value at this point
 	private ushort value;
@@ -19,16 +23,57 @@ public class DepthPoint {
 
 	}
 
-	public void AverageWith(DepthPoint otherPoint)
+	public void AverageWithSurroundingPoints()
 	{
-		value = (ushort)((value + otherPoint.GetValue ()) / (ushort)2);
+		if (this.left != null) {
+			this.AverageWithOtherPoint (this.left);
+		}
+
+		if (this.right != null) {
+			this.AverageWithOtherPoint (this.right);
+		}
+
+		if (this.top != null) {
+			this.AverageWithOtherPoint (this.top);
+		}
+
+		if (this.bottom != null) {
+			this.AverageWithOtherPoint (this.bottom);
+		}
+	}
+
+	public void AverageWithOtherPoint(DepthPoint otherPoint)
+	{
+		ushort otherValue = otherPoint.GetValue ();
+
+//		if (otherValue > this.value) {
+//			this.value = (ushort)Mathf.Min (this.value + (ushort)100, otherValue);
+//		}
+//		if (otherValue < this.value) {
+//			this.value = (ushort)Mathf.Max (this.value - (ushort)100, otherValue);
+//		}
+		if (otherValue == 0) {
+			return;
+		} else if (this.value == 0) {
+			this.value = otherValue;
+			return;
+		}
+					
+		this.value = (ushort)((this.value + otherValue) / (ushort)2);
 	}
 
     public ushort GetValue()
     {
 //		Debug.Log ("point get value: " + value);
-        return value;
+        return this.value;
     }
+
+	public void setSurroundingPoints(DepthPoint left, DepthPoint right, DepthPoint top, DepthPoint bottom) {
+		this.left = left;
+		this.right = right;
+		this.top = top;
+		this.bottom = bottom;
+	}
 
 	// Possible extension for easy recursive traversing through DepthMatrix
 

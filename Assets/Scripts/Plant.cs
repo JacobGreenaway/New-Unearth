@@ -21,7 +21,7 @@ public class Plant : MonoBehaviour {
         if (transform.localScale.x*400 < MaxSize)
         {
             transform.localScale += new Vector3(0.0001F, 0.0001F, 0);
-            Debug.Log("grow!");
+            //Debug.Log("grow!");
         }
 
     }

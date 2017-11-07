@@ -41,6 +41,7 @@ public class DepthSmoother {
 			{
 				initialMatrix.AverageWith (matrix);
 			}
+			initialMatrix.AverageSmoothPoints ();
 			return initialMatrix;
 		} 
 

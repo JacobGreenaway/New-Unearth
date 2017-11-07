@@ -39,7 +39,8 @@ public class FileReader : MonoBehaviour {
 			depthData.Add(ushort.Parse(value));
 		}
 
-		depthMatrix = new DepthMatrix(depthData.ToArray(), 424, 512);
+		ushort[] arrDepthData = depthData.ToArray ();
+		depthMatrix = new DepthMatrix(ref arrDepthData, 424, 512);
 
 
 		return depthMatrix;

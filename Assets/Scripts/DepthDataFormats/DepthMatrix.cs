@@ -12,9 +12,9 @@ public class DepthMatrix {
 	 * 
 	 * @param ushort[] arrDepthData - An array of ushorts representing all the data for a single kinect frame
 	 */
-	public DepthMatrix(ushort[] arrDepthData, int iHeight, int iWidth)
+	public DepthMatrix(ref ushort[] arrDepthData, int iHeight, int iWidth)
 	{
-		this.matrix = Make2DArray(arrDepthData, iHeight, iWidth);
+		this.matrix = Make2DArray(ref arrDepthData, iHeight, iWidth);
 	}
 
 	/**
@@ -29,7 +29,22 @@ public class DepthMatrix {
 				DepthPoint currentPoint = this.matrix [height, width];
 				DepthPoint otherPoint = otherMatrix.matrix [height, width];
 				
-				currentPoint.AverageWith (otherPoint);
+				currentPoint.AverageWithOtherPoint (otherPoint);
+			}
+		}
+	}
+
+	/**
+	 * @param DepthMatrix otherMatrix - A matrix to average the values of this matrix with
+	 */
+	public void AverageSmoothPoints()
+	{
+		for (int height = 0; height < this.matrix.GetLength (0); height++) 
+		{
+			for (int width = 0; width < this.matrix.GetLength(1); width++)
+			{
+				DepthPoint currentPoint = this.matrix [height, width];
+				currentPoint.AverageWithSurroundingPoints ();
 			}
 		}
 	}
@@ -62,7 +77,7 @@ public class DepthMatrix {
 	 * @param int height - the height of the matrix
 	 * @param int width - the width of the matrix
 	 */
-	private DepthPoint[,] Make2DArray(ushort[] input, int height, int width)
+	private DepthPoint[,] Make2DArray(ref ushort[] input, int height, int width)
 	{
 		DepthPoint[,] output = new DepthPoint[height, width];
 		for (int i = 0; i < height; i++)
@@ -72,6 +87,39 @@ public class DepthMatrix {
 				output[i, j] = new DepthPoint(i, j, (ushort)input[i * width + j]);
 			}
 		}
+
+		// Set surrounding points for each depth point
+		for (int i = 0; i < height; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				DepthPoint left = null;
+				DepthPoint right = null;
+				DepthPoint top = null;
+				DepthPoint bottom = null;
+
+				if (0 < i && i < height -1) {
+					//Debug.Log (i);
+					if (output [i - 1, j] != null) {
+						top = output [i - 1, j];
+					}
+					if (output [i + 1, j] != null) {
+						bottom = output [i + 1, j];
+					}
+				}
+				if (0 < j && j < width -1) {
+					if (output [i, j - 1] != null) {
+						left = output [i, j - 1];
+					}
+					if (output [i, j + 1] != null) {
+						right = output [i, j + 1];
+					}
+				}
+
+				output [i, j].setSurroundingPoints (left, right, top, bottom);
+			}
+		}
+
 		return output;
 	}
 }
