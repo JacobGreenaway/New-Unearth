@@ -25,6 +25,7 @@ public class Plant : MonoBehaviour {
         {
             transform.localScale += new Vector3(0.0001F, 0.0001F, 0);
             Debug.Log("grow!");
+            
         }
 
     }

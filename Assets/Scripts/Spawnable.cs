@@ -45,6 +45,7 @@ public class Spawnable : MonoBehaviour {
         }
     }
 
+    //Used to 
     private void CheckVisible ()
     {
         GameObject spawnManager = GameObject.Find("SpawnManager");

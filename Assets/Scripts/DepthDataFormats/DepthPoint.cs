@@ -25,7 +25,7 @@ public class DepthPoint {
         int posZ = x;
         int xModifier = (512 / 2) * 1;
         int zModifier = (424 / 2) * 1;
-        this.position = new Vector3(xModifier - posX, 1, zModifier - posZ);
+        this.position = new Vector3(xModifier - posX, -10, zModifier - posZ);
     }
 
 	public void AverageWith(DepthPoint otherPoint)

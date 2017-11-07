@@ -23,17 +23,10 @@ public class SpawnManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        _toggleAnimal = false;
-        _togglePlant = false;
+        _toggleAnimal = true;
+        _togglePlant = true;
 
-		spawnables = new Spawnable[spawnableGameObjects.Length];
-
-		for (int i = 0; i < spawnableGameObjects.Length; i++) {
-			GameObject spawnobj = spawnableGameObjects [i];
-			Spawnable spawnable = spawnobj.GetComponent<Spawnable> ();
-			spawnables [i] = spawnable;
-            spawnables[i].currentNum = 0;
-		}
+        StartSpawning();
 	}
 	
 	// Update is called once per frame
@@ -48,6 +41,11 @@ public class SpawnManager : MonoBehaviour {
         {
             Debug.Log("Animals Toggled");
             _toggleAnimal = !_toggleAnimal;
+        }
+
+        if (Input.GetButtonUp("Reset all") == true)
+        {
+            StartSpawning();
         }
 
         SpawnAll();
@@ -99,9 +97,20 @@ public class SpawnManager : MonoBehaviour {
 
 	bool SpawnChance(int spawnFrequency)
 	{
-		int rand = Random.Range (0, 100);
+		int rand = Random.Range (0, 1000);
 		return rand < spawnFrequency;
 	}
 
+    void StartSpawning()
+    {
+        spawnables = new Spawnable[spawnableGameObjects.Length];
 
+        for (int i = 0; i < spawnableGameObjects.Length; i++)
+        {
+            GameObject spawnobj = spawnableGameObjects[i];
+            Spawnable spawnable = spawnobj.GetComponent<Spawnable>();
+            spawnables[i] = spawnable;
+            spawnables[i].currentNum = 0;
+        }
+    }
 }
