@@ -56,6 +56,7 @@
      <Compile Include="Assets\KinectExampleScripts\InfraredSourceManager.cs" />
      <Compile Include="Assets\KinectExampleScripts\InfraredSourceView.cs" />
      <Compile Include="Assets\KinectExampleScripts\MultiSourceManager.cs" />
+     <Compile Include="Assets\Lava_Flowing_Shader\Scripts\ScrollingUVs_Layers.cs" />
      <Compile Include="Assets\Scripts\Animal.cs" />
      <Compile Include="Assets\Scripts\ColorView.cs" />
      <Compile Include="Assets\Scripts\DepthDataFormats\DepthFeedManager.cs" />
@@ -64,6 +65,7 @@
      <Compile Include="Assets\Scripts\DepthDataFormats\DepthSmoother.cs" />
      <Compile Include="Assets\Scripts\FileReader.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
+     <Compile Include="Assets\Scripts\Lava.cs" />
      <Compile Include="Assets\Scripts\Layer.cs" />
      <Compile Include="Assets\Scripts\LayerManager.cs" />
      <Compile Include="Assets\Scripts\Plant.cs" />
@@ -72,6 +74,11 @@
      <Compile Include="Assets\Scripts\SpawnPosition.cs" />
      <Compile Include="Assets\Scripts\Spawnable.cs" />
      <Compile Include="Assets\Scripts\TextureManager.cs" />
+     <None Include="Assets\Lava_Flowing_Shader\Shaders\Unlit_Lava_Simple.shader" />
+     <None Include="Assets\Lava_Flowing_Shader\Shaders\Diffuse_Lava_Distort.shader" />
+     <None Include="Assets\Lava_Flowing_Shader\Shaders\Unlit_Lava_Distort.shader" />
+     <None Include="Assets\Lava_Flowing_Shader\Shaders\Unlit_Lava_Distort_Transparent.shader" />
+     <None Include="Assets\Lava_Flowing_Shader\ReadMe.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

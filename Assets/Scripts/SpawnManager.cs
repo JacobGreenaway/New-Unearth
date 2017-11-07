@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour {
 
-	// DepthFeed to use for spawning position
-	public DepthFeedManager depthFeed;
+    // DepthFeed to use for spawning position
+    public DepthFeedManager depthFeed;
 
 	public GameObject spawnObjectParent;
 
 	// Array of spawnable GameObjects
 	public GameObject[] spawnableGameObjects;
+
+	public LayerManager contourManager;
 
 	public LayerManager layerManager;
 
@@ -23,17 +25,10 @@ public class SpawnManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        _toggleAnimal = false;
-        _togglePlant = false;
+        _toggleAnimal = true;
+        _togglePlant = true;
 
-		spawnables = new Spawnable[spawnableGameObjects.Length];
-
-		for (int i = 0; i < spawnableGameObjects.Length; i++) {
-			GameObject spawnobj = spawnableGameObjects [i];
-			Spawnable spawnable = spawnobj.GetComponent<Spawnable> ();
-			spawnables [i] = spawnable;
-            spawnables[i].currentNum = 0;
-		}
+        StartSpawning();
 	}
 	
 	// Update is called once per frame
@@ -48,6 +43,11 @@ public class SpawnManager : MonoBehaviour {
         {
             Debug.Log("Animals Toggled");
             _toggleAnimal = !_toggleAnimal;
+        }
+
+        if (Input.GetButtonUp("Reset all") == true)
+        {
+            StartSpawning();
         }
 
         SpawnAll();
@@ -69,7 +69,7 @@ public class SpawnManager : MonoBehaviour {
             {
                 DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
 
-                Vector3 position = ConvertDepthPointToVector(depthPoint);
+                Vector3 position = depthPoint.position;
                 Debug.Log("spawning at position");
                 if (spawnable.maxNum > spawnable.currentNum)
                 {
@@ -88,12 +88,15 @@ public class SpawnManager : MonoBehaviour {
         }
     }
 
-	DepthPoint GetDepthPointInLayer(DepthMatrix depthMatrix, Layer layer)
+    // Select a random point from the depth matrix which is inside the desired layer
+    DepthPoint GetDepthPointInLayer(DepthMatrix depthMatrix, Layer layer)
 	{
+
 		if (depthMatrix == null) {
 			return null;
 		}
 		// Select a random point from the depth matrix which is inside the desired layer
+
 		List<DepthPoint> depthPointsOnLayer = depthMatrix.GetAllOnLayer(layer);
 
 		int length = depthPointsOnLayer.Count;
@@ -102,23 +105,22 @@ public class SpawnManager : MonoBehaviour {
 		return depthPointsOnLayer [randomIndex];
 	}
 
-	Vector3 ConvertDepthPointToVector(DepthPoint depthPoint)
-	{
-		int x = depthPoint.y;
-		int z = depthPoint.x;
-
-        //Modify the position to turn matrix position into unity position
-		int xModifier = (512 / 2) * 1;
-        int zModifier = (424 / 2) * 1;
-
-        Vector3 position = new Vector3 (xModifier -x, 1, zModifier - z);
-
-		return position;
-	}
-
 	bool SpawnChance(int spawnFrequency)
 	{
-		int rand = Random.Range (0, 100);
+		int rand = Random.Range (0, 1000);
 		return rand < spawnFrequency;
 	}
+
+    void StartSpawning()
+    {
+        spawnables = new Spawnable[spawnableGameObjects.Length];
+
+        for (int i = 0; i < spawnableGameObjects.Length; i++)
+        {
+            GameObject spawnobj = spawnableGameObjects[i];
+            Spawnable spawnable = spawnobj.GetComponent<Spawnable>();
+            spawnables[i] = spawnable;
+            spawnables[i].currentNum = 0;
+        }
+    }
 }

@@ -7,7 +7,11 @@ public class TextureManager : MonoBehaviour
 	public int ColorWidth { get; private set; }
 	public int ColorHeight { get; private set; }
 
+	public LayerManager contourManager;
+
 	public LayerManager layerManager;
+
+	public bool bContour = false;
 
 	public DepthFeedManager depthFeed;
 
@@ -27,6 +31,19 @@ public class TextureManager : MonoBehaviour
 
 	void Update () 
 	{
+		
+	
+		if (Input.GetButtonUp ("Toggle contour line") == true ) {
+			bContour = !bContour;
+		}
+
+		LayerManager lManager;
+
+		if (bContour) {
+			lManager = contourManager;
+		} else {
+			lManager = layerManager;
+		}
 			
 		DepthMatrix depthMatrix = depthFeed.GetDepthMatrix ();
 
@@ -46,9 +63,9 @@ public class TextureManager : MonoBehaviour
 
 				int baseIndex =  (i * d1 + j) * 4;
 
-				if (value > layerManager.Min && value < layerManager.Max) {
+				if (value > lManager.Min && value < lManager.Max) {
 					//Debug.Log (value);
-					Layer layer = layerManager.layerMap [value];
+					Layer layer = lManager.layerMap [value];
 
 					_Data [baseIndex + 0] = (byte)(layer.color.r * 255);
 					_Data [baseIndex + 1] = (byte)(layer.color.g * 255);

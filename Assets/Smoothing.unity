@@ -400,7 +400,7 @@ MonoBehaviour:
   fileReader: {fileID: 1861784949}
   multiSourceGameObject: {fileID: 1883812687}
   bSmoothFrames: 1
-  iSmoothFrameRate: 10
+  iSmoothFrameRate: 5
 --- !u!4 &1591640944
 Transform:
   m_ObjectHideFlags: 0

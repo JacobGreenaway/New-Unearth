@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DepthMatrix {
-
-	// The 2d array storing the depth points
-	public DepthPoint[,] matrix;
+    // The 2d array storing the depth points
+    public DepthPoint[,] matrix;
 
 	/**
 	 * Constructor
@@ -60,7 +59,8 @@ public class DepthMatrix {
 			{
 				DepthPoint currentPoint = this.matrix [height, width];
 
-				if(layer.WithinBounds(currentPoint.GetValue()))
+                //If it has the height of the layer AND inside the camera's view then add point
+				if(layer.WithinBounds(currentPoint.GetValue()) && CheckCamera(currentPoint.position))
 				{
 					pointsInLayer.Add(currentPoint);
 				}
@@ -122,4 +122,19 @@ public class DepthMatrix {
 
 		return output;
 	}
+
+
+    //Returns true or false depending on if it is in camera view
+    private bool CheckCamera(Vector3 position)
+    {
+        //Get the main camera
+        Camera mainCam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        Vector3 screenPoint = mainCam.WorldToViewportPoint(position);
+        if (screenPoint.y > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y < 1)
+        {
+            return true;
+        }
+        return false;
+
+    }
 }

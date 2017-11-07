@@ -6,11 +6,12 @@ using UnityEngine;
 public class Layer {
 
 	public string strName;
+
 	public ushort upperBound;
 	public ushort lowerBound;
 	public Color color;
 
-	public Layer (string strName, ushort upperBound, ushort lowerBound, Color color)
+    public Layer (string strName, ushort upperBound, ushort lowerBound, Color color)
 	{
 		this.strName = strName;
 		this.upperBound = upperBound;

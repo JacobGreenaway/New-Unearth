@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Spawnable : MonoBehaviour {
 
-	public LayerManager layerManager;
+
+    public LayerManager layerManager;
 
     public bool isPlant;
 
@@ -20,6 +21,9 @@ public class Spawnable : MonoBehaviour {
 
     void Start()
     {
+
+
+
         currentNum = 0;
     }
 
@@ -41,6 +45,7 @@ public class Spawnable : MonoBehaviour {
         }
     }
 
+    //Used to 
     private void CheckVisible ()
     {
         GameObject spawnManager = GameObject.Find("SpawnManager");
@@ -70,6 +75,7 @@ public class Spawnable : MonoBehaviour {
     {
        Destroy(this.gameObject);
     }
+
 
 
 }

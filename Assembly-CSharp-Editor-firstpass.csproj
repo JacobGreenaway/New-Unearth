@@ -48,6 +48,11 @@
   <ItemGroup>
      <Compile Include="Assets\Standard Assets\Editor\KinectCopyPluginDataHelper.cs" />
      <Compile Include="Assets\Standard Assets\Editor\KinectFacePostBuildCopyPluginData.cs" />
+     <None Include="Assets\Lava_Flowing_Shader\Shaders\Unlit_Lava_Simple.shader" />
+     <None Include="Assets\Lava_Flowing_Shader\Shaders\Diffuse_Lava_Distort.shader" />
+     <None Include="Assets\Lava_Flowing_Shader\Shaders\Unlit_Lava_Distort.shader" />
+     <None Include="Assets\Lava_Flowing_Shader\Shaders\Unlit_Lava_Distort_Transparent.shader" />
+     <None Include="Assets\Lava_Flowing_Shader\ReadMe.txt" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>

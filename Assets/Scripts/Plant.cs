@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour {
 
+
+    //Determin the max size of the object
     public int MaxSize;
 
 	// Use this for initialization
@@ -16,12 +18,12 @@ public class Plant : MonoBehaviour {
         Grow();
 	}
 
+
     void Grow()
     {
         if (transform.localScale.x*400 < MaxSize)
         {
             transform.localScale += new Vector3(0.0001F, 0.0001F, 0);
-            //Debug.Log("grow!");
         }
 
     }

@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1374886875447454}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -455.38867, y: 862.3477, z: -981.5048}
+  m_LocalPosition: {x: -455.38867, y: -10, z: -981.5048}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d58aad9c3c56a4f9dd1c865931aacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxSize: 3
+  MaxSize: 7
 --- !u!114 &114603413862853764
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,9 +68,9 @@ MonoBehaviour:
   layerManager: {fileID: 0}
   isPlant: 1
   strLayer: Sand
-  spawnFrequency: 10
-  maxNum: 5
-  currentNum: 13
+  spawnFrequency: 100
+  maxNum: 30
+  currentNum: 18
 --- !u!212 &212926460563288776
 SpriteRenderer:
   m_ObjectHideFlags: 1
