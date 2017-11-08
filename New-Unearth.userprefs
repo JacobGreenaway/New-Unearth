@@ -4,17 +4,17 @@
     <Files>
       <File FileName="Assets\Scripts\LayerManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\FileReader.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\TextureManager.cs" Line="31" Column="40" />
+      <File FileName="Assets\Scripts\TextureManager.cs" Line="98" Column="15" />
       <File FileName="Assets\Scripts\Layer.cs" Line="7" Column="2" />
       <File FileName="Assets\Scripts\ColorView.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SpawnManager.cs" Line="38" Column="10" />
+      <File FileName="Assets\Scripts\SpawnManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\SpawnPosition.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\DepthDataFormats\DepthMatrix.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Spawnable.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\DepthDataFormats\DepthPoint.cs" Line="10" Column="1" />
+      <File FileName="Assets\Scripts\DepthDataFormats\DepthPoint.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\DepthDataFormats\DepthFeedManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\DepthDataFormats\DepthSmoother.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Plant.cs" Line="26" Column="70" />
+      <File FileName="Assets\Scripts\Plant.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

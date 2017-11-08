@@ -114,7 +114,7 @@ Light:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 273437263}
   m_Enabled: 1
-  serializedVersion: 8
+  serializedVersion: 7
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
@@ -139,8 +139,6 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &273437265
@@ -279,37 +277,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55bc41871d0d1f84f8fdcc2b67509448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LayerHeight: 5
-  layerGap: 30
-  MinDepth: 400
+  layerGap: 0
+  MinDepth: 500
   arrLayerNames:
   - Volcano
   - Snow
   - Rock
   - Forest
-  - Forest
-  - Grass
   - Grass
   - Sand
   - Shallow
-  - Water
-  - DeepWater
-  - DeepWater1
+  - Deep
   - Black
   arrColours:
-  - {r: 0.894, g: 0, b: 0.1, a: 0}
+  - {r: 0.925, g: 0, b: 0.1, a: 0}
   - {r: 1, g: 1, b: 1, a: 0}
-  - {r: 0.5661765, g: 0.08199807, b: 0, a: 0}
-  - {r: 0, g: 0.5808823, b: 0.10015214, a: 0}
-  - {r: 0, g: 0.5803922, b: 0.10196079, a: 0}
-  - {r: 0, g: 0.8313726, b: 0.039215688, a: 0}
-  - {r: 0, g: 0.8313726, b: 0.039215688, a: 0}
-  - {r: 0.9568628, g: 1, b: 0.20784315, a: 0}
-  - {r: 0.5588235, g: 0.83564013, b: 1, a: 0}
-  - {r: 0, g: 0.627451, b: 1, a: 0}
-  - {r: 0, g: 0.006896496, b: 1, a: 0}
-  - {r: 0, g: 0.006896496, b: 1, a: 0}
+  - {r: 0.5147059, g: 0.33346263, b: 0.30276817, a: 0}
+  - {r: 0.21707399, g: 0.53676474, b: 0.33930302, a: 0}
+  - {r: 0.019607844, g: 0.91372555, b: 0.1764706, a: 0}
+  - {r: 0.94523335, g: 1, b: 0.60294116, a: 0}
+  - {r: 0, g: 0.6250005, b: 1, a: 0}
+  - {r: 0.10002163, g: 0.17658994, b: 0.5441177, a: 0}
   - {r: 0, g: 0, b: 0, a: 0}
+  arrIndividualRanges: 14001e00140032003c001e0028001e003200
   Max: 0
   Min: 0
 --- !u!4 &791472392
@@ -323,7 +313,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1160567148
 GameObject:
@@ -353,86 +343,68 @@ Transform:
   m_Father: {fileID: 503680807}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1543730744
+--- !u!1 &1220594343
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 1543730749}
-  - component: {fileID: 1543730748}
-  - component: {fileID: 1543730746}
-  - component: {fileID: 1543730745}
+  - component: {fileID: 1220594345}
+  - component: {fileID: 1220594344}
   m_Layer: 0
-  m_Name: SandpitColorPlane
+  m_Name: Contour Lines Layer Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1543730745
+--- !u!114 &1220594344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1543730744}
+  m_GameObject: {fileID: 1220594343}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e3dd0db3776c834496c1d5c8ca3d4f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 55bc41871d0d1f84f8fdcc2b67509448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureManager: {fileID: 1685354652}
---- !u!23 &1543730746
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1543730744}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: d7dd591ef53325b4ba70023587472bb7, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!33 &1543730748
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1543730744}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1543730749
+  layerGap: 30
+  MinDepth: 500
+  arrLayerNames:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - Black
+  arrColours:
+  - {r: 0, g: 1, b: 0.25517225, a: 0}
+  - {r: 0, g: 1, b: 0.25490198, a: 0}
+  - {r: 0, g: 1, b: 0.25490198, a: 0}
+  - {r: 0, g: 1, b: 0.25490198, a: 0}
+  - {r: 0, g: 1, b: 0.25490198, a: 0}
+  - {r: 0, g: 1, b: 0.25490198, a: 0}
+  - {r: 0, g: 1, b: 0.25490198, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  arrIndividualRanges: 
+  Max: 0
+  Min: 0
+--- !u!4 &1220594345
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1543730744}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -256, y: 0, z: 212}
-  m_LocalScale: {x: 5.12, y: 1, z: 4.24}
+  m_GameObject: {fileID: 1220594343}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1591640942
 GameObject:
@@ -461,11 +433,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef0b3a7aaa357534ba4aa770689de102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pollRate: 3
   fileReader: {fileID: 1861784949}
   multiSourceGameObject: {fileID: 1883812687}
   bSmoothFrames: 1
-  iSmoothFrameRate: 10
+  iSmoothFrameRate: 8
 --- !u!4 &1591640944
 Transform:
   m_ObjectHideFlags: 0
@@ -477,7 +448,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1685354652
 GameObject:
@@ -506,7 +477,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0f44d5d2bbbb040af1dc32e0f6aeb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  contourManager: {fileID: 1220594344}
   layerManager: {fileID: 791472391}
+  bContour: 0
   depthFeed: {fileID: 1591640943}
 --- !u!4 &1685354654
 Transform:
@@ -519,7 +492,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1861784948
 GameObject:
@@ -559,7 +532,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1883812687
 GameObject:
@@ -599,7 +572,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1898565526
 GameObject:
@@ -637,9 +610,10 @@ MonoBehaviour:
   - {fileID: 1785926298227710, guid: ea8b31967b6e3dd488c108d72e51477a, type: 2}
   - {fileID: 1374886875447454, guid: 8a5acb5230b054c4cb2ef7def1bcfdd8, type: 2}
   - {fileID: 1904451511518486, guid: 17b2353ad98a94e44ac343db652cd409, type: 2}
+  contourManager: {fileID: 0}
   layerManager: {fileID: 791472391}
-  _toggleAnimal: 1
-  _togglePlant: 1
+  _toggleAnimal: 0
+  _togglePlant: 0
 --- !u!4 &1898565528
 Transform:
   m_ObjectHideFlags: 0
@@ -651,7 +625,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2068451869
 GameObject:

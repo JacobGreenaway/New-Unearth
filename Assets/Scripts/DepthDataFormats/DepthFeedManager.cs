@@ -15,7 +15,7 @@ public class DepthFeedManager : MonoBehaviour
 	 */
 	public GameObject multiSourceGameObject;
 
-	public bool bSmoothFrames = false;
+	public bool bSmoothFrames = true;
 	public int iSmoothFrameRate = 30;
 	private DepthSmoother smoother;
 
@@ -55,9 +55,9 @@ public class DepthFeedManager : MonoBehaviour
 
 	void Update () 
 	{
-		if (Input.GetButtonUp ("Toggle contour line") == true ) {
-			bSmoothFrames = !bSmoothFrames;
-		}
+//		if (Input.GetButtonUp ("Toggle contour line") == true ) {
+//			bSmoothFrames = !bSmoothFrames;
+//		}
 		
 			// Get the multi source manager
 			multiSourceManager = multiSourceGameObject.GetComponent<MultiSourceManager> ();

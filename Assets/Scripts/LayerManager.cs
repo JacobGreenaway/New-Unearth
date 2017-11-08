@@ -6,7 +6,6 @@ using UnityEngine;
 public class LayerManager : MonoBehaviour {
 
 	// The distance apart of each layer
-	public ushort LayerHeight;
 
 	public ushort layerGap;
 
@@ -17,6 +16,8 @@ public class LayerManager : MonoBehaviour {
 
 	public Color[] arrColours;
 
+	public ushort[] arrIndividualRanges;
+
 	public Layer[] arrLayers;
 
 	public ushort Max;
@@ -25,10 +26,29 @@ public class LayerManager : MonoBehaviour {
 
 	public Dictionary<ushort, Layer> layerMap = new Dictionary<ushort, Layer>();
 
+	public void Update(){
+
+		if (Input.GetButtonUp ("Lift") == true ) {
+			float input = Input.GetAxis ("Lift");
+			if (input < 0) {
+				input = -10f;
+			} else {
+				input = 10f;
+			}
+
+			MinDepth += (ushort)(input);
+			SetupLayers ();
+		}
+	}
 
 	// Create a LayerManager
 	public void Start ()
 	{
+		SetupLayers ();
+			
+	}
+
+	private void SetupLayers(){
 		if (layerGap == null) 
 		{
 			layerGap = (ushort)0;
@@ -37,11 +57,14 @@ public class LayerManager : MonoBehaviour {
 		// Initialise layer array
 		arrLayers = new Layer[arrLayerNames.Length];
 
+		ushort currentUpperBound = (ushort)MinDepth;
+
 		// Create the layers based on the LayerHeight
 		for (int layerCount = 0; layerCount < arrLayerNames.Length; layerCount++) 
 		{
-			ushort upperBound = layerCount == 0 ? (ushort)(MinDepth) : (ushort) (MinDepth + ((LayerHeight + layerGap) * layerCount));
-			ushort lowerBound = (ushort)(upperBound + LayerHeight);
+			ushort upperBound = layerCount == 0 ? (ushort)currentUpperBound : (ushort)(currentUpperBound + layerGap);
+			currentUpperBound += arrIndividualRanges [layerCount];
+			ushort lowerBound = currentUpperBound;
 
 			string name = arrLayerNames [layerCount];
 
@@ -56,10 +79,7 @@ public class LayerManager : MonoBehaviour {
 		}
 
 		Max = arrLayers [arrLayers.Length - 1].lowerBound;
-		Debug.Log("Max is" + Max);
 		Min = MinDepth;
-		Debug.Log("Min is" + Min);
-			
 	}
 
 	//
@@ -81,8 +101,9 @@ public class LayerManager : MonoBehaviour {
 	// Given a depth value, return the layer that this depth belongs to
 	public Layer DetermineLayer(ushort value)
 	{
-		foreach (Layer layer in arrLayers) 
+		for (int i = 0; i < arrLayers.Length - 1; i++) 
 		{
+			Layer layer = arrLayers [i];
 			if (layer.WithinBounds(value))
 			{
 //				Debug.Log ("Layer is: " + layer.strName);
