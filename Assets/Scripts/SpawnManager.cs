@@ -36,12 +36,12 @@ public class SpawnManager : MonoBehaviour {
         //Check to see if animals and plant modes have been toggled
         if (Input.GetButtonUp("Toggle plants") == true)
         {
-            Debug.Log("Plants Toggled!");
+            //Debug.Log("Plants Toggled!");
             _togglePlant = !_togglePlant;
         }
         else if (Input.GetButtonUp("Toggle animals") == true)
         {
-            Debug.Log("Animals Toggled");
+            //Debug.Log("Animals Toggled");
             _toggleAnimal = !_toggleAnimal;
         }
 
@@ -70,7 +70,7 @@ public class SpawnManager : MonoBehaviour {
                 DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
 
                 Vector3 position = depthPoint.position;
-                Debug.Log("spawning at position");
+                //Debug.Log("spawning at position");
                 if (spawnable.maxNum > spawnable.currentNum)
                 {
                     spawnable.currentNum++;
@@ -79,7 +79,7 @@ public class SpawnManager : MonoBehaviour {
                 }
                 else
                 {
-                    Debug.Log("Max reached");
+                    //Debug.Log("Max reached");
 
                 }
 
@@ -111,6 +111,7 @@ public class SpawnManager : MonoBehaviour {
 		return rand < spawnFrequency;
 	}
 
+    //Resets the current number of spawnables to start spawning again
     void StartSpawning()
     {
         spawnables = new Spawnable[spawnableGameObjects.Length];

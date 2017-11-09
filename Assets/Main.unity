@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 8
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -25,6 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -41,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -53,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 4
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -66,13 +67,29 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_DirectLightInLightProbes: 1
     m_FinalGather: 0
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
+    m_MixedBakeMode: 1
+    m_BakeBackend: 0
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 500
+    m_PVRBounces: 2
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
+    m_PVRFilteringMode: 0
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 5
+    m_PVRFilteringGaussRadiusAO: 2
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
   m_LightingDataAsset: {fileID: 0}
-  m_RuntimeCPUUsage: 25
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -89,7 +106,11 @@ NavMeshSettings:
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &273437263
 GameObject:
@@ -114,7 +135,7 @@ Light:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 273437263}
   m_Enabled: 1
-  serializedVersion: 7
+  serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
@@ -139,6 +160,8 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &273437265
@@ -194,6 +217,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -209,12 +233,14 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!65 &503680805
 BoxCollider:
@@ -278,7 +304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layerGap: 0
-  MinDepth: 500
+  MinDepth: 880
   arrLayerNames:
   - Volcano
   - Snow
@@ -287,7 +313,7 @@ MonoBehaviour:
   - Grass
   - Sand
   - Shallow
-  - Deep
+  - Water
   - Black
   arrColours:
   - {r: 0.925, g: 0, b: 0.1, a: 0}
@@ -298,8 +324,8 @@ MonoBehaviour:
   - {r: 0.94523335, g: 1, b: 0.60294116, a: 0}
   - {r: 0, g: 0.6250005, b: 1, a: 0}
   - {r: 0.10002163, g: 0.17658994, b: 0.5441177, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  arrIndividualRanges: 14001e00140032003c001e0028001e003200
+  - {r: 0.10196079, g: 0.1764706, b: 0.54509807, a: 0}
+  arrIndividualRanges: 14001e00140032003c001e0028008813f401
   Max: 0
   Min: 0
 --- !u!4 &791472392
@@ -435,7 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileReader: {fileID: 1861784949}
   multiSourceGameObject: {fileID: 1883812687}
-  bSmoothFrames: 1
+  bSmoothFrames: 0
   iSmoothFrameRate: 8
 --- !u!4 &1591640944
 Transform:
@@ -610,7 +636,27 @@ MonoBehaviour:
   - {fileID: 1785926298227710, guid: ea8b31967b6e3dd488c108d72e51477a, type: 2}
   - {fileID: 1374886875447454, guid: 8a5acb5230b054c4cb2ef7def1bcfdd8, type: 2}
   - {fileID: 1904451511518486, guid: 17b2353ad98a94e44ac343db652cd409, type: 2}
-  contourManager: {fileID: 0}
+  - {fileID: 1616649540906318, guid: c44b954cd0e8acd4289e5258ac40dd6b, type: 2}
+  - {fileID: 1863378505363936, guid: 9025d433b0d9a7d45902121411ecc100, type: 2}
+  - {fileID: 1672186182645340, guid: 9365c493382ff7b4ea12fdff0edd2937, type: 2}
+  - {fileID: 1566611226832436, guid: cb956463cd6cdaf4a95bfeb6cf1fc4e4, type: 2}
+  - {fileID: 1244857552476492, guid: 40002c866805f614cbc4f2b79eed8c72, type: 2}
+  - {fileID: 1546453153525852, guid: 5dd73a0acc8071045bedd0a90b23266c, type: 2}
+  - {fileID: 1914139683600950, guid: 7d24cf2834e4d1b4091e1b49eb786ba0, type: 2}
+  - {fileID: 1514631007387388, guid: 4ed223d384343f64c8b0568b5723f08b, type: 2}
+  - {fileID: 1420030714998674, guid: dffe6b43d5dfe394aabd4d5496950a87, type: 2}
+  - {fileID: 1382472267415902, guid: 5d019596dc76392429ef312dd6131713, type: 2}
+  - {fileID: 1708276162209252, guid: eb647aaaa1ab5134c87802db135ae06d, type: 2}
+  - {fileID: 1261928902244614, guid: 23879932aefb7264a86a05a321231fbb, type: 2}
+  - {fileID: 1749814612540602, guid: bc19c7152af9efc4594fdabdef842c11, type: 2}
+  - {fileID: 1615745583541310, guid: 5d7ec69f46adc214591f9bfc073f1dab, type: 2}
+  - {fileID: 1211825994056462, guid: de3c4e550a3ca334595b0a3328741eb4, type: 2}
+  - {fileID: 1908566744531194, guid: 68f0c1e9b6bb0da4abf42fe4f78b0cc8, type: 2}
+  - {fileID: 1590670428667516, guid: ff59434542169514882a47e1b997f3c4, type: 2}
+  - {fileID: 1778359280240138, guid: d261a7955c735494f9784d05f0ab6e0a, type: 2}
+  - {fileID: 1683592163857142, guid: b3896c57dc0dcc5408e670d3352c9f86, type: 2}
+  - {fileID: 1660203597291896, guid: c1c49fe894cb67349ab76be9027df2e9, type: 2}
+  contourManager: {fileID: 1220594344}
   layerManager: {fileID: 791472391}
   _toggleAnimal: 0
   _togglePlant: 0
@@ -698,10 +744,11 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
 --- !u!4 &2068451874
 Transform:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ public class Lava : MonoBehaviour {
             transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(targetScale, targetScale, targetScale), Time.deltaTime * expandSpeed);
         } else
         {
-            //Destroy(this.gameObject);
+            Destroy(this.gameObject);
         }
 
     }

@@ -82,10 +82,10 @@ public class LayerManager : MonoBehaviour {
 		Min = MinDepth;
 	}
 
-	//
+	//Returns an single layer
 	public Layer GetLayer(string strLayerName)
 	{
-		Debug.Log (arrLayers);
+		//Debug.Log (arrLayers);
 		for (int i = 0; i < arrLayers.Length; i++) 
 		{
 			Layer layer = arrLayers [i];

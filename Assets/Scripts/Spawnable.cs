@@ -37,10 +37,11 @@ public class Spawnable : MonoBehaviour {
     private void Update()
     {
         CheckVisible();
+        CheckTerrain();
 
         if(Input.GetButtonUp("Reset all") == true)
         {
-            Debug.Log("Die!");
+            //Debug.Log("Die!");
             Die();
         }
     }
@@ -55,12 +56,14 @@ public class Spawnable : MonoBehaviour {
         {
             float x = transform.position.x;
             float z = transform.position.z;
-            transform.position = new Vector3(x, 1, z);
+            //Hides things under the display plain with y=-1
+            transform.position = new Vector3(x, -1, z);
         } else if (!isPlant && !manager._toggleAnimal)
         {
+            //Hides things under the display plain with y=-1
             float x = transform.position.x;
             float z = transform.position.z;
-            transform.position = new Vector3(x, 1, z);
+            transform.position = new Vector3(x, -1, z);
         } else
         {
             float x = transform.position.x;
@@ -76,6 +79,11 @@ public class Spawnable : MonoBehaviour {
        Destroy(this.gameObject);
     }
 
+    bool CheckTerrain()
+    {
+        Debug.Log(transform.position.x);
+        return true;
+    }
 
 
 }
