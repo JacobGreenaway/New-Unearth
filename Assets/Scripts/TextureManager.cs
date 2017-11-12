@@ -38,12 +38,15 @@ public class TextureManager : MonoBehaviour
 	
 		if (Input.GetButtonUp ("Toggle contour line") == true ) {
 			bContour = !bContour;
+			depthFeed.bSmoothFrames = true;
+			depthFeed.iSmoothFrameRate = 2;
 		}
 
 		LayerManager lManager;
 
 		if (bContour) {
 			lManager = contourManager;
+			Debug.Log("contour chosen");
 		} else {
 			lManager = layerManager;
 		}
@@ -70,27 +73,12 @@ public class TextureManager : MonoBehaviour
 					
 					Layer layer = lManager.layerMap [value];
 
-					// Calculate range
-					ushort range = (ushort)(layer.lowerBound - layer.upperBound);
-					float increment = (range / 100f);
-					ushort span = (ushort)(value - layer.upperBound);
-					float percentageFilled = (((range - span) / increment) / 100f);
+					float[] gradientColor = layer.getGradientColorForValue (value);
 
-					float h;
-					float s;
-					float l;
-
-					Color hsl = layer.color;
-					Color.RGBToHSV (layer.color, out h, out s, out l);
-
-					l = layer.strName != "Black" ? Mathf.Min(Mathf.Max(percentageFilled, 0.3f), 0.9f) : 0f;
-
-					Color rgb = Color.HSVToRGB (h, s, l);
-
-					_Data [baseIndex + 0] = (byte)(rgb[0] * 255);
-					_Data [baseIndex + 1] = (byte)(rgb[1] * 255);
-					_Data [baseIndex + 2] = (byte)(rgb[2] * 255);
-					_Data [baseIndex + 3] = (byte)(layer.color.a *255);
+					_Data [baseIndex + 0] = (byte)(gradientColor[0] * 255);
+					_Data [baseIndex + 1] = (byte)(gradientColor[1] * 255);
+					_Data [baseIndex + 2] = (byte)(gradientColor[2] * 255);
+					_Data [baseIndex + 3] = (byte)(gradientColor[3] * 255);
 				} else {
 					_Data [baseIndex + 0] = (byte) 0;
 					_Data [baseIndex + 1] = (byte) 0;

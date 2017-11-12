@@ -59,6 +59,8 @@ public class DepthMatrix {
 			{
 				DepthPoint currentPoint = this.matrix [height, width];
 
+				//Debug.Log (layer);
+
                 //If it has the height of the layer AND inside the camera's view then add point
 				if(layer.WithinBounds(currentPoint.GetValue()) && CheckCamera(currentPoint.position))
 				{

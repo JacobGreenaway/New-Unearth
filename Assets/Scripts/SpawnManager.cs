@@ -66,8 +66,8 @@ public class SpawnManager : MonoBehaviour {
             Spawnable spawnable = spawnables[i];
 
             if (SpawnChance(spawnable.spawnFrequency))
-            {
-                DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
+			{
+				DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
 
                 Vector3 position = depthPoint.position;
                 //Debug.Log("spawning at position");

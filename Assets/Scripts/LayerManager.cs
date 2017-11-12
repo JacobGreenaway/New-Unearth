@@ -12,11 +12,11 @@ public class LayerManager : MonoBehaviour {
 	// Repersents the upper bound of the layers (Smaller Depth is higher)
 	public ushort MinDepth;
 
-	public string[] arrLayerNames;
+	//public string[] arrLayerNames;
 
-	public Color[] arrColours;
+	//public Color[] arrColours;
 
-	public ushort[] arrIndividualRanges;
+	//public ushort[] arrIndividualRanges;
 
 	public Layer[] arrLayers;
 
@@ -48,6 +48,23 @@ public class LayerManager : MonoBehaviour {
 			
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	private void SetupLayers(){
 		if (layerGap == null) 
 		{
@@ -55,22 +72,22 @@ public class LayerManager : MonoBehaviour {
 		}
 
 		// Initialise layer array
-		arrLayers = new Layer[arrLayerNames.Length];
+		//arrLayers = new Layer[arrLayerNames.Length];
 
 		ushort currentUpperBound = (ushort)MinDepth;
 
 		// Create the layers based on the LayerHeight
-		for (int layerCount = 0; layerCount < arrLayerNames.Length; layerCount++) 
+		for (int layerCount = 0; layerCount < arrLayers.Length; layerCount++) 
 		{
-			ushort upperBound = layerCount == 0 ? (ushort)currentUpperBound : (ushort)(currentUpperBound + layerGap);
-			currentUpperBound += arrIndividualRanges [layerCount];
-			ushort lowerBound = currentUpperBound;
+			Layer layer = arrLayers [layerCount];
 
-			string name = arrLayerNames [layerCount];
+			ushort upperBound = (ushort)(currentUpperBound);
+			ushort lowerBound = (ushort) (upperBound + layer.height);
 
-			Layer layer = new Layer (name, upperBound, lowerBound, arrColours[layerCount]);
+			currentUpperBound = (ushort) (lowerBound + layerGap);
 
-			arrLayers [layerCount] = layer;
+			layer.upperBound = upperBound;
+			layer.lowerBound = lowerBound;
 		}
 
 		// Map every valid value to its layer for fast access
@@ -85,6 +102,9 @@ public class LayerManager : MonoBehaviour {
 	//Returns an single layer
 	public Layer GetLayer(string strLayerName)
 	{
+		if (strLayerName == "") {
+			return arrLayers[arrLayers.Length - 1];
+		}
 		//Debug.Log (arrLayers);
 		for (int i = 0; i < arrLayers.Length; i++) 
 		{
@@ -95,7 +115,7 @@ public class LayerManager : MonoBehaviour {
 			}
 		}
 
-		return null;
+		return arrLayers[arrLayers.Length - 1];
 	}
 
 	// Given a depth value, return the layer that this depth belongs to

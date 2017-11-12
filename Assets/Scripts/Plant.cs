@@ -31,5 +31,21 @@ public class Plant : MonoBehaviour {
 
     }
 
+	void Shrink()
+	{
+		if (transform.localScale.x == 0) {
+			
+		}
+		else {
+			
+			transform.localScale -= new Vector3(0.0005F, 0.0005F, 0);
+		}
+	}
+
+	void Die()
+	{
+		Destroy (gameObject);
+	}
+
 
 }

@@ -11,17 +11,16 @@ public class Spawnable : MonoBehaviour {
 
 	public string strLayer;
 
-	public Layer layer;
-
 	public int spawnFrequency;
 
     public int maxNum;
     public int currentNum;
 
+	public DepthPoint positionInMatrix;
+
 
     void Start()
     {
-
 
 
         currentNum = 0;
@@ -52,22 +51,20 @@ public class Spawnable : MonoBehaviour {
         GameObject spawnManager = GameObject.Find("SpawnManager");
 
         SpawnManager manager = spawnManager.GetComponent<SpawnManager>();
+
+		float x = transform.position.x;
+		float z = transform.position.z;
+
         if (isPlant && !manager._togglePlant)
         {
-            float x = transform.position.x;
-            float z = transform.position.z;
             //Hides things under the display plain with y=-1
             transform.position = new Vector3(x, -1, z);
         } else if (!isPlant && !manager._toggleAnimal)
         {
             //Hides things under the display plain with y=-1
-            float x = transform.position.x;
-            float z = transform.position.z;
             transform.position = new Vector3(x, -1, z);
         } else
         {
-            float x = transform.position.x;
-            float z = transform.position.z;
             transform.position = new Vector3(x, 1, z);
         }
 
@@ -81,7 +78,7 @@ public class Spawnable : MonoBehaviour {
 
     bool CheckTerrain()
     {
-        Debug.Log(transform.position.x);
+        //Debug.Log(transform.position.x);
         return true;
     }
 
