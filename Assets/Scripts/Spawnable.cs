@@ -7,6 +7,8 @@ public class Spawnable : MonoBehaviour {
 
     public LayerManager layerManager;
 
+	public Layer[] arrAcceptedLayers;
+
     public bool isPlant;
 
 	public string strLayer;
@@ -21,13 +23,13 @@ public class Spawnable : MonoBehaviour {
 
     void Start()
     {
-
-
         currentNum = 0;
     }
 
-    public GameObject Spawn(Vector3 position)
+	public GameObject Spawn(DepthPoint positionInMatrix)
 	{
+		this.positionInMatrix = positionInMatrix;
+		Vector3 position = positionInMatrix.position;
         GameObject fish = Instantiate(gameObject, position, transform.rotation);
         fish.transform.eulerAngles = new Vector3(90, Random.Range(0, 360), 0);
         return fish;
@@ -78,8 +80,23 @@ public class Spawnable : MonoBehaviour {
 
     bool CheckTerrain()
     {
+		// Do not need to check the position if we have not spawned yet
+		if (positionInMatrix == null) {
+			return false;
+		}
+
         //Debug.Log(transform.position.x);
-        return true;
+		Layer layer = positionInMatrix.getLayer();
+		Debug.Log ("I'm on this layer: " + layer.strName);
+
+		for (int i = 0; i < arrAcceptedLayers.Length; i++) {
+			Layer accLayer = arrAcceptedLayers [i];
+			if (accLayer == layer) {
+				
+				return true;
+			}
+		}
+		return false;
     }
 
 

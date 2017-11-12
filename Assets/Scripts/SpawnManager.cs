@@ -69,7 +69,9 @@ public class SpawnManager : MonoBehaviour {
 			{
 				DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
 
-                Vector3 position = depthPoint.position;
+				// Manually setting the position in the matrix before spawning - should be able to control position from within the spawnable after that
+				// DepthPoints have references to left right top bottom points - can refreence these for positions 
+				spawnable.positionInMatrix = depthPoint;
 
 				// Can get the layer for a depthpoint by calling 'getLayer()'
 				Debug.Log(depthPoint.getLayer().strName);
@@ -77,7 +79,7 @@ public class SpawnManager : MonoBehaviour {
                 if (spawnable.maxNum > spawnable.currentNum)
                 {
                     spawnable.currentNum++;
-                    GameObject fish = spawnable.Spawn(position);
+					GameObject fish = spawnable.Spawn(depthPoint);
                     fish.transform.SetParent(spawnObjectParent.transform);
                 }
                 else
