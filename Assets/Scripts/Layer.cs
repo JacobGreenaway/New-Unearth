@@ -17,6 +17,13 @@ public class Layer : MonoBehaviour{
 
 	public Dictionary<ushort, float[]> gradientColorMap;
 
+//	public void setUpColorMap()
+//	{
+//		for (ushort i = upperBound; i < lowerBound; i++) {
+//			gradientColorMap [(ushort)i] = getGradientColorForValue ((ushort)i);
+//		}
+//	}
+//
 	public bool WithinBounds (ushort value)
 	{
 		return ( (upperBound <= value) && (value < lowerBound));

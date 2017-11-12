@@ -5,15 +5,13 @@ using Windows.Kinect;
 public class DepthFeedManager : MonoBehaviour
 {   
 
-	/**
-	 * Reference to a filereader in case the multi source reader doesnt work
-	*/
-	public FileReader fileReader;
 
 	/*
 	 * GameObject with a multisourcemanager component
 	 */
 	public GameObject multiSourceGameObject;
+
+	public LayerManager layerManager;
 
 	public bool bSmoothFrames = true;
 	public int iSmoothFrameRate = 30;
@@ -69,7 +67,7 @@ public class DepthFeedManager : MonoBehaviour
 
 
 			ushort[] depthData = multiSourceManager.GetDepthData ();
-			DepthMatrix newMatrix = new DepthMatrix (ref depthData, Height, Width);
+			DepthMatrix newMatrix = new DepthMatrix (ref depthData, Height, Width, layerManager);
 
 			// If we are smoothing the depth frames
 			if (bSmoothFrames) {

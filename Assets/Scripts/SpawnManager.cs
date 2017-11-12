@@ -70,7 +70,10 @@ public class SpawnManager : MonoBehaviour {
 				DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
 
                 Vector3 position = depthPoint.position;
-                //Debug.Log("spawning at position");
+
+				// Can get the layer for a depthpoint by calling 'getLayer()'
+				Debug.Log(depthPoint.getLayer().strName);
+
                 if (spawnable.maxNum > spawnable.currentNum)
                 {
                     spawnable.currentNum++;

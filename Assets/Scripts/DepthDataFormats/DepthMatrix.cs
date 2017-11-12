@@ -5,14 +5,16 @@ using UnityEngine;
 public class DepthMatrix {
     // The 2d array storing the depth points
     public DepthPoint[,] matrix;
+	public LayerManager layerManager;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param ushort[] arrDepthData - An array of ushorts representing all the data for a single kinect frame
 	 */
-	public DepthMatrix(ref ushort[] arrDepthData, int iHeight, int iWidth)
+	public DepthMatrix(ref ushort[] arrDepthData, int iHeight, int iWidth, LayerManager layerManager)
 	{
+		this.layerManager = layerManager;
 		this.matrix = Make2DArray(ref arrDepthData, iHeight, iWidth);
 	}
 
@@ -86,7 +88,7 @@ public class DepthMatrix {
 		{
 			for (int j = 0; j < width; j++)
 			{
-				output[i, j] = new DepthPoint(i, j, (ushort)input[i * width + j]);
+				output[i, j] = new DepthPoint(i, j, (ushort)input[i * width + j], this.layerManager);
 			}
 		}
 

@@ -7,6 +7,8 @@ public class DepthPoint {
 	public int x;
 	public int y;
 
+	public LayerManager layerManager;
+
 
 	public DepthPoint left;
 	public DepthPoint right;
@@ -19,11 +21,14 @@ public class DepthPoint {
     // The depth value at this point
 	private ushort value;
 
-	public DepthPoint(int xPos, int yPos, ushort value)
+	public DepthPoint(int xPos, int yPos, ushort value, LayerManager layerManager)
 	{
 		this.x = xPos;
         this.y = yPos;
         this.value = value;
+
+		this.layerManager = layerManager;
+
 
 
         //Converts position on the matrix into world position vector
@@ -33,6 +38,10 @@ public class DepthPoint {
         int zModifier = (424 / 2) * 1;
         this.position = new Vector3(xModifier - posX, -10, zModifier - posZ);
     }
+
+	public Layer getLayer() {
+		return this.layerManager.layerMap[this.value];
+	}
 
 	public void AverageWithSurroundingPoints()
 	{

@@ -88,6 +88,8 @@ public class LayerManager : MonoBehaviour {
 
 			layer.upperBound = upperBound;
 			layer.lowerBound = lowerBound;
+
+			//layer.setUpColorMap ();
 		}
 
 		// Map every valid value to its layer for fast access
