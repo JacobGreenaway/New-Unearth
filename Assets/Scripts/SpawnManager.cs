@@ -74,7 +74,7 @@ public class SpawnManager : MonoBehaviour {
 				spawnable.positionInMatrix = depthPoint;
 
 				// Can get the layer for a depthpoint by calling 'getLayer()'
-				Debug.Log(depthPoint.getLayer().strName);
+				//Debug.Log(depthPoint.getLayer().strName);
 
                 if (spawnable.maxNum > spawnable.currentNum)
                 {

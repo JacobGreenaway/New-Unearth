@@ -84,10 +84,8 @@ public class Spawnable : MonoBehaviour {
 		if (positionInMatrix == null) {
 			return false;
 		}
-
-        //Debug.Log(transform.position.x);
+			
 		Layer layer = positionInMatrix.getLayer();
-		Debug.Log ("I'm on this layer: " + layer.strName);
 
 		for (int i = 0; i < arrAcceptedLayers.Length; i++) {
 			Layer accLayer = arrAcceptedLayers [i];

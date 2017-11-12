@@ -66,6 +66,7 @@
      <Compile Include="Assets\Scripts\FileReader.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
      <Compile Include="Assets\Scripts\Lava.cs" />
+     <Compile Include="Assets\Scripts\LavaController.cs" />
      <Compile Include="Assets\Scripts\Layer.cs" />
      <Compile Include="Assets\Scripts\LayerManager.cs" />
      <Compile Include="Assets\Scripts\Plant.cs" />

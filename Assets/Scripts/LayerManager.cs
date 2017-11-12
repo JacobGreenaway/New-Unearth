@@ -65,7 +65,7 @@ public class LayerManager : MonoBehaviour {
 
 
 
-	private void SetupLayers(){
+	public void SetupLayers(){
 		if (layerGap == null) 
 		{
 			layerGap = (ushort)0;
