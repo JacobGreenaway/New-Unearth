@@ -12,15 +12,18 @@ public class Plant : MonoBehaviour {
 	void Start () {
         
     }
-	
-	// Update is called once per frame
-	void Update () {
 
+    // Update is called once per frame
+    void Update()
+    {
+        Spawnable s = this.GetComponent<Spawnable>();
         Grow();
-        
-	}
+        if (s.CheckTerrain())
+        {
+            s.Die();
+        }
 
-
+    }
 
     void Grow()
     {

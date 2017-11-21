@@ -30,7 +30,10 @@ public class Animal : MonoBehaviour {
         {
             ChangeDirection();
         }
-        Move();
+        if (GetComponent<Spawnable>().CheckTerrain()) {
+            Move();
+        }
+        
     }
 
     private void ChangeDirection()

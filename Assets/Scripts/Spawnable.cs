@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Spawnable : MonoBehaviour {
 
+    //If this is true then don't get killed
+    public bool IsOriginal;
+
+    public SpawnManager Manager;
 
     public LayerManager layerManager;
 
@@ -19,6 +23,8 @@ public class Spawnable : MonoBehaviour {
     public int currentNum;
 
 	public DepthPoint positionInMatrix;
+
+    public int spawnID;
 
 
     void Start()
@@ -50,18 +56,18 @@ public class Spawnable : MonoBehaviour {
     //Used to 
     private void CheckVisible ()
     {
-        GameObject spawnManager = GameObject.Find("SpawnManager");
+        //GameObject spawnManager = GameObject.Find("SpawnManager");
 
-        SpawnManager manager = spawnManager.GetComponent<SpawnManager>();
+        //SpawnManager manager = Manager;
 
 		float x = transform.position.x;
 		float z = transform.position.z;
 
-        if (isPlant && !manager._togglePlant)
+        if (isPlant && !Manager._togglePlant)
         {
             //Hides things under the display plain with y=-1
             transform.position = new Vector3(x, -1, z);
-        } else if (!isPlant && !manager._toggleAnimal)
+        } else if (!isPlant && !Manager._toggleAnimal)
         {
             //Hides things under the display plain with y=-1
             transform.position = new Vector3(x, -1, z);
@@ -73,12 +79,18 @@ public class Spawnable : MonoBehaviour {
 
     }
 
-    private void Die ()
+    public void Die()
     {
-       Destroy(this.gameObject);
+        if (!IsOriginal)
+        {
+            GameObject origin = Manager.spawnableGameObjects[spawnID];
+            origin.GetComponent<Spawnable>().currentNum--;
+            Destroy(this.gameObject);
+        }
+
     }
 
-    bool CheckTerrain()
+    public bool CheckTerrain()
     {
 		// Do not need to check the position if we have not spawned yet
 		if (positionInMatrix == null) {

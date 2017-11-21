@@ -47,7 +47,7 @@ public class SpawnManager : MonoBehaviour {
 
         if (Input.GetButtonUp("Reset all") == true)
         {
-            StartSpawning();
+            //StartSpawning();
         }
 
         SpawnAll();
@@ -79,8 +79,11 @@ public class SpawnManager : MonoBehaviour {
                 if (spawnable.maxNum > spawnable.currentNum)
                 {
                     spawnable.currentNum++;
+                    spawnable.Manager = this.GetComponent<SpawnManager>();
+                    spawnable.spawnID = i;
 					GameObject fish = spawnable.Spawn(depthPoint);
                     fish.transform.SetParent(spawnObjectParent.transform);
+                    fish.GetComponent<Spawnable>().IsOriginal = false;
                 }
                 else
                 {
