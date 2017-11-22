@@ -22,20 +22,29 @@ public class Spawnable : MonoBehaviour {
     public int maxNum;
     public int currentNum;
 
-	public DepthPoint positionInMatrix;
-
     public int spawnID;
 
+    private DepthFeedManager depthFeed;
 
     void Start()
     {
+        //Link spawn manager to Manager
+        GameObject spawnManager = GameObject.Find("SpawnManager");
+        Manager = spawnManager.GetComponent<SpawnManager>();
+
+        //Set starting number as one, only effects original
         currentNum = 0;
+
+        //link to DepthManager
+        depthFeed = GameObject.Find("DepthFeedManager").GetComponent<DepthFeedManager>();
+        
     }
 
-	public GameObject Spawn(DepthPoint positionInMatrix)
+	public GameObject Spawn(Vector3 position)
 	{
-		this.positionInMatrix = positionInMatrix;
-		Vector3 position = positionInMatrix.position;
+		//this.positionInMatrix = Matrix;
+        //Debug.Log(positionInMatrix.x);
+        //Vector3 position = Matrix.position;
         GameObject fish = Instantiate(gameObject, position, transform.rotation);
         fish.transform.eulerAngles = new Vector3(90, Random.Range(0, 360), 0);
         return fish;
@@ -43,10 +52,13 @@ public class Spawnable : MonoBehaviour {
 
     private void Update()
     {
-        CheckVisible();
-        CheckTerrain();
+        if (!IsOriginal)
+        {
+            CheckVisible();
+        }
 
-        if(Input.GetButtonUp("Reset all") == true)
+        
+        if (Input.GetButtonUp("Reset all") == true)
         {
             //Debug.Log("Die!");
             Die();
@@ -56,9 +68,9 @@ public class Spawnable : MonoBehaviour {
     //Used to 
     private void CheckVisible ()
     {
-        //GameObject spawnManager = GameObject.Find("SpawnManager");
+        //
 
-        //SpawnManager manager = Manager;
+        //
 
 		float x = transform.position.x;
 		float z = transform.position.z;
@@ -92,21 +104,27 @@ public class Spawnable : MonoBehaviour {
 
     public bool CheckTerrain()
     {
-		// Do not need to check the position if we have not spawned yet
-		if (positionInMatrix == null) {
-			return false;
-		}
-			
-		Layer layer = positionInMatrix.getLayer();
+        if (IsOriginal)
+        {
+            return true;
+        }
+        //Debug.Log("Found matrix!");
+        DepthFeedManager depthFeedManager = GameObject.Find("DepthFeedManager").GetComponent<DepthFeedManager>();
 
-		for (int i = 0; i < arrAcceptedLayers.Length; i++) {
+        //Layer layer = positionInMatrix.getLayer();
+
+        Layer layer = depthFeed.GetLayerAt((int)this.transform.position.z, (int)this.transform.position.x);
+        //Debug.Log(layer.ToString());
+        //Debug.Log("Found matrix");
+        for (int i = 0; i < arrAcceptedLayers.Length; i++) {
 			Layer accLayer = arrAcceptedLayers [i];
 			if (accLayer == layer) {
-				
+                //Debug.Log(accLayer); 
 				return true;
 			}
 		}
-		return false;
+        //Debug.Log("False!");
+        return false;
     }
 
 

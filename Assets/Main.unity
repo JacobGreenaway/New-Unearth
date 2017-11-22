@@ -670,7 +670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strName: Sand
-  height: 15
+  height: 25
   upperBound: 0
   lowerBound: 0
   upperColor: {r: 0.89455837, g: 0.9632353, b: 0.70117867, a: 0}
@@ -1287,6 +1287,11 @@ Prefab:
       propertyPath: IsOriginal
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114603413862853764, guid: 8a5acb5230b054c4cb2ef7def1bcfdd8,
+        type: 2}
+      propertyPath: maxNum
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8a5acb5230b054c4cb2ef7def1bcfdd8, type: 2}
   m_IsPrefabParent: 0
@@ -1407,7 +1412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layerGap: 0
-  MinDepth: 880
+  MinDepth: 840
   arrLayers:
   - {fileID: 47220550}
   - {fileID: 1063896101}
@@ -1726,7 +1731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strName: Snow
-  height: 20
+  height: 30
   upperBound: 0
   lowerBound: 0
   upperColor: {r: 0.86764705, g: 0.86764705, b: 0.86764705, a: 0}
@@ -1991,7 +1996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strName: Deep Water
-  height: 60
+  height: 60000
   upperBound: 0
   lowerBound: 0
   upperColor: {r: 0.14901961, g: 0.52156866, b: 0.7882353, a: 0}
@@ -2077,7 +2082,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1220594344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2249,6 +2254,11 @@ Prefab:
       propertyPath: IsOriginal
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114738831195640694, guid: 763fa678f46d7b84f94442dbec62110e,
+        type: 2}
+      propertyPath: strLayer
+      value: Deep Water
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 763fa678f46d7b84f94442dbec62110e, type: 2}
   m_IsPrefabParent: 0
@@ -2339,7 +2349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strName: Shallows
-  height: 25
+  height: 20
   upperBound: 0
   lowerBound: 0
   upperColor: {r: 0.7046929, g: 0.9553275, b: 0.97794116, a: 0}
@@ -2508,7 +2518,7 @@ MonoBehaviour:
   multiSourceGameObject: {fileID: 1883812687}
   layerManager: {fileID: 791472391}
   bSmoothFrames: 0
-  iSmoothFrameRate: 2
+  iSmoothFrameRate: 1
 --- !u!4 &1591640944
 Transform:
   m_ObjectHideFlags: 0
@@ -2690,6 +2700,11 @@ Prefab:
       propertyPath: IsOriginal
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114848037308471800, guid: ea8b31967b6e3dd488c108d72e51477a,
+        type: 2}
+      propertyPath: maxNum
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea8b31967b6e3dd488c108d72e51477a, type: 2}
   m_IsPrefabParent: 0
@@ -2734,7 +2749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strName: Rock
-  height: 20
+  height: 25
   upperBound: 0
   lowerBound: 0
   upperColor: {r: 0.4852941, g: 0.39448604, b: 0.32471886, a: 0}
@@ -3512,11 +3527,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strName: Forest
-  height: 20
+  height: 40
   upperBound: 0
   lowerBound: 0
-  upperColor: {r: 0.10899654, g: 0.41176468, b: 0.22383964, a: 0}
-  lowerColor: {r: 0.33506164, g: 0.6397059, b: 0.32455668, a: 0}
+  upperColor: {r: 0.027897932, g: 0.31617647, b: 0.13724497, a: 0}
+  lowerColor: {r: 0.014950966, g: 0.44852942, b: 0, a: 0}
 --- !u!1 &2136292457 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1263608421905132, guid: 763fa678f46d7b84f94442dbec62110e,

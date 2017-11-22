@@ -33,6 +33,20 @@ public class DepthFeedManager : MonoBehaviour
 	{
 		return depthMatrix;
 	}
+
+    /**
+     * Get the exact matrix at a given world coordinate
+     *
+     **/
+    public Layer GetLayerAt(int posY, int posX)
+    {
+        //Converts position on the matrix into world position vector
+        int xModifier = (512 / 2) * 1;
+        int yModifier = (424 / 2) * 1;
+        //Debug.Log(posY);
+
+        return depthMatrix.GetLayer(yModifier - posY, xModifier - posX);
+    }
 		
 
 	void Start () 

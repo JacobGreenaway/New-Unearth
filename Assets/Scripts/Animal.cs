@@ -7,6 +7,8 @@ public class Animal : MonoBehaviour {
     public bool landAble;
     public bool waterAble;
 
+    
+
     //The current direction the animal is engaged in (1, 2, 3, 4, 5, 6, 7, 8 With 5 been standing still)
     private int _direction;
 
@@ -30,6 +32,7 @@ public class Animal : MonoBehaviour {
         {
             ChangeDirection();
         }
+
         if (GetComponent<Spawnable>().CheckTerrain()) {
             Move();
         }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class DepthMatrix {
     // The 2d array storing the depth points
     public DepthPoint[,] matrix;
+
+    // The layerManager giving depth value layer definition.
 	public LayerManager layerManager;
 
 	/**
@@ -140,5 +142,13 @@ public class DepthMatrix {
         }
         return false;
 
+    }
+
+    /*
+     * Get the depth value of a given Depthpoint in the matrix
+     **/
+     public Layer GetLayer(int height, int width)
+    {
+        return this.matrix[height, width].getLayer();
     }
 }

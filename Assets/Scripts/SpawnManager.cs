@@ -60,30 +60,34 @@ public class SpawnManager : MonoBehaviour {
 		if (currentDepthMatrix == null) {
 			return;
 		}
-
+        
         for (int i = 0; i < spawnables.Length; i++)
         {
             Spawnable spawnable = spawnables[i];
-
+            
             if (SpawnChance(spawnable.spawnFrequency))
 			{
-				DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
-
-				// Manually setting the position in the matrix before spawning - should be able to control position from within the spawnable after that
-				// DepthPoints have references to left right top bottom points - can refreence these for positions 
-				spawnable.positionInMatrix = depthPoint;
-
-				// Can get the layer for a depthpoint by calling 'getLayer()'
-				//Debug.Log(depthPoint.getLayer().strName);
-
+				
+                // Can get the layer for a depthpoint by calling 'getLayer()'
+                //Debug.Log(depthPoint.getLayer().strName);
+                
                 if (spawnable.maxNum > spawnable.currentNum)
                 {
+                    DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
                     spawnable.currentNum++;
-                    spawnable.Manager = this.GetComponent<SpawnManager>();
+                    //spawnable.Manager = this.GetComponent<SpawnManager>();
                     spawnable.spawnID = i;
-					GameObject fish = spawnable.Spawn(depthPoint);
-                    fish.transform.SetParent(spawnObjectParent.transform);
+
+					GameObject fish = spawnable.Spawn(depthPoint.position);
                     fish.GetComponent<Spawnable>().IsOriginal = false;
+                    fish.transform.SetParent(spawnObjectParent.transform);
+
+
+                    
+
+                    // Manually setting the position in the matrix before spawning - should be able to control position from within the spawnable after that
+                    // DepthPoints have references to left right top bottom points - can refreence these for positions 
+                    
                 }
                 else
                 {

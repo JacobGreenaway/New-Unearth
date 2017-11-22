@@ -3,24 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Plant : MonoBehaviour {
-
-
+    private Spawnable spawn;
+    
     //Determin the max size of the object
     public int MaxSize;
 
+    //Life
+    private int life = 100;
+
 	// Use this for initialization
 	void Start () {
-        
+        spawn = this.GetComponent<Spawnable>();
     }
 
     // Update is called once per frame
     void Update()
-    {
-        Spawnable s = this.GetComponent<Spawnable>();
+    {   
         Grow();
-        if (s.CheckTerrain())
+        if (!spawn.CheckTerrain())
         {
-            s.Die();
+            life = life - 10;
+        } else if (life < 100)
+        {
+            life = life + 10;
+        }
+
+            if (life < 0)
+        {
+            //Debug.Log("kill plant");
+            spawn.Die();
         }
 
     }
