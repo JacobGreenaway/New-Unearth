@@ -1996,7 +1996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strName: Deep Water
-  height: 60000
+  height: 600
   upperBound: 0
   lowerBound: 0
   upperColor: {r: 0.14901961, g: 0.52156866, b: 0.7882353, a: 0}
@@ -2082,7 +2082,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1220594344
 MonoBehaviour:
   m_ObjectHideFlags: 0

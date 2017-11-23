@@ -52,10 +52,10 @@ public class DepthMatrix {
 		}
 	}
 
-	public List<DepthPoint> GetAllOnLayer(Layer layer)
+	public List<Vector3> GetAllOnLayer(Layer layer)
 	{
 		// List to store points that belong to the specified layer
-		List<DepthPoint> pointsInLayer = new List<DepthPoint> ();
+		List<Vector3> pointsInLayer = new List<Vector3> ();
 
 		for (int height = 0; height < this.matrix.GetLength (0); height++) 
 		{
@@ -68,7 +68,7 @@ public class DepthMatrix {
                 //If it has the height of the layer AND inside the camera's view then add point
 				if(layer.WithinBounds(currentPoint.GetValue()) && CheckCamera(currentPoint.position))
 				{
-					pointsInLayer.Add(currentPoint);
+					pointsInLayer.Add(currentPoint.position);
 				}
 			}
 		}

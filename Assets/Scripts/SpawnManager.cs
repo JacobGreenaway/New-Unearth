@@ -73,14 +73,24 @@ public class SpawnManager : MonoBehaviour {
                 
                 if (spawnable.maxNum > spawnable.currentNum)
                 {
-                    DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
+                    //DepthPoint depthPoint = GetDepthPointInLayer(currentDepthMatrix, layerManager.GetLayer(spawnable.strLayer));
+
+
+                    //Get a random position in a given layer 3 for forest, 2 for grass, 1 for sand, 0 for deep water
+
+
                     spawnable.currentNum++;
                     //spawnable.Manager = this.GetComponent<SpawnManager>();
                     spawnable.spawnID = i;
+                    Vector3 position = depthFeed.GetPointOnLayer(spawnable.strLayer);
+                    if (position != new Vector3(-66, -66, -66))
+                    {
+                        GameObject fish = spawnable.Spawn(position);
+                        fish.GetComponent<Spawnable>().IsOriginal = false;
+                        fish.transform.SetParent(spawnObjectParent.transform);
+                    }
 
-					GameObject fish = spawnable.Spawn(depthPoint.position);
-                    fish.GetComponent<Spawnable>().IsOriginal = false;
-                    fish.transform.SetParent(spawnObjectParent.transform);
+
 
 
                     
@@ -99,23 +109,6 @@ public class SpawnManager : MonoBehaviour {
 
         }
     }
-
-    // Select a random point from the depth matrix which is inside the desired layer
-    DepthPoint GetDepthPointInLayer(DepthMatrix depthMatrix, Layer layer)
-	{
-
-		if (depthMatrix == null) {
-			return null;
-		}
-		// Select a random point from the depth matrix which is inside the desired layer
-
-		List<DepthPoint> depthPointsOnLayer = depthMatrix.GetAllOnLayer(layer);
-
-		int length = depthPointsOnLayer.Count;
-		int randomIndex = Random.Range (0, length - 1);
-
-		return depthPointsOnLayer [randomIndex];
-	}
 
 	bool SpawnChance(int spawnFrequency)
 	{
