@@ -47,24 +47,7 @@ public class LayerManager : MonoBehaviour {
 		SetupLayers ();
 			
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 	public void SetupLayers(){
 		if (layerGap == null) 
 		{

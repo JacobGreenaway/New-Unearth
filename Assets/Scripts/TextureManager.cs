@@ -57,15 +57,15 @@ public class TextureManager : MonoBehaviour
 			return;
 		}
 
-//
-//		// Create _Data
-		int d0 = depthMatrix.matrix.GetLength (0);
-		int d1 = depthMatrix.matrix.GetLength (1);
+        //
+        //		// Create _Data
+        int d0 = depthMatrix.Height;
+        int d1 = depthMatrix.Width;
 
 		for (int i = 0; i < d0; i++) {
 			for (int j = 0; j < d1; j++) {
 
-				ushort value = depthMatrix.matrix [i, j].GetValue ();
+				ushort value = depthMatrix.matrix [i][j].GetValue ();
 
 				int baseIndex =  (i * d1 + j) * 4;
 
