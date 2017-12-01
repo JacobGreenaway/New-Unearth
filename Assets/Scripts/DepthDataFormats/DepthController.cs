@@ -43,6 +43,8 @@ public class DepthController : MonoBehaviour
     [SerializeField]
     private float m_RangeMax = 0.9f;
 
+    [SerializeField]
+    private float m_FadeRange = 0.05f;
 
     [SerializeField]
     private List<DepthLayer> m_DepthLayers = new List<DepthLayer>();
@@ -99,6 +101,7 @@ public class DepthController : MonoBehaviour
         m_BlitMat.SetTexture("_DepthTex", depthTex);
         m_BlitMat.SetFloat("_RangeMin", m_RangeMin);
         m_BlitMat.SetFloat("_RangeMax", m_RangeMax);
+        m_BlitMat.SetFloat("_FadeRange", m_FadeRange);
 
         for(int i = 0; i < MaxLayers; i++)
         {

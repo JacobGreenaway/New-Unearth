@@ -6,6 +6,7 @@
 
 		_RangeMin ("Range Min", float) = 0
 		_RangeMax ("Range Max", float) = 1
+		_FadeRange ("Fade Range", float) = 0.05
 
 		_Layer1Color ("Layer 1 Color", Color) = (0,0,0,1)
 		_Layer1Max ("Layer 1 Max", float) = 0
@@ -73,6 +74,7 @@
 			sampler2D _DepthTex;
 			fixed _RangeMin;
 			fixed _RangeMax;
+			fixed _FadeRange;
 			fixed4 _Layer1Color;
 			fixed _Layer1Max;
 			fixed4 _Layer2Color;
@@ -96,8 +98,9 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 depth = tex2D(_DepthTex, i.uv);
-				fixed height = 1.0 -depth.r;
+				float4 depth = tex2D(_DepthTex, i.uv);
+				float height = 1.0 -depth.r;
+				float halfFade = _FadeRange * 0.5;
 
 				if(height < _RangeMin)
 				{
@@ -109,49 +112,103 @@
 					return fixed4(1,0,0,1);
 				}
 
-				if(height < _Layer1Max)
+				if(height < _Layer1Max - halfFade)
 				{
 					return _Layer1Color;
 				}
-				if(height < _Layer2Max)
+
+				if(height < _Layer1Max + halfFade)
+				{
+					return lerp(_Layer1Color, _Layer2Color, (height - (_Layer1Max - halfFade)) / _FadeRange);
+				}
+
+				if(height < _Layer2Max - halfFade)
 				{
 					return _Layer2Color;
 				}
-				if(height < _Layer3Max)
+
+				if(height < _Layer2Max + halfFade)
+				{
+					return lerp(_Layer2Color, _Layer3Color, (height - (_Layer2Max - halfFade)) / _FadeRange);
+				}
+
+				if(height < _Layer3Max - halfFade)
 				{
 					return _Layer3Color;
 				}
-				if(height < _Layer4Max)
+
+				if(height < _Layer3Max + halfFade)
+				{
+					return lerp(_Layer3Color, _Layer4Color, (height - (_Layer3Max - halfFade)) / _FadeRange);
+				}
+
+				if(height < _Layer4Max - halfFade)
 				{
 					return _Layer4Color;
 				}
-				if(height < _Layer5Max)
+
+				if(height < _Layer4Max + halfFade)
+				{
+					return lerp(_Layer4Color, _Layer5Color, (height - (_Layer4Max - halfFade)) / _FadeRange);
+				}
+
+				if(height < _Layer5Max - halfFade)
 				{
 					return _Layer5Color;
 				}
-				if(height < _Layer6Max)
+
+				if(height < _Layer5Max + halfFade)
+				{
+					return lerp(_Layer5Color, _Layer6Color, (height - (_Layer5Max - halfFade)) / _FadeRange);
+				}
+
+				if(height < _Layer6Max - halfFade)
 				{
 					return _Layer6Color;
 				}
-				if(height < _Layer7Max)
+
+				if(height < _Layer6Max + halfFade)
+				{
+					return lerp(_Layer6Color, _Layer7Color, (height - (_Layer6Max - halfFade)) / _FadeRange);
+				}
+
+				if(height < _Layer7Max - halfFade)
 				{
 					return _Layer7Color;
 				}
-				if(height < _Layer8Max)
+
+				if(height < _Layer7Max + halfFade)
+				{
+					return lerp(_Layer7Color, _Layer8Color, (height - (_Layer7Max - halfFade)) / _FadeRange);
+				}
+
+				if(height < _Layer8Max - halfFade)
 				{
 					return _Layer8Color;
 				}
-				if(height < _Layer9Max)
+
+				if(height < _Layer8Max + halfFade)
+				{
+					return lerp(_Layer8Color, _Layer9Color, (height - (_Layer8Max - halfFade)) / _FadeRange);
+				}
+
+				if(height < _Layer9Max - halfFade)
 				{
 					return _Layer9Color;
 				}
+
+				if(height < _Layer9Max + halfFade)
+				{
+					return lerp(_Layer9Color, _Layer10Color, (height - (_Layer9Max - halfFade)) / _FadeRange);
+				}
+
 				if(height < _Layer10Max)
 				{
 					return _Layer10Color;
 				}
 
 				// Return black as default
-				return fixed4(height,height,height,1);
+				return fixed4(0,0,0,1);
 			}
 			ENDCG
 		}

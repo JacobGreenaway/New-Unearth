@@ -49,7 +49,7 @@ public class MultiSourceManager : MonoBehaviour
             var depthFrameDesc = _Sensor.DepthFrameSource.FrameDescription;
             _DepthData = new ushort[depthFrameDesc.LengthInPixels];
             _RawDepthData = new byte[depthFrameDesc.LengthInPixels * 4];
-            _DepthTexture = new Texture2D(depthFrameDesc.Width, depthFrameDesc.Height, TextureFormat.RGBAFloat, false);
+            _DepthTexture = new Texture2D(depthFrameDesc.Width, depthFrameDesc.Height, TextureFormat.RGBAFloat, true);
             _DepthColorData = new Color[depthFrameDesc.LengthInPixels];
 
             if (!_Sensor.IsOpen)
