@@ -29,6 +29,7 @@ public class DepthController : MonoBehaviour
         public Color LayerColor = Color.black;
         public Texture2D LayerTexture;
     }
+
     private const int MaxLayers = 10;
     public Vector3 DefaultPos { get { return new Vector3(66f, 66f, 66f); } }
 
@@ -56,7 +57,6 @@ public class DepthController : MonoBehaviour
     public event Action NewDepthInfoAvailable;
 
     private Material m_BlitMat;
-    [SerializeField]
     private RenderTexture m_RenderTex;
     [SerializeField]
     private Material m_TargetMaterial;
@@ -79,9 +79,32 @@ public class DepthController : MonoBehaviour
     [SerializeField]
     private Shader m_LayerConversionShader;
 
+    [Header("Contours")]
+    [SerializeField]
+    private Shader m_ContoursShader;
+    [SerializeField]
+    private Material m_ContourTargetMaterial;
+    [SerializeField]
+    private GameObject m_ContourTargetQuad;
+
+    private Material m_ContourBlitMat;
+    private RenderTexture m_ContourRenderTex;
+
+    [SerializeField]
+    private bool m_ContoursEnabled = false;
+    [SerializeField]
+    private float m_SeaLevel = 0.25f;
+    [SerializeField]
+    private float m_HeightDivision = 0.1f;
+    [SerializeField]
+    private float m_LineThickness = 0.02f;
+    [SerializeField]
+    private Color m_LineColor = Color.black;
+
     private void Start()
     {
         m_BlitMat = new Material(m_LayerConversionShader);
+        m_ContourBlitMat = new Material(m_ContoursShader);
         sensor = KinectSensor.GetDefault();
 
         // Sort depth layers
@@ -153,6 +176,30 @@ public class DepthController : MonoBehaviour
         }
 
         Graphics.Blit(m_RenderTex, m_RenderTex, m_BlitMat);
+
+        if(m_ContoursEnabled)
+        {
+            m_ContourTargetQuad.SetActive(true);
+            if(m_ContourRenderTex == null)
+            {
+                m_ContourRenderTex = new RenderTexture(depthTex.width, depthTex.height, 16);
+                m_ContourTargetMaterial.mainTexture = m_ContourRenderTex;
+            }
+
+            m_ContourBlitMat.SetTexture("_DepthTex", depthTex);
+            m_ContourBlitMat.SetFloat("_RangeMin", m_RangeMin);
+            m_ContourBlitMat.SetFloat("_RangeMax", m_RangeMax);
+            m_ContourBlitMat.SetFloat("_SeaLevel", GetRangedMax(m_SeaLevel));
+            m_ContourBlitMat.SetFloat("_HeightDivision", (m_RangeMax - m_RangeMin) * m_HeightDivision);
+            m_ContourBlitMat.SetFloat("_LineThickness", (m_RangeMax - m_RangeMin) * m_LineThickness);
+            m_ContourBlitMat.SetColor("_LineColor", m_LineColor);
+
+            Graphics.Blit(m_ContourRenderTex, m_ContourRenderTex, m_ContourBlitMat);
+        }
+        else
+        {
+            m_ContourTargetQuad.SetActive(false);
+        }
     }
 
     public ushort GetDepthValue(int x, int y)
@@ -207,9 +254,7 @@ public class DepthController : MonoBehaviour
         var selection = matches
             .OrderBy(v => v.GetHashCode())
             .FirstOrDefault();
-
         
-
         var width = GetMipMapWidth();
         var height = GetMipMapHeight();
 
