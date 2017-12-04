@@ -74,6 +74,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   landAble: 0
   waterAble: 1
+  speed: 0.5
   restless: 0
 --- !u!114 &114289266651298088
 MonoBehaviour:
@@ -86,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b49e990012ee44eaa848e7f412f87d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTime: 20
+  targetTime: 4
   currentTime: 0
 --- !u!114 &114334125446242330
 MonoBehaviour:
