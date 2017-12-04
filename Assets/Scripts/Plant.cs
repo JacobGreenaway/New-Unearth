@@ -3,35 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Plant : MonoBehaviour {
-    private Spawnable spawn;
+    private Spawnable spawnable;
+    private SpawnedObject spawnedObject;
     
     //Determin the max size of the object
     public int MaxSize;
 
     //Life
-    private int life = 100;
+    [SerializeField]
+    private float life = 100f;
+    private float decayRate = 10f;
 
 	// Use this for initialization
 	void Start () {
-        spawn = this.GetComponent<Spawnable>();
+        spawnable = this.GetComponent<Spawnable>();
+        spawnedObject = GetComponent<SpawnedObject>();
+    }
+
+    public void Reset()
+    {
+        life = 100f;
     }
 
     // Update is called once per frame
     void Update()
     {   
         Grow();
-        if (!spawn.CheckTerrain())
+        if (spawnable != null)
         {
-            life = life - 10;
-        } else if (life < 100)
-        {
-            life = life + 10;
-        }
+            if (!spawnable.CheckTerrain())
+            {
+                life -= decayRate * Time.deltaTime;
+            }
+            else if (life < 100)
+            {
+                life += decayRate * Time.deltaTime;
+            }
 
             if (life < 0)
+            {
+                //Debug.Log("kill plant");
+                spawnable.Die();
+            }
+        }
+        if(spawnedObject != null)
         {
-            //Debug.Log("kill plant");
-            spawn.Die();
+            if(!spawnedObject.CheckDepth())
+            {
+                life -= decayRate * Time.deltaTime;
+            }
+            else if (life < 100)
+            {
+                life += decayRate * Time.deltaTime;
+            }
+            life = Mathf.Clamp(life, 0f, 100f);
+
+            if(life <= 0)
+            {
+                spawnedObject.Despawn();
+            }
         }
 
     }

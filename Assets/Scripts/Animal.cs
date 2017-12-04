@@ -17,8 +17,13 @@ public class Animal : MonoBehaviour {
 
     private SimpleTimer timer;
 
+    private Spawnable spawnable;
+    private SpawnedObject spawnedObject;
+
 	// Use this for initialization
 	void Start () {
+        spawnable = GetComponent<Spawnable>();
+        spawnedObject = GetComponent<SpawnedObject>();
         timer = GetComponent<SimpleTimer>();
         //timer.targetTime = 
         _direction = 1;
@@ -33,7 +38,13 @@ public class Animal : MonoBehaviour {
             ChangeDirection();
         }
 
-        if (GetComponent<Spawnable>().CheckTerrain()) {
+
+        if (spawnable != null &&  spawnable.CheckTerrain()) {
+            Move();
+        }
+
+        if(spawnedObject != null && spawnedObject.CheckDepth())
+        {
             Move();
         }
         
