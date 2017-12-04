@@ -53,6 +53,7 @@ public class SpawnController : MonoBehaviour
                     var spawned = spawnData.Spawn();
                     spawned.transform.position = pos;
                     spawned.transform.rotation = Quaternion.Euler(90f, UnityEngine.Random.Range(0f, 360f), 0f);
+                    spawned.transform.SetParent(m_SpawnObjectParent.transform);
                     m_SpawnedItems[spawnData].Add(spawned);
                 }
             }

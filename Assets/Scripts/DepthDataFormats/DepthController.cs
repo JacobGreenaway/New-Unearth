@@ -198,9 +198,9 @@ public class DepthController : MonoBehaviour
         //}
         var matches = m_SpawnableValues.Select((c, i) => new { c = c, i = i })
             .Where(v => 1f - v.c.r > rangeMin && 1f - v.c.r < rangeMax);
-        var count = matches.Count();
-        Debug.Log("Matches : " + count + " : " + (count / (float)(GetMipMapWidth() * GetMipMapHeight())));
-        if (matches == null)
+        //var count = matches.Count();
+        //Debug.Log("Matches : " + count + " : " + (count / (float)(GetMipMapWidth() * GetMipMapHeight())));
+        if (matches == null || matches.Count() == 0)
         {
             return DefaultPos;
         }
@@ -219,11 +219,13 @@ public class DepthController : MonoBehaviour
         var index = selection.i;//testX + testY * width; 
         int x = index % width;
         int y = Mathf.FloorToInt(index / (float)width);
-
+        
         var quadScale = m_TargetQuad.transform.localScale;
+        // We add the hald mipped pixel size to place the item at the centre of the sampled pixel.
+        var halfMippedPixelWorldSize = (quadScale.x / width) * 0.5f;
 
-        var pos = new Vector3((x / (float)width) * quadScale.x - (quadScale.x * 0.5f), m_SpawnableHeight, (y / (float)height) * quadScale.y - (quadScale.y * 0.5f));
-        Debug.Log("Got Random Point : " + x + " : " + y + " : " + pos.x + " : " + pos.z + " : " + selection.c.r + " : " + selection.i);
+        var pos = new Vector3((x / (float)width) * quadScale.x - (quadScale.x * 0.5f) + halfMippedPixelWorldSize, m_SpawnableHeight, (y / (float)height) * quadScale.y - (quadScale.y * 0.5f) + halfMippedPixelWorldSize);
+        //Debug.Log("Got Random Point : " + x + " : " + y + " : " + pos.x + " : " + pos.z + " : " + selection.c.r + " : " + selection.i);
         return pos;
     }
 
