@@ -102,15 +102,15 @@
 				float height = 1.0 -depth.r;
 				float halfFade = _FadeRange * 0.5;
 
-				if(height < _RangeMin)
-				{
-					return fixed4(1,0,1,1);
-				}
+				//if(height < _RangeMin)
+				//{
+				//	return fixed4(1,0,1,1);
+				//}
 
-				if(height > _RangeMax)
-				{
-					return fixed4(1,0,0,1);
-				}
+				//if(height > _RangeMax)
+				//{
+				//	return fixed4(1,0,0,1);
+				//}
 
 				if(height < _Layer1Max - halfFade)
 				{

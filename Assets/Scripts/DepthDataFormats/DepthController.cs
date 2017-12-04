@@ -51,6 +51,9 @@ public class DepthController : MonoBehaviour
     [SerializeField]
     private float m_SpawnableScale = 100f;
 
+    [SerializeField]
+    private int m_SmoothingWeight;
+
     public int Width { get; private set; }
     public int Height { get; private set; }
 
@@ -64,9 +67,9 @@ public class DepthController : MonoBehaviour
     private GameObject m_TargetQuad;
 
     [SerializeField]
-    private float m_RangeMin = 0.8f;
+    private int m_RangeMin = 950;
     [SerializeField]
-    private float m_RangeMax = 0.9f;
+    private int m_RangeMax = 1200;
 
     [SerializeField]
     private float m_FadeRange = 0.05f;
@@ -101,6 +104,9 @@ public class DepthController : MonoBehaviour
     [SerializeField]
     private Color m_LineColor = Color.black;
 
+    private Texture2D m_DepthTex;
+    private Color[] m_DepthColorData;
+
     private void Start()
     {
         m_BlitMat = new Material(m_LayerConversionShader);
@@ -114,6 +120,9 @@ public class DepthController : MonoBehaviour
         {
             Debug.Log("Kinect sensor found");
             arrDepth = new ushort[frameBufferCount][];
+            var depthFrameDesc = sensor.DepthFrameSource.FrameDescription;
+            m_DepthTex = new Texture2D(depthFrameDesc.Width, depthFrameDesc.Height, TextureFormat.RGBAFloat, true);
+            m_DepthColorData = new Color[depthFrameDesc.LengthInPixels];
             for (int i = 0; i < frameBufferCount; i++)
             {
                 Width = sensor.DepthFrameSource.FrameDescription.Width;
@@ -142,23 +151,56 @@ public class DepthController : MonoBehaviour
             NewDepthInfoAvailable();
         }
 
-        var depthTex = multiSourceManager.GetDepthTexture();
-        if (depthTex == null)
+        
+        for(int dcd = 0; dcd < m_DepthColorData.Length; dcd++)
         {
-            return;
+            int denominator = 0;
+            int count = 1;
+            float val = 0f;
+            for(int frame = 0; frame < frameBufferCount; frame++)
+            {
+                var offsetFrame = currentBuffer + frame;
+                if(offsetFrame >= frameBufferCount)
+                {
+                    offsetFrame -= frameBufferCount;
+                }
+                if(arrDepth[offsetFrame][dcd] >= m_RangeMin && arrDepth[offsetFrame][dcd] < m_RangeMax )
+                {
+                    val += arrDepth[offsetFrame][dcd] * count;
+                    denominator += count;
+                    count++;
+                }
+            }
+            if(denominator > 0)
+            {
+                var avg = ((val / denominator) - m_RangeMin) / (float)(m_RangeMax - m_RangeMin);
+                avg = (avg + (m_DepthColorData[dcd].r * m_SmoothingWeight)) / (m_SmoothingWeight + 1f); 
+                m_DepthColorData[dcd] = new Color(avg, avg, avg, 1f);
+            }
+            else
+            {
+                m_DepthColorData[dcd] = new Color(0f, 0f, 0f, 0f); 
+            }
         }
 
-        m_SpawnableValues = depthTex.GetPixels(m_SpawnMapMipLevel);
+        m_DepthTex.SetPixels(m_DepthColorData);
+        m_DepthTex.Apply();
+
+        //var depthTex = multiSourceManager.GetDepthTexture();
+        //if (depthTex == null)
+        //{
+        //    return;
+        //}
+
+        m_SpawnableValues = m_DepthTex.GetPixels(m_SpawnMapMipLevel);
 
         if (m_RenderTex == null)
         {
-            m_RenderTex = new RenderTexture(depthTex.width, depthTex.height, 16);
+            m_RenderTex = new RenderTexture(m_DepthTex.width, m_DepthTex.height, 16);
 
             m_TargetMaterial.mainTexture = m_RenderTex;
         }
-        m_BlitMat.SetTexture("_DepthTex", depthTex);
-        m_BlitMat.SetFloat("_RangeMin", m_RangeMin);
-        m_BlitMat.SetFloat("_RangeMax", m_RangeMax);
+        m_BlitMat.SetTexture("_DepthTex", m_DepthTex);
         m_BlitMat.SetFloat("_FadeRange", m_FadeRange);
 
         for (int i = 0; i < MaxLayers; i++)
@@ -166,7 +208,7 @@ public class DepthController : MonoBehaviour
             if (i < m_DepthLayers.Count)
             {
                 m_BlitMat.SetColor(string.Format("_Layer{0}Color", (i + 1).ToString()), m_DepthLayers[i].LayerColor);
-                m_BlitMat.SetFloat(string.Format("_Layer{0}Max", (i + 1).ToString()), GetRangedMax(m_DepthLayers[i].LayerMax));
+                m_BlitMat.SetFloat(string.Format("_Layer{0}Max", (i + 1).ToString()), m_DepthLayers[i].LayerMax);
             }
             else
             {
@@ -182,16 +224,14 @@ public class DepthController : MonoBehaviour
             m_ContourTargetQuad.SetActive(true);
             if(m_ContourRenderTex == null)
             {
-                m_ContourRenderTex = new RenderTexture(depthTex.width, depthTex.height, 16);
+                m_ContourRenderTex = new RenderTexture(m_DepthTex.width, m_DepthTex.height, 16);
                 m_ContourTargetMaterial.mainTexture = m_ContourRenderTex;
             }
 
-            m_ContourBlitMat.SetTexture("_DepthTex", depthTex);
-            m_ContourBlitMat.SetFloat("_RangeMin", m_RangeMin);
-            m_ContourBlitMat.SetFloat("_RangeMax", m_RangeMax);
-            m_ContourBlitMat.SetFloat("_SeaLevel", GetRangedMax(m_SeaLevel));
-            m_ContourBlitMat.SetFloat("_HeightDivision", (m_RangeMax - m_RangeMin) * m_HeightDivision);
-            m_ContourBlitMat.SetFloat("_LineThickness", (m_RangeMax - m_RangeMin) * m_LineThickness);
+            m_ContourBlitMat.SetTexture("_DepthTex", m_DepthTex);
+            m_ContourBlitMat.SetFloat("_SeaLevel", m_SeaLevel);
+            m_ContourBlitMat.SetFloat("_HeightDivision", m_HeightDivision);
+            m_ContourBlitMat.SetFloat("_LineThickness", m_LineThickness);
             m_ContourBlitMat.SetColor("_LineColor", m_LineColor);
 
             Graphics.Blit(m_ContourRenderTex, m_ContourRenderTex, m_ContourBlitMat);

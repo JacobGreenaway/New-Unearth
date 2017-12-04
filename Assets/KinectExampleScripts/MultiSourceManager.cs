@@ -16,6 +16,11 @@ public class MultiSourceManager : MonoBehaviour
     private byte[] _RawDepthData;
     private Color[] _DepthColorData;
 
+    [SerializeField]
+    private int _MinRange;
+    [SerializeField]
+    private int _MaxRange;
+
     public Texture2D GetColorTexture()
     {
         return _ColorTexture;
@@ -91,7 +96,9 @@ public class MultiSourceManager : MonoBehaviour
                             _RawDepthData[startIndex + 2] = _RawDepthData[startIndex];
                             _RawDepthData[startIndex + 3] = (byte)255;
 
-                            _DepthColorData[i] = new Color(_DepthData[i] / 8000f, 0f, 0f, 1f);
+                            float data = _DepthData[i] < _MinRange || _DepthData[i] > _MaxRange ? 0f : ((_DepthData[i] - _MinRange) / (float)(_MaxRange - _MinRange));
+
+                            _DepthColorData[i] = new Color(data, 0f, 0f, 1f);
                         }
                         //_DepthTexture.LoadRawTextureData(_RawDepthData);
                         _DepthTexture.SetPixels(_DepthColorData);

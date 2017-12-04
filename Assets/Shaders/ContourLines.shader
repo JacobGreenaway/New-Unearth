@@ -60,14 +60,14 @@
 				float height = 1.0 - depth.r;
 				float halfLine = _LineThickness * 0.5; 
 
-				if(height < _RangeMin)
-				{
-					return fixed4(0,0,0,0);
-				}
-				if(height > _RangeMax)
-				{
-					return fixed4(0,0,0,0);
-				}
+				//if(height < _RangeMin)
+				//{
+				//	return fixed4(0,0,0,0);
+				//}
+				//if(height > _RangeMax)
+				//{
+				//	return fixed4(0,0,0,0);
+				//}
 
 				float reduced = (abs(height - _SeaLevel) + halfLine) % _HeightDivision;
 				return (reduced <= _LineThickness) ? _LineColor : fixed4(0,0,0,0);
