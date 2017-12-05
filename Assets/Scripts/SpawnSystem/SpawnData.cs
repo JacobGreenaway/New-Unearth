@@ -45,10 +45,7 @@ public class SpawnData : MonoBehaviour
 
         if (m_Timer >= m_NextSpawnTime)
         {
-            if (ShouldSpawnEvent != null)
-            {
-                ShouldSpawnEvent(this);
-            }
+            ShouldSpawnEvent?.Invoke(this);
             m_Timer = 0f;
             CalcNextSpawnTime();
         }

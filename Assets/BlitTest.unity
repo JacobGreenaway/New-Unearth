@@ -964,11 +964,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   multiSourceManager: {fileID: 482800475}
-  frameBufferCount: 1
+  frameBufferCount: 2
   m_SpawnMapMipLevel: 2
   m_SpawnableHeight: 0.5
   m_SpawnableScale: 0.5
   m_SmoothingWeight: 10
+  m_FlipHorizontal: 0
+  m_FlipVertical: 0
   m_TargetMaterial: {fileID: 2100000, guid: 05b095247407dd74f8282fc5ddb08e38, type: 2}
   m_TargetQuad: {fileID: 321659111}
   m_RangeMin: 950
@@ -976,19 +978,19 @@ MonoBehaviour:
   m_FadeRange: 0.001
   m_DepthLayers:
   - Layer: 1
-    LayerMax: 0.27
+    LayerMax: 0.2
     LayerColor: {r: 0.0588776, g: 0.27088192, b: 0.8897059, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 2
-    LayerMax: 0.31
+    LayerMax: 0.25
     LayerColor: {r: 0.0588776, g: 0.7521894, b: 0.8897059, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 4
-    LayerMax: 0.36
+    LayerMax: 0.3
     LayerColor: {r: 0.9117647, g: 0.8355685, b: 0.22123702, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 5
-    LayerMax: 0.46
+    LayerMax: 0.7
     LayerColor: {r: 0.26538086, g: 0.75735295, b: 0.1726319, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 8
@@ -1006,6 +1008,7 @@ MonoBehaviour:
   m_HeightDivision: 0.1
   m_LineThickness: 0.02
   m_LineColor: {r: 0, g: 0, b: 0, a: 1}
+  m_Parallel: 0
 --- !u!4 &976711960
 Transform:
   m_ObjectHideFlags: 0

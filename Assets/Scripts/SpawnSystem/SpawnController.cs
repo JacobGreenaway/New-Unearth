@@ -25,6 +25,35 @@ public class SpawnController : MonoBehaviour
             m_Spawnables[i].SpawnObjectDespawnedEvent += HandleSpawnObjectDespawnedEvent;
             m_SpawnedItems.Add(m_Spawnables[i], new List<GameObject>());
         }
+
+        m_DepthController.HorizontalFlipped += HandleHorizontalFlipped;
+        m_DepthController.VerticalFlipped += HandleVerticalFlipped;
+    }
+
+    private void HandleVerticalFlipped(bool flipped)
+    {
+        foreach (var kvp in m_SpawnedItems)
+        {
+            for (int i = 0; i < kvp.Value.Count; i++)
+            {
+                var pos = kvp.Value[i].transform.position;
+                pos.z = -pos.z;
+                kvp.Value[i].transform.position = pos;
+            }
+        }
+    }
+
+    private void HandleHorizontalFlipped(bool flipped)
+    {
+        foreach (var kvp in m_SpawnedItems)
+        {
+            for (int i = 0; i < kvp.Value.Count; i++)
+            {
+                var pos = kvp.Value[i].transform.position;
+                pos.x = -pos.x;
+                kvp.Value[i].transform.position = pos;
+            }
+        }
     }
 
     private void Update()

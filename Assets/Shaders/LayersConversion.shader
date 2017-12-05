@@ -7,6 +7,8 @@
 		_RangeMin ("Range Min", float) = 0
 		_RangeMax ("Range Max", float) = 1
 		_FadeRange ("Fade Range", float) = 0.05
+		_UOffset ("U Offset", float) = 0
+		_VOffset ("V Offset", float) = 0
 
 		_Layer1Color ("Layer 1 Color", Color) = (0,0,0,1)
 		_Layer1Max ("Layer 1 Max", float) = 0
@@ -63,11 +65,14 @@
 				float4 vertex : SV_POSITION;
 			};
 
+			float _UOffset;
+			float _VOffset;
+
 			v2f vert (appdata v)
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = v.uv;
+				o.uv = float2(abs(_UOffset - v.uv.x), abs(_VOffset - v.uv.y));
 				return o;
 			}
 			
@@ -102,10 +107,10 @@
 				float height = 1.0 -depth.r;
 				float halfFade = _FadeRange * 0.5;
 
-				//if(height < _RangeMin)
-				//{
-				//	return fixed4(1,0,1,1);
-				//}
+				if(height < 0.001)
+				{
+					return fixed4(0,0,0,0);
+				}
 
 				//if(height > _RangeMax)
 				//{
