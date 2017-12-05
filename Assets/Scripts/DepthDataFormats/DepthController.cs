@@ -59,12 +59,8 @@ public class DepthController : MonoBehaviour
     public int Height { get; private set; }
 
     public event Action NewDepthInfoAvailable;
-
-    [SerializeField]
-    private bool m_FlipHorizontal = false;
+    
     public event Action<bool> HorizontalFlipped;
-    [SerializeField]
-    private bool m_FlipVertical = false;
     public event Action<bool> VerticalFlipped;
     private Material m_BlitMat;
     private RenderTexture m_RenderTex;
@@ -151,13 +147,13 @@ public class DepthController : MonoBehaviour
     {
         if (Input.GetButtonDown("Flip Vertical"))
         {
-            m_FlipVertical = !m_FlipVertical;
-            VerticalFlipped?.Invoke(m_FlipVertical);
+            SettingsController.Instance.Current.FlipVertical = !SettingsController.Instance.Current.FlipVertical;
+            VerticalFlipped?.Invoke(SettingsController.Instance.Current.FlipVertical);
         }
         if (Input.GetButtonDown("Flip Horizontal"))
         {
-            m_FlipHorizontal = !m_FlipHorizontal;
-            HorizontalFlipped?.Invoke(m_FlipHorizontal);
+            SettingsController.Instance.Current.FlipHorizontal = !SettingsController.Instance.Current.FlipHorizontal;
+            HorizontalFlipped?.Invoke(SettingsController.Instance.Current.FlipHorizontal);
         }
 
         if (arrDepth == null)
@@ -219,8 +215,8 @@ public class DepthController : MonoBehaviour
         }
         m_BlitMat.SetTexture("_DepthTex", m_DepthTex);
         m_BlitMat.SetFloat("_FadeRange", m_FadeRange);
-        m_BlitMat.SetFloat("_UOffset", m_FlipHorizontal ? 1f : 0f);
-        m_BlitMat.SetFloat("_VOffset", m_FlipVertical ? 1f : 0f);
+        m_BlitMat.SetFloat("_UOffset", SettingsController.Instance.Current.FlipHorizontal ? 1f : 0f);
+        m_BlitMat.SetFloat("_VOffset", SettingsController.Instance.Current.FlipVertical ? 1f : 0f);
 
         for (int i = 0; i < MaxLayers; i++)
         {
@@ -371,11 +367,11 @@ public class DepthController : MonoBehaviour
 
         var pos = new Vector3((x / (float)width) * quadScale.x - (quadScale.x * 0.5f) + halfMippedPixelWorldSize, m_SpawnableHeight, (y / (float)height) * quadScale.y - (quadScale.y * 0.5f) + halfMippedPixelWorldSize);
         //Debug.Log("Got Random Point : " + x + " : " + y + " : " + pos.x + " : " + pos.z + " : " + selection.c.r + " : " + selection.i);
-        if(m_FlipHorizontal)
+        if(SettingsController.Instance.Current.FlipHorizontal)
         {
             pos.x = -pos.x;
         }
-        if(m_FlipVertical)
+        if(SettingsController.Instance.Current.FlipVertical)
         {
             pos.z = -pos.z;
         }
@@ -387,11 +383,11 @@ public class DepthController : MonoBehaviour
         var quadScale = m_TargetQuad.transform.localScale;
         // If we're currently in a flipped mode the positions will be flipped,
         // so flip them back for lookup.
-        if(m_FlipHorizontal)
+        if(SettingsController.Instance.Current.FlipHorizontal)
         {
             pos.x = -pos.x;
         }
-        if(m_FlipVertical)
+        if(SettingsController.Instance.Current.FlipVertical)
         {
             pos.z = -pos.z;
         }

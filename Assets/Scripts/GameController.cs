@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        transform.position = SettingsController.Instance.Current.CamPos;
     }
 	
 	// Update is called once per frame
@@ -33,11 +33,10 @@ public class GameController : MonoBehaviour {
         //Input for zooming the camera
         var z = Input.GetAxis("Zoom") * Time.deltaTime * _Zoom;
         transform.Translate(0, 0, z);
-    }
 
-    // Zoom in and out according to keyboard control
-    void Zoom ()
-    {
-
+        if(x > 0f || y > 0f || z > 0f)
+        {
+            SettingsController.Instance.Current.CamPos = transform.position;
+        }
     }
 }
