@@ -10,7 +10,7 @@ public class SettingsController : MonoBehaviour
     [Serializable]
     public class Settings
     {
-        public bool Dirty { get; set; }
+        public bool Dirty;
 
         [SerializeField]
         private Vector3 m_CamPos = new Vector3(0f, 47.5f, 0f);
@@ -44,6 +44,114 @@ public class SettingsController : MonoBehaviour
             set
             {
                 m_FlipVertical = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_DeepWaterMax = 0.1f;
+        public float DeepWaterMax
+        {
+            get { return m_DeepWaterMax; }
+            set
+            {
+                m_DeepWaterMax = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_WaterMax = 0.2f;
+        public float WaterMax
+        {
+            get { return m_WaterMax; }
+            set
+            {
+                m_WaterMax = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_ShallowsMax = 0.25f; 
+        public float ShallowsMax
+        {
+            get { return m_ShallowsMax; }
+            set
+            {
+                m_ShallowsMax = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_SandMax = 0.3f;
+        public float SandMax
+        {
+            get { return m_SandMax; }
+            set
+            {
+                m_SandMax = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_GrassMax = 0.4f;
+        public float GrassMax
+        {
+            get { return m_GrassMax; }
+            set
+            {
+                m_GrassMax = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_ForestMax = 0.6f;
+        public float ForestMax
+        {
+            get { return m_ForestMax; }
+            set
+            {
+                m_ForestMax = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_RockMax = 0.75f;
+        public float RockMax
+        {
+            get { return m_RockMax; }
+            set
+            {
+                m_RockMax = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_SnowMax = 0.9f;
+        public float SnowMax
+        {
+            get { return m_SnowMax; }
+            set
+            {
+                m_SnowMax = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_LavaMax = 1f;
+        public float LavaMax
+        {
+            get { return m_LavaMax; }
+            set
+            {
+                m_LavaMax = value;
                 Dirty = true;
             }
         }
@@ -103,6 +211,7 @@ public class SettingsController : MonoBehaviour
         {
             var json = JsonUtility.ToJson(m_Settings, true);
             File.WriteAllText(GetFilePath(), json);
+            m_Settings.Dirty = false;
         }
     }
 

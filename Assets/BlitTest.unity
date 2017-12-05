@@ -545,6 +545,15 @@ MonoBehaviour:
     m_CamPos: {x: 0, y: 0, z: 0}
     m_FlipHorizontal: 0
     m_FlipVertical: 0
+    m_DeepWaterMax: 0.1
+    m_WaterMax: 0.2
+    m_ShallowsMax: 0.25
+    m_SandMax: 0.3
+    m_GrassMax: 0.4
+    m_ForestMax: 0.6
+    m_RockMax: 0.7
+    m_SnowMax: 0.9
+    m_LavaMax: 1
 --- !u!4 &664651417
 Transform:
   m_ObjectHideFlags: 0
@@ -1020,39 +1029,30 @@ MonoBehaviour:
   m_FadeRange: 0.001
   m_DepthLayers:
   - Layer: 2
-    LayerMax: 0.1
     LayerColor: {r: 0.0588776, g: 0.27088192, b: 0.8897059, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 4
-    LayerMax: 0.2
     LayerColor: {r: 0.0588776, g: 0.44277763, b: 0.8897059, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 8
-    LayerMax: 0.25
     LayerColor: {r: 0.2260489, g: 0.63066155, b: 0.8308824, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 16
-    LayerMax: 0.3
     LayerColor: {r: 0.8576154, g: 0.86764705, b: 0.14035465, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 32
-    LayerMax: 0.35
     LayerColor: {r: 0.28145215, g: 0.7647059, b: 0.24178201, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 64
-    LayerMax: 0.55
     LayerColor: {r: 0.19060226, g: 0.44852942, b: 0.18139058, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 128
-    LayerMax: 0.65
     LayerColor: {r: 0.38235295, g: 0.37954152, b: 0.37954152, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 256
-    LayerMax: 0.7
     LayerColor: {r: 0.89705884, g: 0.89705884, b: 0.89705884, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 512
-    LayerMax: 1
     LayerColor: {r: 0.9338235, g: 0.2903282, b: 0.19912416, a: 1}
     LayerTexture: {fileID: 0}
   m_LayerConversionShader: {fileID: 4800000, guid: 7ee8242d60e9e4045973b93e5070fbb5,

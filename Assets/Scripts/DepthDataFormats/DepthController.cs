@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 public class DepthController : MonoBehaviour
 {
+    // Set up as flags so that items can use multiple layers at once
     [Flags]
     public enum Layers
     {
@@ -33,9 +34,41 @@ public class DepthController : MonoBehaviour
     public class DepthLayer
     {
         public Layers Layer;
-        public float LayerMax;
         public Color LayerColor = Color.black;
         public Texture2D LayerTexture;
+
+        public float LayerMax
+        {
+            get
+            {
+                var settings = SettingsController.Instance.Current;
+                switch(Layer)
+                {
+                    case Layers.None:
+                        return 0f;
+                    case Layers.DeepWater:
+                        return settings.DeepWaterMax;
+                    case Layers.Water:
+                        return settings.WaterMax;
+                    case Layers.Shallows:
+                        return settings.ShallowsMax;
+                    case Layers.Sand:
+                        return settings.SandMax;
+                    case Layers.Grass:
+                        return settings.GrassMax;
+                    case Layers.Forest:
+                        return settings.ForestMax;
+                    case Layers.Rock:
+                        return settings.RockMax;
+                    case Layers.Snow:
+                        return settings.SnowMax;
+                    case Layers.Lava:
+                        return settings.LavaMax;
+                    default:
+                        return 0f;
+                }
+            }
+        }
     }
 
     private const int MaxLayers = 10;
@@ -343,9 +376,7 @@ public class DepthController : MonoBehaviour
             }
             m_Ranges.Add(r);
         }
-
-
-
+        
         // For testing
         //Color depth;
         //int index = -1;
