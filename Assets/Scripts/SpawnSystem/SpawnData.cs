@@ -9,8 +9,9 @@ public class SpawnData : MonoBehaviour
     [SerializeField]
     private GameObject m_SpawnPrefab;
     [SerializeField]
-    private DepthController.Layers m_Layer;
-    public DepthController.Layers Layer { get { return m_Layer; } }
+    [EnumFlag]
+    private DepthController.Layers m_Layers;
+    public DepthController.Layers Layers { get { return m_Layers; } }
     [SerializeField]
     private int m_SpawnCap;
     public int SpawnCap {  get { return m_SpawnCap; } }

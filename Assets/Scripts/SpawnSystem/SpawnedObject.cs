@@ -22,7 +22,7 @@ public class SpawnedObject : MonoBehaviour
 
     public bool CheckDepth()
     {
-        return m_DepthController.GetLayerAtPosition(transform.position) == m_SpawnData.Layer;
+        return m_SpawnData.Layers.HasFlag(m_DepthController.GetLayerAtPosition(transform.position));
     }
 
     public void Despawn()

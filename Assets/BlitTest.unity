@@ -155,7 +155,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1173748217897150, guid: 554b9060fa1636242b108ae2a3204a54,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1497166646756726, guid: 27e5ab45241005c47a5e0a6985195eac,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -463,7 +463,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1281654798956232, guid: 7e006b8284a527644a5e7f61cbb499d7,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1939291888705312, guid: 9b2032f470335d945af171c57c333667,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -541,6 +541,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42a0227999ea4a488cf1c01c4303bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Settings:
+    m_CamPos: {x: 0, y: 0, z: 0}
+    m_FlipHorizontal: 0
+    m_FlipVertical: 0
 --- !u!4 &664651417
 Transform:
   m_ObjectHideFlags: 0
@@ -584,7 +588,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1769784982477014, guid: a7ca4bb58bc79c84f906e777209a9fa9,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -631,7 +635,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1666414111223530, guid: ee0dc3995f752d64a9d644948837ad88,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -784,7 +788,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1152545115072508, guid: 27eeb96a60a3db94b9711104cab246ac,
     type: 2}
-  m_Layer: 5
+  m_Layers: 96
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -831,7 +835,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1227706670388682, guid: cf4c357fa8d5ba047a19b7f01e2d2e66,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -878,7 +882,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1783865839443614, guid: 544fbcb3db31a4d479934b465fa03758,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -912,7 +916,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1249933894347146, guid: a3a2e20d5d1f62b4eb4a258e1db5ebeb,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -972,7 +976,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1252457137673402, guid: 86d87afa07305ac4db7d82b315cabd07,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1009,33 +1013,47 @@ MonoBehaviour:
   m_SpawnableHeight: 0.5
   m_SpawnableScale: 0.5
   m_SmoothingWeight: 10
-  m_FlipHorizontal: 0
-  m_FlipVertical: 0
   m_TargetMaterial: {fileID: 2100000, guid: 05b095247407dd74f8282fc5ddb08e38, type: 2}
   m_TargetQuad: {fileID: 321659111}
   m_RangeMin: 950
   m_RangeMax: 1200
   m_FadeRange: 0.001
   m_DepthLayers:
-  - Layer: 1
-    LayerMax: 0.2
+  - Layer: 2
+    LayerMax: 0.1
     LayerColor: {r: 0.0588776, g: 0.27088192, b: 0.8897059, a: 1}
     LayerTexture: {fileID: 0}
-  - Layer: 2
-    LayerMax: 0.25
-    LayerColor: {r: 0.0588776, g: 0.7521894, b: 0.8897059, a: 1}
-    LayerTexture: {fileID: 0}
   - Layer: 4
-    LayerMax: 0.3
-    LayerColor: {r: 0.9117647, g: 0.8355685, b: 0.22123702, a: 1}
-    LayerTexture: {fileID: 0}
-  - Layer: 5
-    LayerMax: 0.7
-    LayerColor: {r: 0.26538086, g: 0.75735295, b: 0.1726319, a: 1}
+    LayerMax: 0.2
+    LayerColor: {r: 0.0588776, g: 0.44277763, b: 0.8897059, a: 1}
     LayerTexture: {fileID: 0}
   - Layer: 8
-    LayerMax: 1
+    LayerMax: 0.25
+    LayerColor: {r: 0.2260489, g: 0.63066155, b: 0.8308824, a: 1}
+    LayerTexture: {fileID: 0}
+  - Layer: 16
+    LayerMax: 0.3
+    LayerColor: {r: 0.8576154, g: 0.86764705, b: 0.14035465, a: 1}
+    LayerTexture: {fileID: 0}
+  - Layer: 32
+    LayerMax: 0.35
+    LayerColor: {r: 0.28145215, g: 0.7647059, b: 0.24178201, a: 1}
+    LayerTexture: {fileID: 0}
+  - Layer: 64
+    LayerMax: 0.55
+    LayerColor: {r: 0.19060226, g: 0.44852942, b: 0.18139058, a: 1}
+    LayerTexture: {fileID: 0}
+  - Layer: 128
+    LayerMax: 0.65
+    LayerColor: {r: 0.38235295, g: 0.37954152, b: 0.37954152, a: 1}
+    LayerTexture: {fileID: 0}
+  - Layer: 256
+    LayerMax: 0.7
     LayerColor: {r: 0.89705884, g: 0.89705884, b: 0.89705884, a: 1}
+    LayerTexture: {fileID: 0}
+  - Layer: 512
+    LayerMax: 1
+    LayerColor: {r: 0.9338235, g: 0.2903282, b: 0.19912416, a: 1}
     LayerTexture: {fileID: 0}
   m_LayerConversionShader: {fileID: 4800000, guid: 7ee8242d60e9e4045973b93e5070fbb5,
     type: 3}
@@ -1048,7 +1066,7 @@ MonoBehaviour:
   m_HeightDivision: 0.1
   m_LineThickness: 0.02
   m_LineColor: {r: 0, g: 0, b: 0, a: 1}
-  m_Parallel: 0
+  m_Parallel: 1
 --- !u!4 &976711960
 Transform:
   m_ObjectHideFlags: 0
@@ -1092,7 +1110,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1926429094478408, guid: 4c81498f265b167459689e0f03a407d8,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1152,7 +1170,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1933686190369016, guid: 6d7a3fe5ff3f2db429aab39bc7ef3347,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1186,7 +1204,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1956161267609224, guid: bb2a2d457fae71b4099f902e2c929661,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1246,7 +1264,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1516310244887166, guid: 2b886ec4c59c05e4da7b7307fd541512,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1293,7 +1311,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1753420605173476, guid: 8597a6fde4953434da8465816f5db5f6,
     type: 2}
-  m_Layer: 5
+  m_Layers: 96
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1420,7 +1438,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1987279654991084, guid: 1fe437ea707244f4eba7537b03e297a5,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1467,7 +1485,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1389574806338680, guid: 349f45ef385343c48a906221214181a0,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1514,7 +1532,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1645288092465922, guid: c5783d4c69deb93488f4e7ed833b5a2f,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1561,7 +1579,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1824897897350918, guid: 653f46d974f6ee945abf8742d5e4cc92,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1621,7 +1639,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1160315719634996, guid: 324b122eb573c59448e74398019b8bcc,
     type: 2}
-  m_Layer: 5
+  m_Layers: 96
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1655,7 +1673,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1590042075987460, guid: 1922fb4690dab5145918633a43d18b41,
     type: 2}
-  m_Layer: 2
+  m_Layers: 14
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1715,7 +1733,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1623991756435762, guid: 78b2c2ecfc4f9d64f867b2aa4f776c62,
     type: 2}
-  m_Layer: 5
+  m_Layers: 96
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1762,7 +1780,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1448411840589264, guid: ddf5f56d7522b634ba4ab925c7ad9dc3,
     type: 2}
-  m_Layer: 5
+  m_Layers: 32
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1
@@ -1888,7 +1906,7 @@ MonoBehaviour:
   m_DepthController: {fileID: 976711958}
   m_SpawnPrefab: {fileID: 1314362689066604, guid: a792499a624fded49b50a6b103ab5197,
     type: 2}
-  m_Layer: 4
+  m_Layers: 16
   m_SpawnCap: 2
   m_SpawnFrequency: 5
   m_SpawnVariance: 1

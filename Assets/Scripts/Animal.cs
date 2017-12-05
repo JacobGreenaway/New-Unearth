@@ -30,8 +30,8 @@ public class Animal : MonoBehaviour {
         _direction = 1;
     }
 
-
-	
+    public bool DepthPassed;
+    
 	// Update is called once per frame
 	void Update () {
         if (timer.Count() == 0f)
@@ -46,7 +46,12 @@ public class Animal : MonoBehaviour {
 
         if(spawnedObject != null && spawnedObject.CheckDepth())
         {
+            DepthPassed = true;
             Move();
+        }
+        else
+        {
+            DepthPassed = false;
         }
         
     }

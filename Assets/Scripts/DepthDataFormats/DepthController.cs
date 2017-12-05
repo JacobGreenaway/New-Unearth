@@ -8,18 +8,25 @@ using System.Threading.Tasks;
 
 public class DepthController : MonoBehaviour
 {
+    [Flags]
     public enum Layers
     {
-        None,
-        DeepWater,
-        Water,
-        Shallows,
-        Sand,
-        Grass,
-        Forest,
-        Rock,
-        Snow,
-        Lava
+        None = 1 << 0,
+        DeepWater = 1 << 1,
+        Water = 1 << 2,
+        Shallows = 1 << 3,
+        Sand = 1 << 4,
+        Grass = 1 << 5,
+        Forest = 1 << 6,
+        Rock = 1 << 7,
+        Snow = 1 << 8,
+        Lava = 1 << 9
+    }
+
+    private struct LayerRange
+    {
+        public float Top;
+        public float Bottom;
     }
 
     [Serializable]
@@ -59,7 +66,7 @@ public class DepthController : MonoBehaviour
     public int Height { get; private set; }
 
     public event Action NewDepthInfoAvailable;
-    
+
     public event Action<bool> HorizontalFlipped;
     public event Action<bool> VerticalFlipped;
     private Material m_BlitMat;
@@ -176,7 +183,7 @@ public class DepthController : MonoBehaviour
         }
         else
         {
-            for(int i = 0; i < m_DepthColorData.Length; i++)
+            for (int i = 0; i < m_DepthColorData.Length; i++)
             {
                 UpdateDepth(i);
             }
@@ -312,21 +319,32 @@ public class DepthController : MonoBehaviour
         return ((m_RangeMax - m_RangeMin) * maxValue) + m_RangeMin;
     }
 
-    public Vector3 GetRandomPointOnLayer(Layers layer)
-    {
-        var selectedLayer = m_DepthLayers.FirstOrDefault((dl) => dl.Layer == layer);
+    private List<LayerRange> m_Ranges = new List<LayerRange>();
 
-        if (selectedLayer == null)
+    public Vector3 GetRandomPointOnLayers(Layers layers)
+    {
+        var selectedLayers = m_DepthLayers.Where((dl) => layers.HasFlag(dl.Layer));
+
+        if (selectedLayers == null || selectedLayers.Count() == 0)
         {
             return DefaultPos;
         }
-        var layerBelowIndex = m_DepthLayers.IndexOf(selectedLayer) - 1;
-        float rangeMin = 0f;
-        float rangeMax = selectedLayer.LayerMax;
-        if (layerBelowIndex >= 0)
+
+        m_Ranges.Clear();
+        foreach (var sl in selectedLayers)
         {
-            rangeMin = m_DepthLayers[layerBelowIndex].LayerMax;
+            var layerBelowIndex = m_DepthLayers.IndexOf(sl) - 1;
+            var r = new LayerRange();
+            r.Bottom = 0f;
+            r.Top = sl.LayerMax;
+            if (layerBelowIndex >= 0)
+            {
+                r.Bottom = m_DepthLayers[layerBelowIndex].LayerMax;
+            }
+            m_Ranges.Add(r);
         }
+
+
 
         // For testing
         //Color depth;
@@ -340,7 +358,7 @@ public class DepthController : MonoBehaviour
         //    }
         //}
         var matches = m_SpawnableValues.Select((c, i) => new { c = c, i = i })
-            .Where(v => 1f - v.c.r > rangeMin && 1f - v.c.r < rangeMax);
+            .Where(v => m_Ranges.Any((r) => 1f - v.c.r > r.Bottom && 1f - v.c.r < r.Top));
         //var count = matches.Count();
         //Debug.Log("Matches : " + count + " : " + (count / (float)(GetMipMapWidth() * GetMipMapHeight())));
         if (matches == null || matches.Count() == 0)
@@ -367,11 +385,11 @@ public class DepthController : MonoBehaviour
 
         var pos = new Vector3((x / (float)width) * quadScale.x - (quadScale.x * 0.5f) + halfMippedPixelWorldSize, m_SpawnableHeight, (y / (float)height) * quadScale.y - (quadScale.y * 0.5f) + halfMippedPixelWorldSize);
         //Debug.Log("Got Random Point : " + x + " : " + y + " : " + pos.x + " : " + pos.z + " : " + selection.c.r + " : " + selection.i);
-        if(SettingsController.Instance.Current.FlipHorizontal)
+        if (SettingsController.Instance.Current.FlipHorizontal)
         {
             pos.x = -pos.x;
         }
-        if(SettingsController.Instance.Current.FlipVertical)
+        if (SettingsController.Instance.Current.FlipVertical)
         {
             pos.z = -pos.z;
         }
@@ -383,11 +401,11 @@ public class DepthController : MonoBehaviour
         var quadScale = m_TargetQuad.transform.localScale;
         // If we're currently in a flipped mode the positions will be flipped,
         // so flip them back for lookup.
-        if(SettingsController.Instance.Current.FlipHorizontal)
+        if (SettingsController.Instance.Current.FlipHorizontal)
         {
             pos.x = -pos.x;
         }
-        if(SettingsController.Instance.Current.FlipVertical)
+        if (SettingsController.Instance.Current.FlipVertical)
         {
             pos.z = -pos.z;
         }

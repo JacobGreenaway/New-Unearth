@@ -121,7 +121,7 @@ public class SpawnController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Encountered unregistered SpawnData item : " + spawnData.Layer + " : " + spawnData.name);
+            Debug.LogError("Encountered unregistered SpawnData item : " + spawnData.Layers + " : " + spawnData.name);
         }
     }
 
@@ -132,7 +132,7 @@ public class SpawnController : MonoBehaviour
             // If we aren't at our limit
             if (m_SpawnedItems[spawnData].Count < spawnData.SpawnCap)
             {
-                var pos = m_DepthController.GetRandomPointOnLayer(spawnData.Layer);
+                var pos = m_DepthController.GetRandomPointOnLayers(spawnData.Layers);
                 // If there is valid position to spawn at
                 if (pos != m_DepthController.DefaultPos)
                 {
@@ -147,7 +147,7 @@ public class SpawnController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Encountered unregistered SpawnData item : " + spawnData.Layer + " : " + spawnData.name);
+            Debug.LogError("Encountered unregistered SpawnData item : " + spawnData.Layers + " : " + spawnData.name);
         }
     }
 }

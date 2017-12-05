@@ -13,7 +13,7 @@ public class SettingsController : MonoBehaviour
         public bool Dirty { get; set; }
 
         [SerializeField]
-        private Vector3 m_CamPos;
+        private Vector3 m_CamPos = new Vector3(0f, 47.5f, 0f);
         public Vector3 CamPos
         {
             get { return m_CamPos; }
