@@ -964,7 +964,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   multiSourceManager: {fileID: 482800475}
-  frameBufferCount: 2
+  frameBufferCount: 1
   m_SpawnMapMipLevel: 2
   m_SpawnableHeight: 0.5
   m_SpawnableScale: 0.5
@@ -1734,6 +1734,7 @@ GameObject:
   - component: {fileID: 1842288066}
   - component: {fileID: 1842288065}
   - component: {fileID: 1842288064}
+  - component: {fileID: 1842288068}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1803,6 +1804,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1842288068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1842288063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d75755fb079c7c4eb4ae5e150a610c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2124036471
 GameObject:
   m_ObjectHideFlags: 0

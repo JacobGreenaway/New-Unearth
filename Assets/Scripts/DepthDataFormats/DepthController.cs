@@ -265,11 +265,11 @@ public class DepthController : MonoBehaviour
             return DefaultPos;
         }
         var layerBelowIndex = m_DepthLayers.IndexOf(selectedLayer) - 1;
-        float rangeMin = GetScaledRange(0f);
-        float rangeMax = GetScaledRange(selectedLayer.LayerMax);
+        float rangeMin = 0f;
+        float rangeMax = selectedLayer.LayerMax;
         if (layerBelowIndex >= 0)
         {
-            rangeMin = GetScaledRange(m_DepthLayers[layerBelowIndex].LayerMax);
+            rangeMin = m_DepthLayers[layerBelowIndex].LayerMax;
         }
 
         // For testing
