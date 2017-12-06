@@ -422,10 +422,30 @@ public class DepthController : MonoBehaviour
         var settings = SettingsController.Instance.Current;
         var quadWidth = m_TargetQuad.transform.localScale.x;
         var quadHeight = m_TargetQuad.transform.localScale.y;
-        int xMin = Mathf.FloorToInt(((settings.ClipLeft + (quadWidth * 0.5f)) / quadWidth) * width);
-        int xMax = Mathf.CeilToInt(((settings.ClipRight + (quadWidth * 0.5f)) / quadWidth) * width);
-        int yMin = Mathf.FloorToInt(((settings.ClipBottom + (quadHeight * 0.5f)) / quadHeight) * height);
-        int yMax = Mathf.CeilToInt(((settings.ClipTop + (quadHeight * 0.5f)) / quadHeight) * height);
+        int xMin = 0;
+        int xMax = 0;
+        int yMin = 0;
+        int yMax = 0;
+        if (settings.FlipHorizontal)
+        {
+            xMax = Mathf.FloorToInt((1f - ((settings.ClipLeft + (quadWidth * 0.5f)) / quadWidth)) * width);
+            xMin = Mathf.CeilToInt((1f - ((settings.ClipRight + (quadWidth * 0.5f)) / quadWidth)) * width);
+        }
+        else
+        {
+            xMin = Mathf.FloorToInt(((settings.ClipLeft + (quadWidth * 0.5f)) / quadWidth) * width);
+            xMax = Mathf.CeilToInt(((settings.ClipRight + (quadWidth * 0.5f)) / quadWidth) * width);
+        }
+        if (settings.FlipVertical)
+        {
+            yMax = Mathf.FloorToInt((1f - ((settings.ClipBottom + (quadHeight * 0.5f)) / quadHeight)) * height);
+            yMin = Mathf.CeilToInt((1f - ((settings.ClipTop + (quadHeight * 0.5f)) / quadHeight)) * height);
+        }
+        else
+        {
+            yMin = Mathf.FloorToInt(((settings.ClipBottom + (quadHeight * 0.5f)) / quadHeight) * height);
+            yMax = Mathf.CeilToInt(((settings.ClipTop + (quadHeight * 0.5f)) / quadHeight) * height);
+        }
 
         var matches = m_SpawnableValues.Select((c, i) => new { c = c, i = i })
             .Where(v => IndexInClipRange(v.i, xMin, xMax, yMin, yMax) && m_Ranges.Any((r) => 1f - v.c.r > r.Bottom && 1f - v.c.r < r.Top));

@@ -557,6 +557,10 @@ MonoBehaviour:
     m_LavaMax: 1
     m_RangeMin: 950
     m_RangeMax: 1200
+    m_ClipLeft: 0
+    m_ClipRight: 512
+    m_ClipTop: 424
+    m_ClipBottom: 0
 --- !u!4 &664651417
 Transform:
   m_ObjectHideFlags: 0
@@ -1023,7 +1027,6 @@ MonoBehaviour:
   frameBufferCount: 2
   m_SpawnMapMipLevel: 2
   m_SpawnableHeight: 0.5
-  m_SpawnableScale: 0.5
   m_SmoothingWeight: 10
   m_TargetMaterial: {fileID: 2100000, guid: 05b095247407dd74f8282fc5ddb08e38, type: 2}
   m_TargetQuad: {fileID: 321659111}
@@ -1877,6 +1880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d75755fb079c7c4eb4ae5e150a610c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Cam: {fileID: 1842288066}
 --- !u!1 &2124036471
 GameObject:
   m_ObjectHideFlags: 0
