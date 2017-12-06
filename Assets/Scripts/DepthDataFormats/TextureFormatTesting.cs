@@ -10,7 +10,7 @@ public class TextureFormatTesting : MonoBehaviour {
 	void Start () {
         var tex = new Texture2D(4, 4, TextureFormat.RGBAHalf, false);
         m_Mat.mainTexture = tex;
-        var bytes =  tex.GetRawTextureData();
+        //var bytes =  tex.GetRawTextureData();
 	}
 	
 	

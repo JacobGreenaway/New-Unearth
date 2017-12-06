@@ -113,6 +113,6 @@ public class Animal : MonoBehaviour {
                 transform.eulerAngles = new Vector3(90, 45, 0);
                 break;
         }
-        transform.position += dir * Time.deltaTime;
+        transform.position += dir * Time.deltaTime * speed;
     }
 }

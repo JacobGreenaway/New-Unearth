@@ -24,7 +24,7 @@ public class DepthFeedManager : MonoBehaviour
     private Queue<DepthMatrix> depthMatrixPool = new Queue<DepthMatrix>();
     private MultiSourceManager multiSourceManager;
 
-    private ushort[] arrDepth;
+   // private ushort[] arrDepth;
 
     //Running list of positions in a given layer (must redo)
     private List<Vector3> forestPoints;
@@ -63,7 +63,7 @@ public class DepthFeedManager : MonoBehaviour
         if (_Sensor != null)
         {
             Debug.Log("Kinect sensor found");
-            arrDepth = new ushort[_Sensor.DepthFrameSource.FrameDescription.LengthInPixels];
+            //arrDepth = new ushort[_Sensor.DepthFrameSource.FrameDescription.LengthInPixels];
         }
 
 

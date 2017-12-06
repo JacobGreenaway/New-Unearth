@@ -75,7 +75,7 @@ public class SettingsController : MonoBehaviour
         }
 
         [SerializeField]
-        private float m_ShallowsMax = 0.25f; 
+        private float m_ShallowsMax = 0.25f;
         public float ShallowsMax
         {
             get { return m_ShallowsMax; }
@@ -179,6 +179,54 @@ public class SettingsController : MonoBehaviour
             set
             {
                 m_RangeMax = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_ClipLeft = 0;
+        public float ClipLeft
+        {
+            get { return m_ClipLeft; }
+            set
+            {
+                m_ClipLeft = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_ClipRight = 512;
+        public float ClipRight
+        {
+            get { return m_ClipRight; }
+            set
+            {
+                m_ClipRight = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_ClipTop = 424;
+        public float ClipTop
+        {
+            get { return m_ClipTop; }
+            set
+            {
+                m_ClipTop = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private float m_ClipBottom = 0;
+        public float ClipBottom
+        {
+            get { return m_ClipBottom; }
+            set
+            {
+                m_ClipBottom = value;
                 Dirty = true;
             }
         }

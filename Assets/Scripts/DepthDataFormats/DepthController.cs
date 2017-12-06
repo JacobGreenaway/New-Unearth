@@ -42,7 +42,7 @@ public class DepthController : MonoBehaviour
             get
             {
                 var settings = SettingsController.Instance.Current;
-                switch(Layer)
+                switch (Layer)
                 {
                     case Layers.None:
                         return 0f;
@@ -89,8 +89,6 @@ public class DepthController : MonoBehaviour
     private int m_SpawnMapMipLevel = 0;
     [SerializeField]
     private float m_SpawnableHeight = 0.5f;
-    [SerializeField]
-    private float m_SpawnableScale = 100f;
 
     [SerializeField]
     private float m_SmoothingWeight;
@@ -226,14 +224,14 @@ public class DepthController : MonoBehaviour
         // So that we can have smooth tracking input we track changes in float and adjust on the int.
         m_TrackingRangeMin += Input.GetAxis("Raise Lower") * RangeChangeSpeed * Time.deltaTime;
         int newRangeMin = (int)m_TrackingRangeMin;
-        if(settings.RangeMin != newRangeMin)
+        if (settings.RangeMin != newRangeMin)
         {
             settings.RangeMin = newRangeMin;
         }
 
         m_TrackingRangeMax += Input.GetAxis("Raise Upper") * RangeChangeSpeed * Time.deltaTime;
         int newRangeMax = (int)m_TrackingRangeMax;
-        if(settings.RangeMax != newRangeMax)
+        if (settings.RangeMax != newRangeMax)
         {
             settings.RangeMax = newRangeMax;
         }
@@ -418,40 +416,32 @@ public class DepthController : MonoBehaviour
             }
             m_Ranges.Add(r);
         }
-        
-        // For testing
-        //Color depth;
-        //int index = -1;
-        //for(int i = 0; i < m_SpawnableValues.Length; i++)
-        //{
-        //    if(1.0f - m_SpawnableValues[i].r > rangeMin && 1.0f - m_SpawnableValues[i].r < rangeMax)
-        //    {
-        //        index = i;
-        //        break;
-        //    }
-        //}
+
+        var width = GetMipMapWidth();
+        var height = GetMipMapHeight();
+        var settings = SettingsController.Instance.Current;
+        var quadWidth = m_TargetQuad.transform.localScale.x;
+        var quadHeight = m_TargetQuad.transform.localScale.y;
+        int xMin = Mathf.FloorToInt(((settings.ClipLeft + (quadWidth * 0.5f)) / quadWidth) * width);
+        int xMax = Mathf.CeilToInt(((settings.ClipRight + (quadWidth * 0.5f)) / quadWidth) * width);
+        int yMin = Mathf.FloorToInt(((settings.ClipBottom + (quadHeight * 0.5f)) / quadHeight) * height);
+        int yMax = Mathf.CeilToInt(((settings.ClipTop + (quadHeight * 0.5f)) / quadHeight) * height);
+
         var matches = m_SpawnableValues.Select((c, i) => new { c = c, i = i })
-            .Where(v => m_Ranges.Any((r) => 1f - v.c.r > r.Bottom && 1f - v.c.r < r.Top));
-        //var count = matches.Count();
-        //Debug.Log("Matches : " + count + " : " + (count / (float)(GetMipMapWidth() * GetMipMapHeight())));
-        if (matches == null || matches.Count() == 0)
+            .Where(v => IndexInClipRange(v.i, xMin, xMax, yMin, yMax) && m_Ranges.Any((r) => 1f - v.c.r > r.Bottom && 1f - v.c.r < r.Top));
+       if (matches == null || matches.Count() == 0)
         {
             return DefaultPos;
         }
         var selection = matches
             .OrderBy(v => v.GetHashCode())
             .FirstOrDefault();
-
-        var width = GetMipMapWidth();
-        var height = GetMipMapHeight();
-
-        //int testX = 127;
-        //int testY = 105;
-
+        
+        
         var index = selection.i;//testX + testY * width; 
         int x = index % width;
         int y = Mathf.FloorToInt(index / (float)width);
-
+        
         var quadScale = m_TargetQuad.transform.localScale;
         // We add the hald mipped pixel size to place the item at the centre of the sampled pixel.
         var halfMippedPixelWorldSize = (quadScale.x / width) * 0.5f;
@@ -528,5 +518,12 @@ public class DepthController : MonoBehaviour
     private float GetScaledRange(float range)
     {
         return ((RangeMax - RangeMin) * range) + RangeMin;
+    }
+
+    private bool IndexInClipRange(int index, int xMin, int xMax, int yMin, int yMax)
+    {
+        int x = index % GetMipMapWidth();
+        int y = Mathf.FloorToInt(index / (float)GetMipMapWidth());
+        return x >= xMin && x <= xMax && y >= yMin && y <= yMax;
     }
 }
