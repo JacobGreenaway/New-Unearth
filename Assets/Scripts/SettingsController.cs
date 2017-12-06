@@ -12,6 +12,7 @@ public class SettingsController : MonoBehaviour
     {
         public bool Dirty;
 
+        [Header("Camera Settings")]
         [SerializeField]
         private Vector3 m_CamPos = new Vector3(0f, 47.5f, 0f);
         public Vector3 CamPos
@@ -48,6 +49,7 @@ public class SettingsController : MonoBehaviour
             }
         }
 
+        [Header("Layer Levels")]
         [SerializeField]
         private float m_DeepWaterMax = 0.1f;
         public float DeepWaterMax
@@ -152,6 +154,31 @@ public class SettingsController : MonoBehaviour
             set
             {
                 m_LavaMax = value;
+                Dirty = true;
+            }
+        }
+
+        [Header("Depth Settings")]
+        [SerializeField]
+        private int m_RangeMin = 950;
+        public int RangeMin
+        {
+            get { return m_RangeMin; }
+            set
+            {
+                m_RangeMin = value;
+                Dirty = true;
+            }
+        }
+
+        [SerializeField]
+        private int m_RangeMax = 1200;
+        public int RangeMax
+        {
+            get { return m_RangeMax; }
+            set
+            {
+                m_RangeMax = value;
                 Dirty = true;
             }
         }

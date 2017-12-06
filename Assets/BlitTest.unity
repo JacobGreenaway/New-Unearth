@@ -542,6 +542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Settings:
+    Dirty: 0
     m_CamPos: {x: 0, y: 0, z: 0}
     m_FlipHorizontal: 0
     m_FlipVertical: 0
@@ -554,6 +555,8 @@ MonoBehaviour:
     m_RockMax: 0.7
     m_SnowMax: 0.9
     m_LavaMax: 1
+    m_RangeMin: 950
+    m_RangeMax: 1200
 --- !u!4 &664651417
 Transform:
   m_ObjectHideFlags: 0
@@ -1024,8 +1027,6 @@ MonoBehaviour:
   m_SmoothingWeight: 10
   m_TargetMaterial: {fileID: 2100000, guid: 05b095247407dd74f8282fc5ddb08e38, type: 2}
   m_TargetQuad: {fileID: 321659111}
-  m_RangeMin: 950
-  m_RangeMax: 1200
   m_FadeRange: 0.001
   m_DepthLayers:
   - Layer: 2

@@ -109,10 +109,34 @@ public class DepthController : MonoBehaviour
     [SerializeField]
     private GameObject m_TargetQuad;
 
+    private const float RangeChangeSpeed = 10f;
+    private float m_TrackingRangeMin;
     [SerializeField]
-    private int m_RangeMin = 950;
+    private int RangeMin
+    {
+        get
+        {
+            return SettingsController.Instance.Current.RangeMin;
+        }
+        set
+        {
+            SettingsController.Instance.Current.RangeMin = value;
+        }
+    }
+
+    private float m_TrackingRangeMax;
     [SerializeField]
-    private int m_RangeMax = 1200;
+    private int RangeMax
+    {
+        get
+        {
+            return SettingsController.Instance.Current.RangeMax;
+        }
+        set
+        {
+            SettingsController.Instance.Current.RangeMax = value;
+        }
+    }
 
     [SerializeField]
     private float m_FadeRange = 0.05f;
@@ -158,6 +182,8 @@ public class DepthController : MonoBehaviour
         m_BlitMat = new Material(m_LayerConversionShader);
         m_ContourBlitMat = new Material(m_ContoursShader);
         sensor = KinectSensor.GetDefault();
+        m_TrackingRangeMin = RangeMin;
+        m_TrackingRangeMax = RangeMax;
 
         // Sort depth layers
         m_DepthLayers.Sort((dl1, dl2) => dl1.LayerMax.CompareTo(dl2.LayerMax));
@@ -194,6 +220,22 @@ public class DepthController : MonoBehaviour
         {
             SettingsController.Instance.Current.FlipHorizontal = !SettingsController.Instance.Current.FlipHorizontal;
             HorizontalFlipped?.Invoke(SettingsController.Instance.Current.FlipHorizontal);
+        }
+
+        var settings = SettingsController.Instance.Current;
+        // So that we can have smooth tracking input we track changes in float and adjust on the int.
+        m_TrackingRangeMin += Input.GetAxis("Raise Lower") * RangeChangeSpeed * Time.deltaTime;
+        int newRangeMin = (int)m_TrackingRangeMin;
+        if(settings.RangeMin != newRangeMin)
+        {
+            settings.RangeMin = newRangeMin;
+        }
+
+        m_TrackingRangeMax += Input.GetAxis("Raise Upper") * RangeChangeSpeed * Time.deltaTime;
+        int newRangeMax = (int)m_TrackingRangeMax;
+        if(settings.RangeMax != newRangeMax)
+        {
+            settings.RangeMax = newRangeMax;
         }
 
         if (arrDepth == null)
@@ -312,7 +354,7 @@ public class DepthController : MonoBehaviour
                 offsetFrame -= frameBufferCount;
             }
             // If the target pixel is within the correct range
-            if (arrDepth[offsetFrame][dcd] >= m_RangeMin && arrDepth[offsetFrame][dcd] < m_RangeMax)
+            if (arrDepth[offsetFrame][dcd] >= RangeMin && arrDepth[offsetFrame][dcd] < RangeMax)
             {
                 // Add the value multiplied by the count
                 val += arrDepth[offsetFrame][dcd] * count;
@@ -325,7 +367,7 @@ public class DepthController : MonoBehaviour
         if (denominator > 0)
         {
             // Find the scaled value average and store in the depth data array
-            var avg = ((val / denominator) - m_RangeMin) / (float)(m_RangeMax - m_RangeMin);
+            var avg = ((val / denominator) - RangeMin) / (float)(RangeMax - RangeMin);
             // Smooth this with the current value in the buffer
             avg = (avg + (m_DepthColorData[dcd].r * m_SmoothingWeight)) / (m_SmoothingWeight + 1f);
             m_DepthColorData[dcd] = new Color(avg, avg, avg, 1f);
@@ -349,7 +391,7 @@ public class DepthController : MonoBehaviour
 
     private float GetRangedMax(float maxValue)
     {
-        return ((m_RangeMax - m_RangeMin) * maxValue) + m_RangeMin;
+        return ((RangeMax - RangeMin) * maxValue) + RangeMin;
     }
 
     private List<LayerRange> m_Ranges = new List<LayerRange>();
@@ -485,6 +527,6 @@ public class DepthController : MonoBehaviour
 
     private float GetScaledRange(float range)
     {
-        return ((m_RangeMax - m_RangeMin) * range) + m_RangeMin;
+        return ((RangeMax - RangeMin) * range) + RangeMin;
     }
 }

@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour {
     private const int _Speed = 10;
 
     //Camera zoom speed
-    private const int _Zoom = 30;
+    private const int _Zoom = 10;
 
     // Use this for initialization
     void Start () {
