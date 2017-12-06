@@ -165,9 +165,9 @@ public class DepthController : MonoBehaviour
     [SerializeField]
     private float m_HeightDivision = 0.1f;
     [SerializeField]
-    private float m_LineThickness = 0.02f;
-    [SerializeField]
     private Color m_LineColor = Color.black;
+    [SerializeField]
+    private float m_SampleDistance = 1f;
 
     private Texture2D m_DepthTex;
     private Color[] m_DepthColorData;
@@ -218,6 +218,10 @@ public class DepthController : MonoBehaviour
         {
             SettingsController.Instance.Current.FlipHorizontal = !SettingsController.Instance.Current.FlipHorizontal;
             HorizontalFlipped?.Invoke(SettingsController.Instance.Current.FlipHorizontal);
+        }
+        if(Input.GetButtonDown("Toggle contour line"))
+        {
+            m_ContoursEnabled = !m_ContoursEnabled;
         }
 
         var settings = SettingsController.Instance.Current;
@@ -326,8 +330,10 @@ public class DepthController : MonoBehaviour
             m_ContourBlitMat.SetTexture("_DepthTex", m_DepthTex);
             m_ContourBlitMat.SetFloat("_SeaLevel", m_SeaLevel);
             m_ContourBlitMat.SetFloat("_HeightDivision", m_HeightDivision);
-            m_ContourBlitMat.SetFloat("_LineThickness", m_LineThickness);
             m_ContourBlitMat.SetColor("_LineColor", m_LineColor);
+            m_ContourBlitMat.SetFloat("_SampleDistance", m_SampleDistance);
+            m_ContourBlitMat.SetFloat("_UOffset", SettingsController.Instance.Current.FlipHorizontal ? 1f : 0f);
+            m_ContourBlitMat.SetFloat("_VOffset", SettingsController.Instance.Current.FlipVertical ? 1f : 0f);
 
             Graphics.Blit(m_ContourRenderTex, m_ContourRenderTex, m_ContourBlitMat);
         }
