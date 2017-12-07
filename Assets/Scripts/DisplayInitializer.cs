@@ -12,9 +12,11 @@ public class DisplayInitializer : MonoBehaviour
 
     private void Awake()
     {
+        Display.displays[0].SetRenderingResolution(Display.displays[0].systemWidth, Display.displays[0].systemHeight);
         if (Display.displays.Length > 1)
         {
             Display.displays[1].Activate();
+            Display.displays[1].SetRenderingResolution(Display.displays[1].systemWidth, Display.displays[1].systemHeight);
         }
     }
 
