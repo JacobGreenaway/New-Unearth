@@ -34,11 +34,11 @@
 		_Layer8Color ("Layer 8 Color", Color) = (0,0,0,1)
 		_Layer8Max ("Layer 8 Max", float) = 0
 
-		_Layer1Color ("Layer 9 Color", Color) = (0,0,0,1)
-		_Layer1Max ("Layer 9 Max", float) = 0
+		_Layer9Color ("Layer 9 Color", Color) = (0,0,0,1)
+		_Layer9Max ("Layer 9 Max", float) = 0
 
-		_Layer1Color ("Layer 10 Color", Color) = (0,0,0,1)
-		_Layer1Max ("Layer 10 Max", float) = 0
+		_Layer10Color ("Layer 10 Color", Color) = (0,0,0,1)
+		_Layer10Max ("Layer 10 Max", float) = 0
 	}
 	SubShader
 	{

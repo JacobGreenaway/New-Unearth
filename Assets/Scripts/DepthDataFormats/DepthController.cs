@@ -92,6 +92,8 @@ public class DepthController : MonoBehaviour
 
     [SerializeField]
     private float m_SmoothingWeight;
+    [SerializeField]
+    private Vector2 m_Tiling = Vector2.one;
 
     public int Width { get; private set; }
     public int Height { get; private set; }
@@ -101,6 +103,7 @@ public class DepthController : MonoBehaviour
     public event Action<bool> HorizontalFlipped;
     public event Action<bool> VerticalFlipped;
     private Material m_BlitMat;
+    private Material m_TexturedBlitMat;
     private RenderTexture m_RenderTex;
     [SerializeField]
     private Material m_TargetMaterial;
@@ -143,6 +146,10 @@ public class DepthController : MonoBehaviour
 
     [SerializeField]
     private Shader m_LayerConversionShader;
+    [SerializeField]
+    private Shader m_TexturedLayersConversionShader;
+    [SerializeField]
+    private bool m_TexturedToggle = false;
 
     [Header("Contours")]
     [SerializeField]
@@ -175,7 +182,9 @@ public class DepthController : MonoBehaviour
     private void Start()
     {
         m_BlitMat = new Material(m_LayerConversionShader);
+        m_TexturedBlitMat = new Material(m_TexturedLayersConversionShader);
         m_ContourBlitMat = new Material(m_ContoursShader);
+        
         sensor = KinectSensor.GetDefault();
 
         // Sort depth layers
@@ -217,6 +226,10 @@ public class DepthController : MonoBehaviour
         if(Input.GetButtonDown("Toggle contour line"))
         {
             m_ContoursEnabled = !m_ContoursEnabled;
+        }
+        if(Input.GetButtonDown("Toggle Textured"))
+        {
+            m_TexturedToggle = !m_TexturedToggle;
         }
         
         if (arrDepth == null)
@@ -272,30 +285,57 @@ public class DepthController : MonoBehaviour
 
         if (m_RenderTex == null)
         {
-            m_RenderTex = new RenderTexture(m_DepthTex.width, m_DepthTex.height, 16);
+            m_RenderTex = new RenderTexture(m_DepthTex.width * 2, m_DepthTex.height * 2, 16);
 
             m_TargetMaterial.mainTexture = m_RenderTex;
         }
-        m_BlitMat.SetTexture("_DepthTex", m_DepthTex);
-        m_BlitMat.SetFloat("_FadeRange", m_FadeRange);
-        m_BlitMat.SetFloat("_UOffset", SettingsController.Instance.Current.FlipHorizontal ? 1f : 0f);
-        m_BlitMat.SetFloat("_VOffset", SettingsController.Instance.Current.FlipVertical ? 1f : 0f);
-
-        for (int i = 0; i < MaxLayers; i++)
+        if (m_TexturedToggle)
         {
-            if (i < m_DepthLayers.Count)
-            {
-                m_BlitMat.SetColor(string.Format("_Layer{0}Color", (i + 1).ToString()), m_DepthLayers[i].LayerColor);
-                m_BlitMat.SetFloat(string.Format("_Layer{0}Max", (i + 1).ToString()), m_DepthLayers[i].LayerMax);
-            }
-            else
-            {
-                m_BlitMat.SetColor(string.Format("_Layer{0}Color", (i + 1).ToString()), Color.black);
-                m_BlitMat.SetFloat(string.Format("_Layer{0}Max", (i + 1).ToString()), -1f);
-            }
-        }
+            m_TexturedBlitMat.SetTexture("_DepthTex", m_DepthTex);
+            m_TexturedBlitMat.SetFloat("_FadeRange", m_FadeRange);
+            m_TexturedBlitMat.SetFloat("_UOffset", SettingsController.Instance.Current.FlipHorizontal ? 1f : 0f);
+            m_TexturedBlitMat.SetFloat("_VOffset", SettingsController.Instance.Current.FlipVertical ? 1f : 0f);
 
-        Graphics.Blit(m_RenderTex, m_RenderTex, m_BlitMat);
+            for (int i = 0; i < MaxLayers; i++)
+            {
+                if (i < m_DepthLayers.Count)
+                {
+                    m_TexturedBlitMat.SetTexture(string.Format("_Layer{0}Tex", (i + 1).ToString()), m_DepthLayers[i].LayerTexture);
+                    m_TexturedBlitMat.SetTextureScale(string.Format("_Layer{0}Tex", (i + 1).ToString()), m_Tiling);
+                    m_TexturedBlitMat.SetFloat(string.Format("_Layer{0}Max", (i + 1).ToString()), m_DepthLayers[i].LayerMax);
+                }
+                else
+                {
+                    m_TexturedBlitMat.SetTexture(string.Format("_Layer{0}Tex", (i + 1).ToString()), Texture2D.blackTexture);
+                    m_TexturedBlitMat.SetFloat(string.Format("_Layer{0}Max", (i + 1).ToString()), -1f);
+                }
+            }
+
+            Graphics.Blit(m_RenderTex, m_RenderTex, m_TexturedBlitMat);
+        }
+        else
+        {
+            m_BlitMat.SetTexture("_DepthTex", m_DepthTex);
+            m_BlitMat.SetFloat("_FadeRange", m_FadeRange);
+            m_BlitMat.SetFloat("_UOffset", SettingsController.Instance.Current.FlipHorizontal ? 1f : 0f);
+            m_BlitMat.SetFloat("_VOffset", SettingsController.Instance.Current.FlipVertical ? 1f : 0f);
+
+            for (int i = 0; i < MaxLayers; i++)
+            {
+                if (i < m_DepthLayers.Count)
+                {
+                    m_BlitMat.SetColor(string.Format("_Layer{0}Color", (i + 1).ToString()), m_DepthLayers[i].LayerColor);
+                    m_BlitMat.SetFloat(string.Format("_Layer{0}Max", (i + 1).ToString()), m_DepthLayers[i].LayerMax);
+                }
+                else
+                {
+                    m_BlitMat.SetColor(string.Format("_Layer{0}Color", (i + 1).ToString()), Color.black);
+                    m_BlitMat.SetFloat(string.Format("_Layer{0}Max", (i + 1).ToString()), -1f);
+                }
+            }
+
+            Graphics.Blit(m_RenderTex, m_RenderTex, m_BlitMat);
+        }
 
         if (m_ContoursEnabled)
         {
