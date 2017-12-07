@@ -32,10 +32,15 @@ public class SettingsController : MonoBehaviour
             get { return m_FlipHorizontal; }
             set
             {
-                m_FlipHorizontal = value;
-                Dirty = true;
+                if (m_FlipHorizontal != value)
+                {
+                    m_FlipHorizontal = value;
+                    Dirty = true;
+                    FlipHorizontalChanged?.Invoke(m_FlipHorizontal);
+                }
             }
         }
+        public event Action<bool> FlipHorizontalChanged;
 
         [SerializeField]
         private bool m_FlipVertical;
@@ -44,10 +49,15 @@ public class SettingsController : MonoBehaviour
             get { return m_FlipVertical; }
             set
             {
-                m_FlipVertical = value;
-                Dirty = true;
+                if (m_FlipVertical != value)
+                {
+                    m_FlipVertical = value;
+                    Dirty = true;
+                    FlipVerticalChanged?.Invoke(m_FlipVertical);
+                }
             }
         }
+        public event Action<bool> FlipVerticalChanged;
 
         [Header("Layer Levels")]
         [SerializeField]
@@ -57,10 +67,15 @@ public class SettingsController : MonoBehaviour
             get { return m_DeepWaterMax; }
             set
             {
-                m_DeepWaterMax = value;
-                Dirty = true;
+                if (m_DeepWaterMax != value)
+                {
+                    m_DeepWaterMax = value;
+                    Dirty = true;
+                    DeepWaterMaxChanged?.Invoke(m_DeepWaterMax);
+                }
             }
         }
+        public event Action<float> DeepWaterMaxChanged;
 
         [SerializeField]
         private float m_WaterMax = 0.2f;
@@ -69,10 +84,15 @@ public class SettingsController : MonoBehaviour
             get { return m_WaterMax; }
             set
             {
-                m_WaterMax = value;
-                Dirty = true;
+                if (m_WaterMax != value)
+                {
+                    m_WaterMax = value;
+                    Dirty = true;
+                    WaterMaxChanged?.Invoke(m_WaterMax);
+                }
             }
         }
+        public event Action<float> WaterMaxChanged;
 
         [SerializeField]
         private float m_ShallowsMax = 0.25f;
@@ -81,10 +101,15 @@ public class SettingsController : MonoBehaviour
             get { return m_ShallowsMax; }
             set
             {
-                m_ShallowsMax = value;
-                Dirty = true;
+                if (m_ShallowsMax != value)
+                {
+                    m_ShallowsMax = value;
+                    Dirty = true;
+                    ShallowsMaxChanged?.Invoke(m_ShallowsMax);
+                }
             }
         }
+        public event Action<float> ShallowsMaxChanged;
 
         [SerializeField]
         private float m_SandMax = 0.3f;
@@ -93,10 +118,15 @@ public class SettingsController : MonoBehaviour
             get { return m_SandMax; }
             set
             {
-                m_SandMax = value;
-                Dirty = true;
+                if (m_SandMax != value)
+                {
+                    m_SandMax = value;
+                    Dirty = true;
+                    SandMaxChanged?.Invoke(m_SandMax);
+                }
             }
         }
+        public event Action<float> SandMaxChanged;
 
         [SerializeField]
         private float m_GrassMax = 0.4f;
@@ -105,10 +135,15 @@ public class SettingsController : MonoBehaviour
             get { return m_GrassMax; }
             set
             {
-                m_GrassMax = value;
-                Dirty = true;
+                if (m_GrassMax != value)
+                {
+                    m_GrassMax = value;
+                    Dirty = true;
+                    GrassMaxChanged?.Invoke(m_GrassMax);
+                }
             }
         }
+        public event Action<float> GrassMaxChanged;
 
         [SerializeField]
         private float m_ForestMax = 0.6f;
@@ -117,10 +152,15 @@ public class SettingsController : MonoBehaviour
             get { return m_ForestMax; }
             set
             {
-                m_ForestMax = value;
-                Dirty = true;
+                if (m_ForestMax != value)
+                {
+                    m_ForestMax = value;
+                    Dirty = true;
+                    ForestMaxChanged?.Invoke(m_ForestMax);
+                }
             }
         }
+        public event Action<float> ForestMaxChanged;
 
         [SerializeField]
         private float m_RockMax = 0.75f;
@@ -129,10 +169,15 @@ public class SettingsController : MonoBehaviour
             get { return m_RockMax; }
             set
             {
-                m_RockMax = value;
-                Dirty = true;
+                if (m_RockMax != value)
+                {
+                    m_RockMax = value;
+                    Dirty = true;
+                    RockMaxChanged?.Invoke(m_RockMax);
+                }
             }
         }
+        public event Action<float> RockMaxChanged;
 
         [SerializeField]
         private float m_SnowMax = 0.9f;
@@ -141,10 +186,15 @@ public class SettingsController : MonoBehaviour
             get { return m_SnowMax; }
             set
             {
-                m_SnowMax = value;
-                Dirty = true;
+                if (m_SnowMax != value)
+                {
+                    m_SnowMax = value;
+                    Dirty = true;
+                    SnowMaxChanged?.Invoke(m_SnowMax);
+                }
             }
         }
+        public event Action<float> SnowMaxChanged;
 
         [SerializeField]
         private float m_LavaMax = 1f;
@@ -153,10 +203,15 @@ public class SettingsController : MonoBehaviour
             get { return m_LavaMax; }
             set
             {
-                m_LavaMax = value;
-                Dirty = true;
+                if (m_LavaMax != value)
+                {
+                    m_LavaMax = value;
+                    Dirty = true;
+                    LavaMaxChanged?.Invoke(m_LavaMax);
+                }
             }
         }
+        public event Action<float> LavaMaxChanged;
 
         [Header("Depth Settings")]
         [SerializeField]
@@ -166,10 +221,15 @@ public class SettingsController : MonoBehaviour
             get { return m_RangeMin; }
             set
             {
-                m_RangeMin = value;
-                Dirty = true;
+                if (m_RangeMin != value)
+                {
+                    m_RangeMin = value;
+                    Dirty = true;
+                    RangeMinChanged?.Invoke(m_RangeMin);
+                }
             }
         }
+        public event Action<int> RangeMinChanged;
 
         [SerializeField]
         private int m_RangeMax = 1200;
@@ -178,10 +238,15 @@ public class SettingsController : MonoBehaviour
             get { return m_RangeMax; }
             set
             {
-                m_RangeMax = value;
-                Dirty = true;
+                if (m_RangeMax != value)
+                {
+                    m_RangeMax = value;
+                    Dirty = true;
+                    RangeMaxChanged?.Invoke(m_RangeMax);
+                }
             }
         }
+        public event Action<int> RangeMaxChanged;
 
         [SerializeField]
         private float m_ClipLeft = 0;

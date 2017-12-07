@@ -106,9 +106,7 @@ public class DepthController : MonoBehaviour
     private Material m_TargetMaterial;
     [SerializeField]
     private GameObject m_TargetQuad;
-
-    private const float RangeChangeSpeed = 10f;
-    private float m_TrackingRangeMin;
+    
     [SerializeField]
     private int RangeMin
     {
@@ -122,7 +120,6 @@ public class DepthController : MonoBehaviour
         }
     }
 
-    private float m_TrackingRangeMax;
     [SerializeField]
     private int RangeMax
     {
@@ -180,8 +177,6 @@ public class DepthController : MonoBehaviour
         m_BlitMat = new Material(m_LayerConversionShader);
         m_ContourBlitMat = new Material(m_ContoursShader);
         sensor = KinectSensor.GetDefault();
-        m_TrackingRangeMin = RangeMin;
-        m_TrackingRangeMax = RangeMax;
 
         // Sort depth layers
         m_DepthLayers.Sort((dl1, dl2) => dl1.LayerMax.CompareTo(dl2.LayerMax));
@@ -223,23 +218,7 @@ public class DepthController : MonoBehaviour
         {
             m_ContoursEnabled = !m_ContoursEnabled;
         }
-
-        var settings = SettingsController.Instance.Current;
-        // So that we can have smooth tracking input we track changes in float and adjust on the int.
-        m_TrackingRangeMin += Input.GetAxis("Raise Lower") * RangeChangeSpeed * Time.deltaTime;
-        int newRangeMin = (int)m_TrackingRangeMin;
-        if (settings.RangeMin != newRangeMin)
-        {
-            settings.RangeMin = newRangeMin;
-        }
-
-        m_TrackingRangeMax += Input.GetAxis("Raise Upper") * RangeChangeSpeed * Time.deltaTime;
-        int newRangeMax = (int)m_TrackingRangeMax;
-        if (settings.RangeMax != newRangeMax)
-        {
-            settings.RangeMax = newRangeMax;
-        }
-
+        
         if (arrDepth == null)
         {
             return;
