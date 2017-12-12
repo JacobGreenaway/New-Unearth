@@ -1,0 +1,29 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel GenerateDepth
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+RWStructuredBuffer<float> KinectDepthNew;
+RWStructuredBuffer<float> KinectDepthPrev;
+float rangeMin;
+float rangeMax;
+float weight;
+
+[numthreads(32, 32 ,1)]
+void GenerateDepth (uint3 id : SV_DispatchThreadID) 
+{
+	float dnew = KinectDepthNew[id.y * 512 + id.x];
+	float dold = KinectDepthPrev[id.y * 512 + id.x];
+	float dorig = Result[id.xy];
+	dnew = (dnew > rangeMin && dnew <= rangeMax) ? 1.0 - ((dnew - rangeMin)/(rangeMax - rangeMin)) : 0;
+	dold = (dold > rangeMin && dold <= rangeMax) ? 1.0 - ((dold - rangeMin)/(rangeMax - rangeMin)) : 0;
+
+	// If both are over zero, perform average, otherwise return zero.
+	// Avoids a divide by zero error.
+	float avg = (dnew + dold > 0) ? (dnew + dold) / (dnew > 0 ? 1 : 0 + dold > 0 ? 1 : 0) : 0;
+	// If avg was zero, force black
+	float d = (avg > 0) ? (avg + (dorig * weight))/ (weight + 1) : 0;
+
+	Result[id.xy] = float4(d, d, d, 1.0);
+} 

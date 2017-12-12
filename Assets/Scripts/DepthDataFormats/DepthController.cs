@@ -291,7 +291,7 @@ public class DepthController : MonoBehaviour
         }
         if (m_TexturedToggle)
         {
-            m_TexturedBlitMat.SetTexture("_DepthTex", m_DepthTex);
+            m_TexturedBlitMat.SetTexture("_DepthTex", multiSourceManager.GetDepthRenderTexture());
             m_TexturedBlitMat.SetFloat("_FadeRange", m_FadeRange);
             m_TexturedBlitMat.SetFloat("_UOffset", SettingsController.Instance.Current.FlipHorizontal ? 1f : 0f);
             m_TexturedBlitMat.SetFloat("_VOffset", SettingsController.Instance.Current.FlipVertical ? 1f : 0f);
