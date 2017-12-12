@@ -104,7 +104,7 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float4 depth = tex2D(_DepthTex, i.uv);
-				float height = 1.0 -depth.r;
+				float height = depth.r;
 				float halfFade = _FadeRange * 0.5;
 
 				if(height < 0.001)

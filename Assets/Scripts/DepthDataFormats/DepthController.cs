@@ -173,7 +173,7 @@ public class DepthController : MonoBehaviour
     [SerializeField]
     private float m_SampleDistance = 1f;
 
-    private Texture2D m_DepthTex;
+    private RenderTexture m_DepthTex;
     private Color[] m_DepthColorData;
 
     [SerializeField]
@@ -195,7 +195,7 @@ public class DepthController : MonoBehaviour
             Debug.Log("Kinect sensor found");
             arrDepth = new ushort[frameBufferCount][];
             var depthFrameDesc = sensor.DepthFrameSource.FrameDescription;
-            m_DepthTex = new Texture2D(depthFrameDesc.Width, depthFrameDesc.Height, TextureFormat.RGBAFloat, true);
+           // m_DepthTex = new Texture2D(depthFrameDesc.Width, depthFrameDesc.Height, TextureFormat.RGBAFloat, true);
             m_DepthColorData = new Color[depthFrameDesc.LengthInPixels];
             for (int i = 0; i < m_DepthColorData.Length; i++)
             {
@@ -246,17 +246,17 @@ public class DepthController : MonoBehaviour
         NewDepthInfoAvailable?.Invoke();
 
         // For each depth pixel
-        if (m_Parallel)
-        {
-            Parallel.For(0, m_DepthColorData.Length, UpdateDepth);
-        }
-        else
-        {
-            for (int i = 0; i < m_DepthColorData.Length; i++)
-            {
-                UpdateDepth(i);
-            }
-        }
+        //if (m_Parallel)
+        //{
+        //    Parallel.For(0, m_DepthColorData.Length, UpdateDepth);
+        //}
+        //else
+        //{
+        //    for (int i = 0; i < m_DepthColorData.Length; i++)
+        //    {
+        //        UpdateDepth(i);
+        //    }
+        //}
 
         //for (int dcd = 0; dcd < m_DepthColorData.Length; dcd++)
         //{
@@ -278,10 +278,11 @@ public class DepthController : MonoBehaviour
         //    }
         //}
 
-        m_DepthTex.SetPixels(m_DepthColorData);
-        m_DepthTex.Apply();
+        //m_DepthTex.SetPixels(m_DepthColorData);
+        //m_DepthTex.Apply();
+        m_DepthTex = multiSourceManager.GetDepthRenderTexture();
 
-        m_SpawnableValues = m_DepthTex.GetPixels(m_SpawnMapMipLevel);
+        //m_SpawnableValues = m_DepthTex.GetPixels(m_SpawnMapMipLevel);
 
         if (m_RenderTex == null)
         {
@@ -291,7 +292,7 @@ public class DepthController : MonoBehaviour
         }
         if (m_TexturedToggle)
         {
-            m_TexturedBlitMat.SetTexture("_DepthTex", multiSourceManager.GetDepthRenderTexture());
+            m_TexturedBlitMat.SetTexture("_DepthTex", m_DepthTex);
             m_TexturedBlitMat.SetFloat("_FadeRange", m_FadeRange);
             m_TexturedBlitMat.SetFloat("_UOffset", SettingsController.Instance.Current.FlipHorizontal ? 1f : 0f);
             m_TexturedBlitMat.SetFloat("_VOffset", SettingsController.Instance.Current.FlipVertical ? 1f : 0f);
@@ -362,45 +363,45 @@ public class DepthController : MonoBehaviour
         }
     }
 
-    private void UpdateDepth(int dcd)
-    {
-        int denominator = 0;
-        int count = 1;
-        float val = 0f;
-        // For every frame in the frame buffer
-        for (int frame = 1; frame < frameBufferCount; frame++)
-        {
-            // Calculate the offset from the newest frame
-            var offsetFrame = currentBuffer + frame;
-            if (offsetFrame >= frameBufferCount)
-            {
-                offsetFrame -= frameBufferCount;
-            }
-            // If the target pixel is within the correct range
-            if (arrDepth[offsetFrame][dcd] >= RangeMin && arrDepth[offsetFrame][dcd] < RangeMax)
-            {
-                // Add the value multiplied by the count
-                val += arrDepth[offsetFrame][dcd] * count;
-                // Add the count to the denominator (give more priority to more recent frames
-                denominator += count;
-                count++;
-            }
-        }
-        // If we got any values inside the range
-        if (denominator > 0)
-        {
-            // Find the scaled value average and store in the depth data array
-            var avg = ((val / denominator) - RangeMin) / (float)(RangeMax - RangeMin);
-            // Smooth this with the current value in the buffer
-            avg = (avg + (m_DepthColorData[dcd].r * m_SmoothingWeight)) / (m_SmoothingWeight + 1f);
-            m_DepthColorData[dcd] = new Color(avg, avg, avg, 1f);
-        }
-        else
-        {
-            // Force Black
-            m_DepthColorData[dcd] = new Color(1f, 1f, 1f, 1f);
-        }
-    }
+    //private void UpdateDepth(int dcd)
+    //{
+    //    int denominator = 0;
+    //    int count = 1;
+    //    float val = 0f;
+    //    // For every frame in the frame buffer
+    //    for (int frame = 1; frame < frameBufferCount; frame++)
+    //    {
+    //        // Calculate the offset from the newest frame
+    //        var offsetFrame = currentBuffer + frame;
+    //        if (offsetFrame >= frameBufferCount)
+    //        {
+    //            offsetFrame -= frameBufferCount;
+    //        }
+    //        // If the target pixel is within the correct range
+    //        if (arrDepth[offsetFrame][dcd] >= RangeMin && arrDepth[offsetFrame][dcd] < RangeMax)
+    //        {
+    //            // Add the value multiplied by the count
+    //            val += arrDepth[offsetFrame][dcd] * count;
+    //            // Add the count to the denominator (give more priority to more recent frames
+    //            denominator += count;
+    //            count++;
+    //        }
+    //    }
+    //    // If we got any values inside the range
+    //    if (denominator > 0)
+    //    {
+    //        // Find the scaled value average and store in the depth data array
+    //        var avg = ((val / denominator) - RangeMin) / (float)(RangeMax - RangeMin);
+    //        // Smooth this with the current value in the buffer
+    //        avg = (avg + (m_DepthColorData[dcd].r * m_SmoothingWeight)) / (m_SmoothingWeight + 1f);
+    //        m_DepthColorData[dcd] = new Color(avg, avg, avg, 1f);
+    //    }
+    //    else
+    //    {
+    //        // Force Black
+    //        m_DepthColorData[dcd] = new Color(1f, 1f, 1f, 1f);
+    //    }
+    //}
 
 
     public ushort GetDepthValue(int x, int y)

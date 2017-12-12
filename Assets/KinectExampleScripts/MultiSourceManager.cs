@@ -4,6 +4,24 @@ using Windows.Kinect;
 
 public class MultiSourceManager : MonoBehaviour
 {
+    private struct LayerRange
+    {
+        public float Bottom;
+        public float Top;
+
+        public LayerRange(float bottom, float top)
+        {
+            Bottom = bottom;
+            Top = top;
+        }
+    }
+
+    private struct LayerValue
+    {
+        public int Layer;
+        public int Index;
+    }
+
     public int ColorWidth { get; private set; }
     public int ColorHeight { get; private set; }
 
@@ -18,18 +36,19 @@ public class MultiSourceManager : MonoBehaviour
     private Color[] _DepthColorData;
 
     [SerializeField]
-    private int _MinRange;
-    [SerializeField]
-    private int _MaxRange;
-    [SerializeField]
     private float _Weight;
 
     [SerializeField]
     private ComputeShader m_DepthComputeShader;
     private ComputeBuffer m_DepthComputeBuffer;
     private ComputeBuffer m_DepthComputeBufferPrev;
+    private ComputeBuffer m_LayersComputeBuffer;
+    private ComputeBuffer m_LayerRangesBuffer;
     private float[] m_DepthFloatData;
     private float[] m_DepthFloatDataPrev;
+    private LayerValue[] m_Layers;
+    private LayerRange[] m_LayerRanges;
+    private const int LayerCount = 9;
     private int m_KernalHandle;
 
     public Texture2D GetColorTexture()
@@ -80,8 +99,12 @@ public class MultiSourceManager : MonoBehaviour
             m_DepthComputeShader.SetTexture(m_KernalHandle, "Result", _DepthRenderTexture);
             m_DepthComputeBuffer = new ComputeBuffer(_DepthData.Length, (int)sizeof(float), ComputeBufferType.Raw);
             m_DepthComputeBufferPrev = new ComputeBuffer(_DepthData.Length, (int)sizeof(float), ComputeBufferType.Raw);
+            m_LayersComputeBuffer = new ComputeBuffer(_DepthData.Length, (int)(sizeof(int) * 2));
+            m_LayerRangesBuffer = new ComputeBuffer(LayerCount, (int)(sizeof(float) * 2));
             m_DepthFloatData = new float[depthFrameDesc.LengthInPixels];
             m_DepthFloatDataPrev = new float[depthFrameDesc.LengthInPixels];
+            m_Layers = new LayerValue[depthFrameDesc.LengthInPixels];
+            m_LayerRanges = new LayerRange[LayerCount];
             _DepthColorData = new Color[depthFrameDesc.LengthInPixels];
 
             if (!_Sensor.IsOpen)
@@ -93,13 +116,13 @@ public class MultiSourceManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(m_DepthComputeBuffer != null)
+        if (m_DepthComputeBuffer != null)
         {
             m_DepthComputeBuffer.Release();
             m_DepthComputeBuffer = null;
         }
 
-        if(m_DepthComputeBufferPrev != null)
+        if (m_DepthComputeBufferPrev != null)
         {
             m_DepthComputeBufferPrev.Release();
             m_DepthComputeBufferPrev = null;
@@ -136,36 +159,29 @@ public class MultiSourceManager : MonoBehaviour
 
                         m_DepthComputeBuffer.SetData(m_DepthFloatData);
                         m_DepthComputeBufferPrev.SetData(m_DepthFloatDataPrev);
+                        m_LayersComputeBuffer.SetData(m_Layers);
+
+                        var settings = SettingsController.Instance.Current;
+
+                        m_LayerRanges[0] = new LayerRange(0f, settings.DeepWaterMax);
+                        m_LayerRanges[1] = new LayerRange(settings.DeepWaterMax, settings.WaterMax);
+                        m_LayerRanges[2] = new LayerRange(settings.WaterMax, settings.ShallowsMax);
+                        m_LayerRanges[3] = new LayerRange(settings.ShallowsMax, settings.SandMax);
+                        m_LayerRanges[4] = new LayerRange(settings.SandMax, settings.GrassMax);
+                        m_LayerRanges[5] = new LayerRange(settings.GrassMax, settings.ForestMax);
+                        m_LayerRanges[6] = new LayerRange(settings.ForestMax, settings.RockMax);
+                        m_LayerRanges[7] = new LayerRange(settings.RockMax, settings.SnowMax);
+                        m_LayerRanges[8] = new LayerRange(settings.SnowMax, settings.LavaMax);
+
+                        m_LayerRangesBuffer.SetData(m_LayerRanges);
+
                         m_DepthComputeShader.SetBuffer(m_KernalHandle, "KinectDepthNew", m_DepthComputeBuffer);
                         m_DepthComputeShader.SetBuffer(m_KernalHandle, "KinectDepthPrev", m_DepthComputeBufferPrev);
-                        m_DepthComputeShader.SetFloat("rangeMin", (float)_MinRange);
-                        m_DepthComputeShader.SetFloat("rangeMax", (float)_MaxRange);
+                        m_DepthComputeShader.SetBuffer(m_KernalHandle, "ResultLayers", m_LayersComputeBuffer);
+                        m_DepthComputeShader.SetBuffer(m_KernalHandle, "LayerRanges", m_LayerRangesBuffer);
+                        m_DepthComputeShader.SetFloat("rangeMin", SettingsController.Instance.Current.RangeMin);
+                        m_DepthComputeShader.SetFloat("rangeMax", SettingsController.Instance.Current.RangeMax);
                         m_DepthComputeShader.SetFloat("weight", _Weight);
-                        //m_DepthComputeShader.SetInt("width", _DepthRenderTexture.width);
-                        // m_DepthComputeShader.SetInt("rangeMin", _MinRange);
-                        //m_DepthComputeShader.SetInt("rangeMax", _MaxRange);
-                        //m_DepthComputeShader.Dispatch(m_KernalHandle, _DepthRenderTexture.width/8, _DepthRenderTexture.height/8, 1);
-
-                        //ushort largestValue = 0;
-                        //for (int i = 0; i < _DepthData.Length; ++i)
-                        //{
-                        //    //    if (_DepthData[i] > largestValue)
-                        //    //    {
-                        //    //        largestValue = _DepthData[i];
-                        //    //    }
-                        //    //    //var startIndex = 4 * i;
-                        //    //    //_RawDepthData[startIndex] = (byte)((_DepthData[i] / 8000f)*255);
-                        //    //    //_RawDepthData[startIndex + 1] = _RawDepthData[startIndex];
-                        //    //    // _RawDepthData[startIndex + 2] = _RawDepthData[startIndex];
-                        //    //    //_RawDepthData[startIndex + 3] = (byte)255;
-
-                        //    float data = _DepthData[i] < _MinRange || _DepthData[i] > _MaxRange ? 0f : ((_DepthData[i] - _MinRange) / (float)(_MaxRange - _MinRange));
-
-                        //    _DepthColorData[i] = new Color(data, 0f, 0f, 1f);
-                        //}
-                        ////_DepthTexture.LoadRawTextureData(_RawDepthData);
-                        //_DepthTexture.SetPixels(_DepthColorData);
-                        //_DepthTexture.Apply();
 
                         depthFrame.Dispose();
                         depthFrame = null;
@@ -178,7 +194,12 @@ public class MultiSourceManager : MonoBehaviour
                 frame = null;
             }
         }
-        m_DepthComputeShader.Dispatch(m_KernalHandle, _DepthRenderTexture.width / 8, _DepthRenderTexture.height / 8, 1);
+        //Process every frame, not just when a kinect frame is available so smoothing occurs when the kinect is slow
+        m_DepthComputeShader.Dispatch(m_KernalHandle, _DepthRenderTexture.width /8, _DepthRenderTexture.height / 8, 1); 
+        // Need to manually pull the layers data back out
+        m_LayersComputeBuffer.GetData(m_Layers, 0, 0, m_Layers.Length);
+
+
     }
 
     void OnApplicationQuit()

@@ -65,10 +65,10 @@
 				float4 depth = tex2D(_DepthTex, i.uv[0]);
 				float height = 1.0 - depth.r;
 				// Sample up, down, left and right
-				float h1 = 1.0 - tex2D(_DepthTex, i.uv[1]).r;
-				float h2 = 1.0 - tex2D(_DepthTex, i.uv[2]).r;
-				float h3 = 1.0 - tex2D(_DepthTex, i.uv[3]).r;
-				float h4 = 1.0 - tex2D(_DepthTex, i.uv[4]).r;
+				float h1 = tex2D(_DepthTex, i.uv[1]).r;
+				float h2 = tex2D(_DepthTex, i.uv[2]).r;
+				float h3 = tex2D(_DepthTex, i.uv[3]).r;
+				float h4 = tex2D(_DepthTex, i.uv[4]).r;
 
 				// Get height band for each sampled texel
 				float minLevel = _SeaLevel - floor(_SeaLevel / _HeightDivision) * _HeightDivision;

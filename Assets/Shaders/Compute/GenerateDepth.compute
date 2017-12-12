@@ -1,21 +1,36 @@
 ﻿// Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel GenerateDepth
+#pragma enable_d3d11_debug_symbols 
+
+struct LayerRange
+{
+	float Bottom;
+	float Top;
+};
+
+struct LayerValue
+{
+	int Layer;
+	int Index;
+};
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
 RWTexture2D<float4> Result;
 RWStructuredBuffer<float> KinectDepthNew;
 RWStructuredBuffer<float> KinectDepthPrev;
+RWStructuredBuffer<LayerValue> ResultLayers;
+RWStructuredBuffer<LayerRange> LayerRanges;
 float rangeMin;
 float rangeMax;
 float weight;
 
-[numthreads(32, 32 ,1)]
+[numthreads(8, 8, 1)]
 void GenerateDepth (uint3 id : SV_DispatchThreadID) 
 {
 	float dnew = KinectDepthNew[id.y * 512 + id.x];
 	float dold = KinectDepthPrev[id.y * 512 + id.x];
-	float dorig = Result[id.xy];
+	float4 dorig = Result[id.xy];
 	dnew = (dnew > rangeMin && dnew <= rangeMax) ? 1.0 - ((dnew - rangeMin)/(rangeMax - rangeMin)) : 0;
 	dold = (dold > rangeMin && dold <= rangeMax) ? 1.0 - ((dold - rangeMin)/(rangeMax - rangeMin)) : 0;
 
@@ -23,7 +38,14 @@ void GenerateDepth (uint3 id : SV_DispatchThreadID)
 	// Avoids a divide by zero error.
 	float avg = (dnew + dold > 0) ? (dnew + dold) / (dnew > 0 ? 1 : 0 + dold > 0 ? 1 : 0) : 0;
 	// If avg was zero, force black
-	float d = (avg > 0) ? (avg + (dorig * weight))/ (weight + 1) : 0;
+	float d = (avg > 0) ? (avg + (dorig.x * weight))/ (weight + 1) : 0;
 
 	Result[id.xy] = float4(d, d, d, 1.0);
+
+	ResultLayers[id.y * 512 + id.x].Index = id.y * 512 + id.x;
+	ResultLayers[id.y * 512 + id.x].Layer = 0;
+	for(int i = 0; i < 9; i++)
+	{
+		ResultLayers[id.y * 512 + id.x].Layer += (d > LayerRanges[i].Bottom && d <= LayerRanges[i].Top) ? (pow(2, i+1)) : 0;  
+	}
 } 
