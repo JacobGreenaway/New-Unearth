@@ -67,6 +67,7 @@ public class SpawnData : MonoBehaviour
         {
             spawn = Instantiate(m_SpawnPrefab);
             spawn.GetComponent<SpawnedObject>().Init(this, m_LayersController);
+            spawn.GetComponent<SpawnedObject>().Reset();
         }
         return spawn;
     }

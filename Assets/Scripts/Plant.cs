@@ -1,21 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
 
-public class Plant : MonoBehaviour {
+public class Plant : MonoBehaviour
+{
     private Spawnable spawnable;
     private SpawnedObject spawnedObject;
-    
+
     //Determin the max size of the object
     public float MaxSize;
+    [SerializeField]
+    private float m_TweenTime = 0.25f;
+    [SerializeField]
+    private Ease m_GrowEaseType = Ease.OutBounce;
+    [SerializeField]
+    private Ease m_ShrinkEaseType = Ease.InBack;
 
     //Life
     [SerializeField]
     private float life = 100f;
     private float decayRate = 10f;
 
-	// Use this for initialization
-	void Start () {
+    private bool m_Died = false;
+    
+    // Use this for initialization
+    void Start()
+    {
         spawnable = this.GetComponent<Spawnable>();
         spawnedObject = GetComponent<SpawnedObject>();
     }
@@ -23,11 +32,18 @@ public class Plant : MonoBehaviour {
     public void Reset()
     {
         life = 100f;
+        m_Died = false;
+        transform.localScale = Vector3.one * 0.00001f;
+        transform.DOScale(MaxSize, m_TweenTime).SetEase(m_GrowEaseType);
     }
 
     // Update is called once per frame
     void Update()
-    {   
+    {
+        if(m_Died)
+        {
+            return;
+        }
         if (spawnable != null)
         {
             if (!spawnable.CheckTerrain())
@@ -45,9 +61,9 @@ public class Plant : MonoBehaviour {
                 spawnable.Die();
             }
         }
-        if(spawnedObject != null)
+        if (spawnedObject != null)
         {
-            if(!spawnedObject.CheckDepth())
+            if (!spawnedObject.CheckDepth())
             {
                 life -= decayRate * Time.deltaTime;
             }
@@ -57,17 +73,14 @@ public class Plant : MonoBehaviour {
             }
             life = Mathf.Clamp(life, 0f, 100f);
 
-            if(life <= 0)
+            if (life <= 0)
             {
-                spawnedObject.Despawn();
+                m_Died = true;
+                transform.DOScale(0.00001f, m_TweenTime).SetEase(m_ShrinkEaseType).OnComplete(() =>
+                {
+                    spawnedObject.Despawn();
+                });
             }
         }
-        var scale = MaxSize * life / 100f;
-        transform.localScale = new Vector3(scale, scale, scale);
     }
-    
-	void Die()
-	{
-		Destroy (gameObject);
-	}
 }

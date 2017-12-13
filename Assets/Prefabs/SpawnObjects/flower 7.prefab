@@ -54,6 +54,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxSize: 0.25
+  m_TweenTime: 0.75
+  m_GrowEaseType: 30
+  m_ShrinkEaseType: 26
   life: 100
 --- !u!114 &114641169452895734
 MonoBehaviour:
