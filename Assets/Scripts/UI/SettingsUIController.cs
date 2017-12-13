@@ -200,7 +200,7 @@ public class SettingsUIController : MonoBehaviour
 
     private void HandleRangeMinChanged(int rangeMin)
     {
-        m_DepthRangeMin.SetText("Depth Range Min : " + ToString());
+        m_DepthRangeMin.SetText("Depth Range Min : " + rangeMin.ToString());
     }
 
     private void HandleRangeMaxChanged(int rangeMax)
