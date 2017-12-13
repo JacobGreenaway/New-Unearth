@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 436944534}
   - component: {fileID: 436944533}
   - component: {fileID: 436944532}
+  - component: {fileID: 436944536}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -192,6 +193,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &436944536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 436944531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f752c4e07617d8d4eb21d4975a2d7c61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Weight: 0.82
+  m_DepthComputeShader: {fileID: 7200000, guid: 66ea7a419ff1527458e829ff6d7f3e6b,
+    type: 3}
 --- !u!1 &461047146
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8be039fe781385499eaab4c189ba3e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MultiSourceManager: {fileID: 511505022}
+  m_MultiSourceManager: {fileID: 436944536}
   m_Mat: {fileID: 2100000, guid: f0e01b4ac6b643443a84971a32dc30d9, type: 2}
 --- !u!23 &461047148
 MeshRenderer:
@@ -288,51 +303,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 512, y: 424, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &511505021
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 511505023}
-  - component: {fileID: 511505022}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &511505022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 511505021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f752c4e07617d8d4eb21d4975a2d7c61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _MinRange: 950
-  _MaxRange: 1250
-  _Weight: 0.82
-  m_DepthComputeShader: {fileID: 7200000, guid: 66ea7a419ff1527458e829ff6d7f3e6b,
-    type: 3}
---- !u!4 &511505023
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 511505021}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.714997, y: 2.984375, z: 1.0100754}
-  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2

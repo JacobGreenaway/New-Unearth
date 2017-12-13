@@ -7,7 +7,7 @@ public class Plant : MonoBehaviour {
     private SpawnedObject spawnedObject;
     
     //Determin the max size of the object
-    public int MaxSize;
+    public float MaxSize;
 
     //Life
     [SerializeField]
@@ -28,7 +28,6 @@ public class Plant : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {   
-        Grow();
         if (spawnable != null)
         {
             if (!spawnable.CheckTerrain())
@@ -63,33 +62,12 @@ public class Plant : MonoBehaviour {
                 spawnedObject.Despawn();
             }
         }
-
+        var scale = MaxSize * life / 100f;
+        transform.localScale = new Vector3(scale, scale, scale);
     }
-
-    void Grow()
-    {
-        if (transform.localScale.x*400 < MaxSize)
-        {
-            transform.localScale += new Vector3(0.0001F, 0.0001F, 0);
-        }
-
-    }
-
-	void Shrink()
-	{
-		if (transform.localScale.x == 0) {
-			
-		}
-		else {
-			
-			transform.localScale -= new Vector3(0.0005F, 0.0005F, 0);
-		}
-	}
-
+    
 	void Die()
 	{
 		Destroy (gameObject);
 	}
-
-
 }

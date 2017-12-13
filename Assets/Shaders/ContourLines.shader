@@ -63,7 +63,7 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float4 depth = tex2D(_DepthTex, i.uv[0]);
-				float height = 1.0 - depth.r;
+				float height = depth.r;
 				// Sample up, down, left and right
 				float h1 = tex2D(_DepthTex, i.uv[1]).r;
 				float h2 = tex2D(_DepthTex, i.uv[2]).r;

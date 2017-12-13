@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Layers = UnearthLayersController.Layers;
 
 public class SpawnData : MonoBehaviour
 {
     [SerializeField]
-    private DepthController m_DepthController;
+    private UnearthLayersController m_LayersController;
     [SerializeField]
     private GameObject m_SpawnPrefab;
     [SerializeField]
     [EnumFlag]
-    private DepthController.Layers m_Layers;
-    public DepthController.Layers Layers { get { return m_Layers; } }
+    private Layers m_Layers;
+    public Layers Layers { get { return m_Layers; } }
     [SerializeField]
     private int m_SpawnCap;
     public int SpawnCap {  get { return m_SpawnCap; } }
@@ -65,7 +66,7 @@ public class SpawnData : MonoBehaviour
         else
         {
             spawn = Instantiate(m_SpawnPrefab);
-            spawn.GetComponent<SpawnedObject>().Init(this, m_DepthController);
+            spawn.GetComponent<SpawnedObject>().Init(this, m_LayersController);
         }
         return spawn;
     }

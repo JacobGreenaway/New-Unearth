@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d58aad9c3c56a4f9dd1c865931aacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxSize: 1
+  MaxSize: 0.25
   life: 100
 --- !u!212 &212488957999694746
 SpriteRenderer:

@@ -1,51 +1,77 @@
 ﻿// Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel GenerateDepth
-#pragma enable_d3d11_debug_symbols 
-
-struct LayerRange
-{
-	float Bottom;
-	float Top;
-};
-
-struct LayerValue
-{
-	int Layer;
-	int Index;
-};
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
 RWTexture2D<float4> Result;
-RWStructuredBuffer<float> KinectDepthNew;
-RWStructuredBuffer<float> KinectDepthPrev;
-RWStructuredBuffer<LayerValue> ResultLayers;
-RWStructuredBuffer<LayerRange> LayerRanges;
+RWStructuredBuffer<float> KinectDepth0;
+RWStructuredBuffer<float> KinectDepth1;
+RWStructuredBuffer<float> KinectDepth2;
+RWStructuredBuffer<float> KinectDepth3;
 float rangeMin;
 float rangeMax;
+int width;
+int height;
 float weight;
 
-[numthreads(8, 8, 1)]
+float AvgDepth(RWStructuredBuffer<float> depthData, uint3 id, int width, int height)
+{
+	float sum = 0;
+	int count = 0;
+
+	for(int x = -1; x < 2; x++)
+	{
+		for (int y = -1; y < 2; y++)
+		{
+			x = id.x + x;
+			y = id.y + y;
+			if( x >= 0 && x < width && y >= 0 && y < height)
+			{
+				sum += depthData[y * width + x];
+				count++;
+			}
+		}
+	}
+
+	return count > 0 ? sum / count : 0;
+}
+
+[numthreads(1, 1, 1)]
 void GenerateDepth (uint3 id : SV_DispatchThreadID) 
 {
-	float dnew = KinectDepthNew[id.y * 512 + id.x];
-	float dold = KinectDepthPrev[id.y * 512 + id.x];
-	float4 dorig = Result[id.xy];
-	dnew = (dnew > rangeMin && dnew <= rangeMax) ? 1.0 - ((dnew - rangeMin)/(rangeMax - rangeMin)) : 0;
-	dold = (dold > rangeMin && dold <= rangeMax) ? 1.0 - ((dold - rangeMin)/(rangeMax - rangeMin)) : 0;
+	float darray[4];
+	darray[0] = KinectDepth0[id.y * width + id.x]; //AvgDepth(KinectDepth0, id, width, height);
+	darray[0] = (darray[0] > rangeMin && darray[0] <= rangeMax) ? 1.0 - ((darray[0] - rangeMin)/(rangeMax - rangeMin)) : 0;
+	darray[1] = KinectDepth1[id.y * width + id.x]; //AvgDepth(KinectDepth1, id, width, height);
+	darray[1] = (darray[1] > rangeMin && darray[1] <= rangeMax) ? 1.0 - ((darray[1] - rangeMin)/(rangeMax - rangeMin)) : 0;
+	darray[2] = KinectDepth2[id.y * width + id.x]; // AvgDepth(KinectDepth2, id, width, height);
+	darray[2] = (darray[2] > rangeMin && darray[2] <= rangeMax) ? 1.0 - ((darray[2] - rangeMin)/(rangeMax - rangeMin)) : 0;
+	darray[3] = KinectDepth3[id.y * width + id.x]; // AvgDepth(KinectDepth3, id, width, height);
+	darray[3] = (darray[3] > rangeMin && darray[3] <= rangeMax) ? 1.0 - ((darray[3] - rangeMin)/(rangeMax - rangeMin)) : 0;
 
-	// If both are over zero, perform average, otherwise return zero.
-	// Avoids a divide by zero error.
-	float avg = (dnew + dold > 0) ? (dnew + dold) / (dnew > 0 ? 1 : 0 + dold > 0 ? 1 : 0) : 0;
-	// If avg was zero, force black
-	float d = (avg > 0) ? (avg + (dorig.x * weight))/ (weight + 1) : 0;
-
-	Result[id.xy] = float4(d, d, d, 1.0);
-
-	ResultLayers[id.y * 512 + id.x].Index = id.y * 512 + id.x;
-	ResultLayers[id.y * 512 + id.x].Layer = 0;
-	for(int i = 0; i < 9; i++)
+	int denominator = 0;
+	int count = 1;
+	float sum = 0;
+	for(int i = 3; i >= 0; i--)
 	{
-		ResultLayers[id.y * 512 + id.x].Layer += (d > LayerRanges[i].Bottom && d <= LayerRanges[i].Top) ? (pow(2, i+1)) : 0;  
+		if(darray[i] > 0)
+		{
+			sum += darray[i] * count;
+			denominator += count;
+			count++;
+		}
+	}
+
+	if(denominator > 0)
+	{
+		float d = (sum / denominator);
+		d = (d + (Result[id.xy].x * weight)) / (weight + 1);
+		Result[id.xy] = float4(d, d, d, 1.0);
+	}
+	else
+	{
+		Result[id.xy] = float4(0, 0, 0, 1);
 	}
 } 
+
+

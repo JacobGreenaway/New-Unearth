@@ -1,16 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-public class SpawnController : MonoBehaviour
+public class UnearthSpawnController : MonoBehaviour
 {
     [SerializeField]
-    private DepthController m_DepthController;
+    private UnearthDepthController m_DepthController;
+    [SerializeField]
+    private UnearthLayersController m_LayersController;
     [SerializeField]
     private GameObject m_SpawnObjectParent;
     [SerializeField]
+    private float m_SpawnHeight;
+    [SerializeField]
     private SpawnData[] m_Spawnables;
+
 
     private Dictionary<SpawnData, List<GameObject>> m_SpawnedItems = new Dictionary<SpawnData, List<GameObject>>();
 
@@ -32,33 +35,7 @@ public class SpawnController : MonoBehaviour
         SettingsController.Instance.Current.FlipVerticalChanged += HandleVerticalFlipped;
     }
 
-    private void HandleVerticalFlipped(bool flipped)
-    {
-        foreach (var kvp in m_SpawnedItems)
-        {
-            for (int i = 0; i < kvp.Value.Count; i++)
-            {
-                var pos = kvp.Value[i].transform.position;
-                pos.z = -pos.z;
-                kvp.Value[i].transform.position = pos;
-            }
-        }
-    }
-
-    private void HandleHorizontalFlipped(bool flipped)
-    {
-        foreach (var kvp in m_SpawnedItems)
-        {
-            for (int i = 0; i < kvp.Value.Count; i++)
-            {
-                var pos = kvp.Value[i].transform.position;
-                pos.x = -pos.x;
-                kvp.Value[i].transform.position = pos;
-            }
-        }
-    }
-
-    private void Update()
+    private void LateUpdate()
     {
         if (Input.GetButtonUp("Toggle plants"))
         {
@@ -74,7 +51,7 @@ public class SpawnController : MonoBehaviour
 
         if (Input.GetButtonUp("Reset all"))
         {
-            foreach(var kvp in m_SpawnedItems)
+            foreach (var kvp in m_SpawnedItems)
             {
                 for (int i = kvp.Value.Count - 1; i >= 0; i--)
                 {
@@ -85,7 +62,7 @@ public class SpawnController : MonoBehaviour
             m_SpawnQueue.Clear();
         }
 
-        if(m_SpawnQueue.Count > 0)
+        if (m_SpawnQueue.Count > 0)
         {
             var spawnData = m_SpawnQueue.Dequeue();
             if (m_SpawnedItems.ContainsKey(spawnData))
@@ -93,12 +70,12 @@ public class SpawnController : MonoBehaviour
                 // If we aren't at our limit
                 if (m_SpawnedItems[spawnData].Count < spawnData.SpawnCap)
                 {
-                    var pos = m_DepthController.GetRandomPointOnLayers(spawnData.Layers);
+                    var pos = m_LayersController.GetRandomPointOnLayers(spawnData.Layers);
                     // If there is valid position to spawn at
-                    if (pos != m_DepthController.DefaultPos)
+                    if (pos != m_LayersController.DefaultPos)
                     {
                         var spawned = spawnData.Spawn();
-                        spawned.transform.position = pos;
+                        spawned.transform.position = pos + new Vector3(0f, m_SpawnHeight, 0f);
                         spawned.transform.rotation = Quaternion.Euler(90f, UnityEngine.Random.Range(0f, 360f), 0f);
                         spawned.transform.SetParent(m_SpawnObjectParent.transform);
                         m_SpawnedItems[spawnData].Add(spawned);
@@ -112,7 +89,7 @@ public class SpawnController : MonoBehaviour
             }
         }
     }
-
+    
     private void EnablePlants(bool enable)
     {
         foreach (var kvp in m_SpawnedItems)
@@ -141,6 +118,37 @@ public class SpawnController : MonoBehaviour
         }
     }
 
+    private void HandleVerticalFlipped(bool flipped)
+    {
+        foreach (var kvp in m_SpawnedItems)
+        {
+            for (int i = 0; i < kvp.Value.Count; i++)
+            {
+                var pos = kvp.Value[i].transform.position;
+                pos.z = -pos.z;
+                kvp.Value[i].transform.position = pos;
+            }
+        }
+    }
+
+    private void HandleHorizontalFlipped(bool flipped)
+    {
+        foreach (var kvp in m_SpawnedItems)
+        {
+            for (int i = 0; i < kvp.Value.Count; i++)
+            {
+                var pos = kvp.Value[i].transform.position;
+                pos.x = -pos.x;
+                kvp.Value[i].transform.position = pos;
+            }
+        }
+    }
+
+    private void HandleShouldSpawnEvent(SpawnData spawnData)
+    {
+        m_SpawnQueue.Enqueue(spawnData);
+    }
+
     private void HandleSpawnObjectDespawnedEvent(SpawnData spawnData, GameObject spawnedObject)
     {
         if (m_SpawnedItems.ContainsKey(spawnData))
@@ -154,11 +162,5 @@ public class SpawnController : MonoBehaviour
         {
             Debug.LogError("Encountered unregistered SpawnData item : " + spawnData.Layers + " : " + spawnData.name);
         }
-    }
-
-    private void HandleShouldSpawnEvent(SpawnData spawnData)
-    {
-        m_SpawnQueue.Enqueue(spawnData);
-        
     }
 }

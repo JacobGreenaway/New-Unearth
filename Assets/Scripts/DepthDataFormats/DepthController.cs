@@ -5,31 +5,21 @@ using Windows.Kinect;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Layers = UnearthLayersController.Layers;
 
 public class DepthController : MonoBehaviour
 {
-    // Set up as flags so that items can use multiple layers at once
-    [Flags]
-    public enum Layers
-    {
-        None = 1 << 0,
-        DeepWater = 1 << 1,
-        Water = 1 << 2,
-        Shallows = 1 << 3,
-        Sand = 1 << 4,
-        Grass = 1 << 5,
-        Forest = 1 << 6,
-        Rock = 1 << 7,
-        Snow = 1 << 8,
-        Lava = 1 << 9
-    }
-
     private struct LayerRange
     {
         public float Top;
         public float Bottom;
+        public uint OrigTop;
+        public uint OrigBottom;
     }
 
+    /// <summary>
+    /// Depth Layer is a serializable class for setting up layers in the Unity Editor.
+    /// </summary>
     [Serializable]
     public class DepthLayer
     {
@@ -37,6 +27,9 @@ public class DepthController : MonoBehaviour
         public Color LayerColor = Color.black;
         public Texture2D LayerTexture;
 
+        /// <summary>
+        /// Wrapper function for accessing settings stored Layer Max values
+        /// </summary>
         public float LayerMax
         {
             get
@@ -75,18 +68,14 @@ public class DepthController : MonoBehaviour
     public Vector3 DefaultPos { get { return new Vector3(66f, 66f, 66f); } }
 
     [SerializeField]
-    private MultiSourceManager multiSourceManager;
+    private MultiSourceManager m_MultiSourceManager;
     [SerializeField]
-    private int frameBufferCount = 5;
-    private int currentBuffer = 0;
+    private int m_FrameBufferCount = 5;
+    private int m_CurrentBuffer = 0;
+    private ushort[][] m_DepthBufferCirc;
 
-    private KinectSensor sensor;
-    private DepthFrameReader depthFrameReader;
-
-    private ushort[][] arrDepth;
-
-    [SerializeField]
-    private int m_SpawnMapMipLevel = 0;
+    private KinectSensor m_Sensor;
+    
     [SerializeField]
     private float m_SpawnableHeight = 0.5f;
 
@@ -95,13 +84,9 @@ public class DepthController : MonoBehaviour
     [SerializeField]
     private Vector2 m_Tiling = Vector2.one;
 
-    public int Width { get; private set; }
-    public int Height { get; private set; }
-
-    public event Action NewDepthInfoAvailable;
-
-    public event Action<bool> HorizontalFlipped;
-    public event Action<bool> VerticalFlipped;
+    private int m_Width;
+    private int m_Height;
+    
     private Material m_BlitMat;
     private Material m_TexturedBlitMat;
     private RenderTexture m_RenderTex;
@@ -109,7 +94,7 @@ public class DepthController : MonoBehaviour
     private Material m_TargetMaterial;
     [SerializeField]
     private GameObject m_TargetQuad;
-    
+
     [SerializeField]
     private int RangeMin
     {
@@ -141,8 +126,8 @@ public class DepthController : MonoBehaviour
 
     [SerializeField]
     private List<DepthLayer> m_DepthLayers = new List<DepthLayer>();
-
-    private Color[] m_SpawnableValues;
+    
+    private int[] m_SpawnableIndices;
 
     [SerializeField]
     private Shader m_LayerConversionShader;
@@ -174,39 +159,30 @@ public class DepthController : MonoBehaviour
     private float m_SampleDistance = 1f;
 
     private RenderTexture m_DepthTex;
-    private Color[] m_DepthColorData;
-
-    [SerializeField]
-    private bool m_Parallel = false;
 
     private void Start()
     {
         m_BlitMat = new Material(m_LayerConversionShader);
         m_TexturedBlitMat = new Material(m_TexturedLayersConversionShader);
         m_ContourBlitMat = new Material(m_ContoursShader);
-        
-        sensor = KinectSensor.GetDefault();
+
+        m_Sensor = KinectSensor.GetDefault();
 
         // Sort depth layers
         m_DepthLayers.Sort((dl1, dl2) => dl1.LayerMax.CompareTo(dl2.LayerMax));
 
-        if (sensor != null)
+        if (m_Sensor != null)
         {
             Debug.Log("Kinect sensor found");
-            arrDepth = new ushort[frameBufferCount][];
-            var depthFrameDesc = sensor.DepthFrameSource.FrameDescription;
-           // m_DepthTex = new Texture2D(depthFrameDesc.Width, depthFrameDesc.Height, TextureFormat.RGBAFloat, true);
-            m_DepthColorData = new Color[depthFrameDesc.LengthInPixels];
-            for (int i = 0; i < m_DepthColorData.Length; i++)
+            m_DepthBufferCirc = new ushort[m_FrameBufferCount][];
+            var depthFrameDesc = m_Sensor.DepthFrameSource.FrameDescription;
+            for (int i = 0; i < m_FrameBufferCount; i++)
             {
-                m_DepthColorData[i] = Color.black;
+                m_Width = m_Sensor.DepthFrameSource.FrameDescription.Width;
+                m_Height = m_Sensor.DepthFrameSource.FrameDescription.Height;
+                m_DepthBufferCirc[i] = new ushort[m_Sensor.DepthFrameSource.FrameDescription.LengthInPixels];
             }
-            for (int i = 0; i < frameBufferCount; i++)
-            {
-                Width = sensor.DepthFrameSource.FrameDescription.Width;
-                Height = sensor.DepthFrameSource.FrameDescription.Height;
-                arrDepth[i] = new ushort[sensor.DepthFrameSource.FrameDescription.LengthInPixels];
-            }
+            m_SpawnableIndices = new int[m_Sensor.DepthFrameSource.FrameDescription.LengthInPixels];
         }
     }
 
@@ -216,73 +192,33 @@ public class DepthController : MonoBehaviour
         if (Input.GetButtonDown("Flip Vertical"))
         {
             SettingsController.Instance.Current.FlipVertical = !SettingsController.Instance.Current.FlipVertical;
-            VerticalFlipped?.Invoke(SettingsController.Instance.Current.FlipVertical);
         }
         if (Input.GetButtonDown("Flip Horizontal"))
         {
             SettingsController.Instance.Current.FlipHorizontal = !SettingsController.Instance.Current.FlipHorizontal;
-            HorizontalFlipped?.Invoke(SettingsController.Instance.Current.FlipHorizontal);
         }
-        if(Input.GetButtonDown("Toggle contour line"))
+        if (Input.GetButtonDown("Toggle contour line"))
         {
             m_ContoursEnabled = !m_ContoursEnabled;
         }
-        if(Input.GetButtonDown("Toggle Textured"))
+        if (Input.GetButtonDown("Toggle Textured"))
         {
             m_TexturedToggle = !m_TexturedToggle;
         }
-        
-        if (arrDepth == null)
+
+        if (m_DepthBufferCirc == null)
         {
             return;
         }
-        ++currentBuffer;
-        if (currentBuffer >= frameBufferCount)
+        ++m_CurrentBuffer;
+        if (m_CurrentBuffer >= m_FrameBufferCount)
         {
             // Loop
-            currentBuffer = 0;
+            m_CurrentBuffer = 0;
         }
-        arrDepth[currentBuffer] = multiSourceManager.GetDepthData();
-        NewDepthInfoAvailable?.Invoke();
-
-        // For each depth pixel
-        //if (m_Parallel)
-        //{
-        //    Parallel.For(0, m_DepthColorData.Length, UpdateDepth);
-        //}
-        //else
-        //{
-        //    for (int i = 0; i < m_DepthColorData.Length; i++)
-        //    {
-        //        UpdateDepth(i);
-        //    }
-        //}
-
-        //for (int dcd = 0; dcd < m_DepthColorData.Length; dcd++)
-        //{
-        //    var val = arrDepth[currentBuffer][dcd];
-        //    if(val < m_RangeMin)
-        //    {
-        //        // If it's rejected above the range, we use the previous frame's data.
-        //        // Do Nothing
-
-        //    }
-        //    else if(val < m_RangeMax)
-        //    {
-        //        var ranged = (val - m_RangeMin) / (float)(m_RangeMax - m_RangeMin);
-        //        m_DepthColorData[dcd] = (m_DepthColorData[dcd] + (new Color(ranged, ranged, ranged, 1f) * m_SmoothingWeight)) / (m_SmoothingWeight + 1);
-        //    }
-        //    else
-        //    {
-        //        m_DepthColorData[dcd] = new Color(1f, 1f, 1f, 1f);
-        //    }
-        //}
-
-        //m_DepthTex.SetPixels(m_DepthColorData);
-        //m_DepthTex.Apply();
-        m_DepthTex = multiSourceManager.GetDepthRenderTexture();
-
-        //m_SpawnableValues = m_DepthTex.GetPixels(m_SpawnMapMipLevel);
+        m_DepthBufferCirc[m_CurrentBuffer] = m_MultiSourceManager.GetDepthData();
+        
+        m_DepthTex = m_MultiSourceManager.GetDepthRenderTexture();
 
         if (m_RenderTex == null)
         {
@@ -363,52 +299,12 @@ public class DepthController : MonoBehaviour
         }
     }
 
-    //private void UpdateDepth(int dcd)
-    //{
-    //    int denominator = 0;
-    //    int count = 1;
-    //    float val = 0f;
-    //    // For every frame in the frame buffer
-    //    for (int frame = 1; frame < frameBufferCount; frame++)
-    //    {
-    //        // Calculate the offset from the newest frame
-    //        var offsetFrame = currentBuffer + frame;
-    //        if (offsetFrame >= frameBufferCount)
-    //        {
-    //            offsetFrame -= frameBufferCount;
-    //        }
-    //        // If the target pixel is within the correct range
-    //        if (arrDepth[offsetFrame][dcd] >= RangeMin && arrDepth[offsetFrame][dcd] < RangeMax)
-    //        {
-    //            // Add the value multiplied by the count
-    //            val += arrDepth[offsetFrame][dcd] * count;
-    //            // Add the count to the denominator (give more priority to more recent frames
-    //            denominator += count;
-    //            count++;
-    //        }
-    //    }
-    //    // If we got any values inside the range
-    //    if (denominator > 0)
-    //    {
-    //        // Find the scaled value average and store in the depth data array
-    //        var avg = ((val / denominator) - RangeMin) / (float)(RangeMax - RangeMin);
-    //        // Smooth this with the current value in the buffer
-    //        avg = (avg + (m_DepthColorData[dcd].r * m_SmoothingWeight)) / (m_SmoothingWeight + 1f);
-    //        m_DepthColorData[dcd] = new Color(avg, avg, avg, 1f);
-    //    }
-    //    else
-    //    {
-    //        // Force Black
-    //        m_DepthColorData[dcd] = new Color(1f, 1f, 1f, 1f);
-    //    }
-    //}
-
 
     public ushort GetDepthValue(int x, int y)
     {
-        if (x >= 0 && x < Width && y >= 0 && y < Height)
+        if (x >= 0 && x < m_Width && y >= 0 && y < m_Height)
         {
-            return arrDepth[currentBuffer][y * Width + x];
+            return m_DepthBufferCirc[m_CurrentBuffer][y * m_Width + x];
         }
         return 0;
     }
@@ -418,7 +314,8 @@ public class DepthController : MonoBehaviour
         return ((RangeMax - RangeMin) * maxValue) + RangeMin;
     }
 
-    private List<LayerRange> m_Ranges = new List<LayerRange>();
+    private LayerRange[] m_Ranges = new LayerRange[9];
+    private int m_RangeCount = 0;
 
     public Vector3 GetRandomPointOnLayers(Layers layers)
     {
@@ -428,8 +325,7 @@ public class DepthController : MonoBehaviour
         {
             return DefaultPos;
         }
-
-        m_Ranges.Clear();
+        m_RangeCount = 0;
         foreach (var sl in selectedLayers)
         {
             var layerBelowIndex = m_DepthLayers.IndexOf(sl) - 1;
@@ -440,11 +336,16 @@ public class DepthController : MonoBehaviour
             {
                 r.Bottom = m_DepthLayers[layerBelowIndex].LayerMax;
             }
-            m_Ranges.Add(r);
+            // The original depth data goes from top to bottom so we flip the
+            // range limits when calculating for original data range checks
+            r.OrigBottom = (uint)(RangeMax - (r.Top * (RangeMax - RangeMin)));
+            r.OrigTop = (uint)(RangeMax - (r.Bottom * (RangeMax - RangeMin)));
+            m_Ranges[m_RangeCount] = r;
+            m_RangeCount++;
         }
 
-        var width = GetMipMapWidth();
-        var height = GetMipMapHeight();
+        var width = m_Width;
+        var height = m_Height;
         var settings = SettingsController.Instance.Current;
         var quadWidth = m_TargetQuad.transform.localScale.x;
         var quadHeight = m_TargetQuad.transform.localScale.y;
@@ -473,27 +374,41 @@ public class DepthController : MonoBehaviour
             yMax = Mathf.CeilToInt(((settings.ClipTop + (quadHeight * 0.5f)) / quadHeight) * height);
         }
 
-        var matches = m_SpawnableValues.Select((c, i) => new { c = c, i = i })
-            .Where(v => IndexInClipRange(v.i, xMin, xMax, yMin, yMax) && m_Ranges.Any((r) => 1f - v.c.r > r.Bottom && 1f - v.c.r < r.Top));
-       if (matches == null || matches.Count() == 0)
+        int count = 0;
+        for (int i = 0; i < m_SpawnableIndices.Length; i++)
         {
+            m_SpawnableIndices[i] = int.MaxValue;
+        }
+        for (int i = 0; i < m_SpawnableIndices.Length; i++)
+        {
+            var depth = m_DepthBufferCirc[m_CurrentBuffer][i];
+            for (int r = 0; r < m_RangeCount; r++)
+            {
+                if (depth > m_Ranges[r].OrigBottom && depth <= m_Ranges[r].OrigTop && IndexInClipRange(i, xMin, xMax, yMin, yMax))
+                {
+                    m_SpawnableIndices[count] = i;
+                    count++;
+                    break;
+                }
+            }
+        }
+
+        if (count == 0)
+        {
+            // No available spots
             return DefaultPos;
         }
-        var selection = matches
-            .OrderBy(v => v.GetHashCode())
-            .FirstOrDefault();
-        
-        
-        var index = selection.i;//testX + testY * width; 
+
+        var index = m_SpawnableIndices[UnityEngine.Random.Range(0, count)];
+
         int x = index % width;
         int y = Mathf.FloorToInt(index / (float)width);
-        
-        var quadScale = m_TargetQuad.transform.localScale;
-        // We add the hald mipped pixel size to place the item at the centre of the sampled pixel.
-        var halfMippedPixelWorldSize = (quadScale.x / width) * 0.5f;
 
-        var pos = new Vector3((x / (float)width) * quadScale.x - (quadScale.x * 0.5f) + halfMippedPixelWorldSize, m_SpawnableHeight, (y / (float)height) * quadScale.y - (quadScale.y * 0.5f) + halfMippedPixelWorldSize);
-        //Debug.Log("Got Random Point : " + x + " : " + y + " : " + pos.x + " : " + pos.z + " : " + selection.c.r + " : " + selection.i);
+        var quadScale = m_TargetQuad.transform.localScale;
+        // We add the half pixel size to place the item at the centre of the sampled pixel.
+        var halfPixelWorldSize = (quadScale.x / width) * 0.5f;
+
+        var pos = new Vector3((x / (float)width) * quadScale.x - (quadScale.x * 0.5f) + halfPixelWorldSize, m_SpawnableHeight, (y / (float)height) * quadScale.y - (quadScale.y * 0.5f) + halfPixelWorldSize);
         if (SettingsController.Instance.Current.FlipHorizontal)
         {
             pos.x = -pos.x;
@@ -518,10 +433,11 @@ public class DepthController : MonoBehaviour
         {
             pos.z = -pos.z;
         }
-        var x = Mathf.FloorToInt(((pos.x + (quadScale.x * 0.5f)) / quadScale.x) * GetMipMapWidth());
-        var y = Mathf.FloorToInt(((pos.z + (quadScale.y * 0.5f)) / quadScale.y) * GetMipMapHeight());
-
-        var depth = 1f - m_SpawnableValues[y * GetMipMapWidth() + x].r;
+        var x = Mathf.FloorToInt(((pos.x + (quadScale.x * 0.5f)) / quadScale.x) * m_Width);
+        var y = Mathf.FloorToInt(((pos.z + (quadScale.y * 0.5f)) / quadScale.y) * m_Height);
+        var settings = SettingsController.Instance.Current;
+        var depth = 1f - ((m_DepthBufferCirc[m_CurrentBuffer][y * m_Width + x] - settings.RangeMin) / (RangeMax - RangeMin));
+        //var depth = 1f - m_SpawnableValues[y * GetMipMapWidth() + x].r;
         //Debug.Log("Point Calc : " + x + " : " + y);
         //Debug.Break();
         // Depth layers are sorted in ascending order.
@@ -541,26 +457,6 @@ public class DepthController : MonoBehaviour
         return Layers.None;
     }
 
-    private int GetMipMapWidth()
-    {
-        var width = Width;
-        for (int i = 0; i < m_SpawnMapMipLevel; i++)
-        {
-            width /= 2;
-        }
-        return width;
-    }
-
-    private int GetMipMapHeight()
-    {
-        var height = Height;
-        for (int i = 0; i < m_SpawnMapMipLevel; i++)
-        {
-            height /= 2;
-        }
-        return height;
-    }
-
     private float GetScaledRange(float range)
     {
         return ((RangeMax - RangeMin) * range) + RangeMin;
@@ -568,8 +464,8 @@ public class DepthController : MonoBehaviour
 
     private bool IndexInClipRange(int index, int xMin, int xMax, int yMin, int yMax)
     {
-        int x = index % GetMipMapWidth();
-        int y = Mathf.FloorToInt(index / (float)GetMipMapWidth());
+        int x = index % m_Width;//GetMipMapWidth();
+        int y = Mathf.FloorToInt(index / (float)m_Width/*GetMipMapWidth()*/);
         return x >= xMin && x <= xMax && y >= yMin && y <= yMax;
     }
 }

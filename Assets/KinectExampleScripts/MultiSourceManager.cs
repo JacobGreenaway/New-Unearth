@@ -32,8 +32,6 @@ public class MultiSourceManager : MonoBehaviour
     private RenderTexture _DepthRenderTexture;
     private ushort[] _DepthData;
     private byte[] _ColorData;
-    //private byte[] _RawDepthData;
-    private Color[] _DepthColorData;
 
     [SerializeField]
     private float _Weight;
@@ -105,7 +103,6 @@ public class MultiSourceManager : MonoBehaviour
             m_DepthFloatDataPrev = new float[depthFrameDesc.LengthInPixels];
             m_Layers = new LayerValue[depthFrameDesc.LengthInPixels];
             m_LayerRanges = new LayerRange[LayerCount];
-            _DepthColorData = new Color[depthFrameDesc.LengthInPixels];
 
             if (!_Sensor.IsOpen)
             {
@@ -195,12 +192,18 @@ public class MultiSourceManager : MonoBehaviour
             }
         }
         //Process every frame, not just when a kinect frame is available so smoothing occurs when the kinect is slow
-        m_DepthComputeShader.Dispatch(m_KernalHandle, _DepthRenderTexture.width /8, _DepthRenderTexture.height / 8, 1); 
-        // Need to manually pull the layers data back out
-        m_LayersComputeBuffer.GetData(m_Layers, 0, 0, m_Layers.Length);
+        m_DepthComputeShader.Dispatch(m_KernalHandle, _DepthRenderTexture.width, _DepthRenderTexture.height, 1); 
+        
 
-
+        
     }
+
+    //private void OnPostRender()
+    //{
+    //    // Need to manually pull the layers data back out
+    //    m_LayersComputeBuffer.GetData(m_Layers, 0, 0, m_Layers.Length);
+    //    Debug.Log("LayerTest : " + m_Layers[0].Index);
+    //}
 
     void OnApplicationQuit()
     {

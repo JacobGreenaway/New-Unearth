@@ -109,13 +109,8 @@
 
 				if(height < 0.001)
 				{
-					return fixed4(0,0,0,0);
+					return fixed4(0,0,0,1);
 				}
-
-				//if(height > _RangeMax)
-				//{
-				//	return fixed4(1,0,0,1);
-				//}
 
 				if(height < _Layer1Max - halfFade)
 				{

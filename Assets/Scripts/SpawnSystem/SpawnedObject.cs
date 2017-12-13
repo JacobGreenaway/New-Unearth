@@ -3,12 +3,12 @@
 public class SpawnedObject : MonoBehaviour
 {
     private SpawnData m_SpawnData;
-    private DepthController m_DepthController;
+    private UnearthLayersController m_LayersController;
 
-    public void Init(SpawnData spawnData, DepthController depthController)
+    public void Init(SpawnData spawnData, UnearthLayersController layersController)
     {
         m_SpawnData = spawnData;
-        m_DepthController = depthController;
+        m_LayersController = layersController;
     }
 
     public void Reset()
@@ -22,7 +22,7 @@ public class SpawnedObject : MonoBehaviour
 
     public bool CheckDepth()
     {
-        return m_SpawnData.Layers.HasFlag(m_DepthController.GetLayerAtPosition(transform.position));
+        return m_SpawnData.Layers.HasFlag(m_LayersController.GetLayerAtPosition(transform.position));
     }
 
     public void Despawn()
