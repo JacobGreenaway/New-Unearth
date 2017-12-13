@@ -680,7 +680,7 @@ MonoBehaviour:
   m_FrameBufferCount: 2
   m_TargetMaterial: {fileID: 2100000, guid: 05b095247407dd74f8282fc5ddb08e38, type: 2}
   m_TargetQuad: {fileID: 971171624}
-  m_FadeRange: 0.01
+  m_FadeRange: 0.05
   m_LayerConversionShader: {fileID: 4800000, guid: 7ee8242d60e9e4045973b93e5070fbb5,
     type: 3}
   m_TexturedLayersConversionShader: {fileID: 4800000, guid: 207c543f92a62a941acdb6981c5f076e,
@@ -712,31 +712,31 @@ MonoBehaviour:
   m_DepthLayers:
   - Layer: 2
     LayerColor: {r: 0.16446799, g: 0.34202352, b: 0.8602941, a: 1}
-    LayerTexture: {fileID: 0}
+    LayerTexture: {fileID: 2800000, guid: f9a01fd9a405ed24089bdd7bcc83323b, type: 3}
   - Layer: 4
     LayerColor: {r: 0.16446799, g: 0.57236606, b: 0.8602941, a: 1}
-    LayerTexture: {fileID: 0}
+    LayerTexture: {fileID: 2800000, guid: 6db914f06cbc33f45845d00e9de07bcb, type: 3}
   - Layer: 8
     LayerColor: {r: 0.16446799, g: 0.71632993, b: 0.8602941, a: 1}
-    LayerTexture: {fileID: 0}
+    LayerTexture: {fileID: 2800000, guid: 1847c427ebed2b7469dd22667fe6e4e0, type: 3}
   - Layer: 16
     LayerColor: {r: 0.8897059, g: 0.8567705, b: 0.4121432, a: 1}
-    LayerTexture: {fileID: 0}
+    LayerTexture: {fileID: 2800000, guid: bfd675cc0db1d4656b75dc6d6ba91142, type: 3}
   - Layer: 32
     LayerColor: {r: 0.37008718, g: 0.8235294, b: 0.28460205, a: 1}
-    LayerTexture: {fileID: 0}
+    LayerTexture: {fileID: 2800000, guid: c6e0767b1f8c34890ac245217f4b9731, type: 3}
   - Layer: 64
     LayerColor: {r: 0.15803418, g: 0.5808823, b: 0.28343052, a: 1}
-    LayerTexture: {fileID: 0}
+    LayerTexture: {fileID: 2800000, guid: 440eb36db91ca410f800ff3cfe43572f, type: 3}
   - Layer: 128
     LayerColor: {r: 0.42647058, g: 0.42647058, b: 0.42647058, a: 1}
-    LayerTexture: {fileID: 0}
+    LayerTexture: {fileID: 2800000, guid: 18214e9d6af6248559d501391856f1c7, type: 3}
   - Layer: 256
     LayerColor: {r: 0.9264706, g: 0.9264706, b: 0.9264706, a: 1}
-    LayerTexture: {fileID: 0}
+    LayerTexture: {fileID: 2800000, guid: d670322ecf93124438d7d5ba2cd85df6, type: 3}
   - Layer: 512
     LayerColor: {r: 0.7794118, g: 0.25789362, b: 0.25789362, a: 1}
-    LayerTexture: {fileID: 0}
+    LayerTexture: {fileID: 2800000, guid: 93a726948508cc14eab67fb1abe2daa8, type: 3}
 --- !u!114 &249631227
 MonoBehaviour:
   m_ObjectHideFlags: 0
