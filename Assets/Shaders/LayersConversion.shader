@@ -72,6 +72,7 @@
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
+				// We take the absolute values here to deal with flipping in the UV offset.
 				o.uv = float2(abs(_UOffset - v.uv.x), abs(_VOffset - v.uv.y));
 				return o;
 			}
@@ -103,20 +104,26 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
+				// Sample the depth texture
 				float4 depth = tex2D(_DepthTex, i.uv);
+				// Get the height 
 				float height = depth.r;
+				// Get half the fade range
 				float halfFade = _FadeRange * 0.5;
 
+				// If the height is really low, just render black
 				if(height < 0.001)
 				{
 					return fixed4(0,0,0,1);
 				}
 
+				// If height is less than the Layer1Max minus the half fade range, render the full colour
 				if(height < _Layer1Max - halfFade)
 				{
 					return _Layer1Color;
 				}
 
+				// If height is in the fade range, linearly interpolate between the two layers.
 				if(height < _Layer1Max + halfFade)
 				{
 					return lerp(_Layer1Color, _Layer2Color, (height - (_Layer1Max - halfFade)) / _FadeRange);

@@ -250,6 +250,12 @@ public class SettingsUIController : MonoBehaviour
         {
             m_Current.RangeMax = newRangeMax;
         }
+
+        // Quit on escape pressed
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            HandleQuitClicked();
+        }
     }
 
     private void HandleFlipVerticalClick()

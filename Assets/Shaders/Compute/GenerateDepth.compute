@@ -15,7 +15,7 @@ int width;
 int height;
 float weight;
 
-float AvgDepth(RWStructuredBuffer<float> depthData, uint3 id, int width, int height)
+/*float AvgDepth(RWStructuredBuffer<float> depthData, uint3 id, int width, int height)
 {
 	float sum = 0;
 	int count = 0;
@@ -35,14 +35,16 @@ float AvgDepth(RWStructuredBuffer<float> depthData, uint3 id, int width, int hei
 	}
 
 	return count > 0 ? sum / count : 0;
-}
+}*/
 
 [numthreads(1, 1, 1)]
 void GenerateDepth (uint3 id : SV_DispatchThreadID)  
 {
+	// NOTE : Smoothing Algorithm adapted from https://www.codeproject.com/Articles/317974/KinectDepthSmoothing
+	// Just using the Weighted Moving Average to reduce flicking and smooth transition over 4 frames.
 	float darray[4];
 	darray[0] = KinectDepth0[id.y * width + id.x]; //AvgDepth(KinectDepth0, id, width, height);
-	// If the value is within range, convert to 0-1 depth value then flip, else if value is above min range, use the existing texture value, othewise force to 0
+	// If the value is within range, convert to 0-1 depth value then flip, else use the existing texture value as basic hand/head rejection
 	darray[0] = (darray[0] > rangeMin && darray[0] <= rangeMax) ? 1.0 - ((darray[0] - rangeMin)/(rangeMax - rangeMin)) : Result[id.xy].x;
 	darray[1] = KinectDepth1[id.y * width + id.x]; //AvgDepth(KinectDepth1, id, width, height);
 	darray[1] = (darray[1] > rangeMin && darray[1] <= rangeMax) ? 1.0 - ((darray[1] - rangeMin)/(rangeMax - rangeMin)) : Result[id.xy].x;
@@ -51,6 +53,9 @@ void GenerateDepth (uint3 id : SV_DispatchThreadID)
 	darray[3] = KinectDepth3[id.y * width + id.x]; // AvgDepth(KinectDepth3, id, width, height);
 	darray[3] = (darray[3] > rangeMin && darray[3] <= rangeMax) ? 1.0 - ((darray[3] - rangeMin)/(rangeMax - rangeMin)) : Result[id.xy].x;
 
+	// For each sample that isn't 0, 
+	// Add it to the sum multiplied by the count and increase
+	// the denominator by the current count.
 	int denominator = 0;
 	int count = 1;
 	float sum = 0;
@@ -64,14 +69,18 @@ void GenerateDepth (uint3 id : SV_DispatchThreadID)
 		}
 	}
 
+	// If we found any non zero pixels
 	if(denominator > 0)
 	{
+		// Moving Average
 		float d = (sum / denominator);
+		// Blend with weighted existing value.
 		d = (d + (Result[id.xy].x * weight)) / (weight + 1);
 		Result[id.xy] = float4(d, d, d, 1.0);
 	}
 	else
 	{
+		// zero depth
 		Result[id.xy] = float4(0, 0, 0, 1);
 	}
 } 
