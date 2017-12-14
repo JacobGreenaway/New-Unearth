@@ -36,7 +36,31 @@ public class UnearthLayersController : MonoBehaviour
     {
         public Layers Layer;
         public Color LayerColor = Color.black;
-        public Texture2D LayerTexture;
+        public float AnimationSpeed = 25f;
+        private float m_FrameTime = 0f;
+        public Texture2D[] LayerTextures;
+        public Texture2D LayerTexture
+        {
+            get
+            {
+                if(LayerTextures != null)
+                {
+                    if(LayerTextures.Length == 0)
+                    {
+                        return null;
+                    }
+                    if(LayerTextures.Length ==1)
+                    {
+                        // Not animated
+                        return LayerTextures[0];
+                    }
+                    // Greater than 1, animate
+                    return LayerTextures[(int)Mathf.Abs(m_FrameTime % LayerTextures.Length)];
+
+                }
+                return null;
+            }
+        }
 
         /// <summary>
         /// Wrapper function for accessing settings stored Layer Max values
@@ -73,6 +97,11 @@ public class UnearthLayersController : MonoBehaviour
                 }
             }
         }
+
+        public void UpdateTick(float deltaTime)
+        {
+            m_FrameTime += Time.deltaTime * AnimationSpeed;
+        }
     }
 
     public Vector3 DefaultPos { get { return new Vector3(66f, 66f, 66f); } }
@@ -96,6 +125,14 @@ public class UnearthLayersController : MonoBehaviour
     {
         // Sort depth layers
         m_DepthLayers.Sort((dl1, dl2) => dl1.LayerMax.CompareTo(dl2.LayerMax));
+    }
+
+    private void Update()
+    {
+        for(int i = 0; i < m_DepthLayers.Count; i++)
+        {
+            m_DepthLayers[i].UpdateTick(Time.deltaTime);
+        }
     }
 
     public Vector3 GetRandomPointOnLayers(Layers layers)
