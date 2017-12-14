@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using Windows.Kinect;
 
+/// <summary>
+/// Controls all depth related information and manages generation of depth textures
+/// </summary>
 public class UnearthDepthController : MonoBehaviour
 {
+
     private KinectSensor m_Sensor;
     private DepthFrameReader m_Reader;
     private ushort[] m_DepthData;
@@ -36,6 +40,9 @@ public class UnearthDepthController : MonoBehaviour
         return m_DepthRenderTexture;
     }
 
+    /// <summary>
+    /// Called by Unity once on startup
+    /// </summary>
     private void Start()
     {
         m_Sensor = KinectSensor.GetDefault();
@@ -75,19 +82,27 @@ public class UnearthDepthController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by Unity once per frame
+    /// </summary>
     private void Update()
     {
         bool updated = false;
+        // If we have a frame reader
         if(m_Reader != null)
         {
+            // Grab the frame
             DepthFrame frame = m_Reader.AcquireLatestFrame();
+            // If there is a new frame
             if (frame != null)
             {
+                // Copy the data to our main buffer
                 frame.CopyFrameDataToArray(m_DepthData);
                 frame.Dispose();
                 frame = null;
 
                 currentBuffer = GetBufferOffset(1);
+                // Copy the new buffer values into our circular buffer.
                 for(int i = 0; i < m_DepthData.Length; i++)
                 {
                     m_DepthFloatData[currentBuffer][i] = m_DepthData[i];
@@ -96,9 +111,10 @@ public class UnearthDepthController : MonoBehaviour
                 updated = true;
             }
         }
+        // If we didn't get a new frame
         if(!updated)
         {
-            // Force forward and copy previous buffer
+            // Force forward and copy previous buffer so smoothing still occurs
             var prevBuffer = currentBuffer;
             currentBuffer = GetBufferOffset(1);
             for (int i = 0; i < m_DepthData.Length; i++)
@@ -106,12 +122,15 @@ public class UnearthDepthController : MonoBehaviour
                 m_DepthFloatData[currentBuffer][i] = m_DepthFloatData[prevBuffer][i];
             }
         }
+
         //Process every frame, not just when a kinect frame is available so smoothing occurs when the kinect is slow
-        
+
+        // Set the compute buffers to the relevant arrays based on current buffer.
         m_DepthComputeBuffer0.SetData(m_DepthFloatData[currentBuffer]);
         m_DepthComputeBuffer1.SetData(m_DepthFloatData[GetBufferOffset(1)]);
         m_DepthComputeBuffer2.SetData(m_DepthFloatData[GetBufferOffset(2)]);
         m_DepthComputeBuffer3.SetData(m_DepthFloatData[GetBufferOffset(3)]);
+        // Set all values for the Compute Shader
         m_DepthComputeShader.SetBuffer(m_KernalHandle, "KinectDepth0", m_DepthComputeBuffer0);
         m_DepthComputeShader.SetBuffer(m_KernalHandle, "KinectDepth1", m_DepthComputeBuffer1);
         m_DepthComputeShader.SetBuffer(m_KernalHandle, "KinectDepth2", m_DepthComputeBuffer2);
@@ -120,11 +139,16 @@ public class UnearthDepthController : MonoBehaviour
         m_DepthComputeShader.SetFloat("rangeMax", SettingsController.Instance.Current.RangeMax);
         m_DepthComputeShader.SetInt("width", m_Width);
         m_DepthComputeShader.SetInt("height", m_Height);
-
         m_DepthComputeShader.SetFloat("weight", m_SmoothingWeight);
+        // Run the Compute Shader
         m_DepthComputeShader.Dispatch(m_KernalHandle, m_DepthRenderTexture.width, m_DepthRenderTexture.height, 1);
     }
 
+    /// <summary>
+    /// Returns the Buffer Index offset by the given amount, looping when required
+    /// </summary>
+    /// <param name="offset">The amount to offset by</param>
+    /// <returns>The offset value</returns>
     private int GetBufferOffset(int offset)
     {
         var off = currentBuffer + offset;
@@ -135,8 +159,12 @@ public class UnearthDepthController : MonoBehaviour
         return off;
     }
     
+    /// <summary>
+    /// Called by Unity when this object is destroyed
+    /// </summary>
     private void OnDestroy()
     {
+        // Release all Compute Buffers manually.
         if (m_DepthComputeBuffer0 != null)
         {
             m_DepthComputeBuffer0.Release();
@@ -162,14 +190,19 @@ public class UnearthDepthController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by Unity when quitting the application
+    /// </summary>
     void OnApplicationQuit()
     {
+        // Clean up the Kinect Frame reader
         if (m_Reader != null)
         {
             m_Reader.Dispose();
             m_Reader = null;
         }
 
+        // Clean up the Sensor
         if (m_Sensor != null)
         {
             if (m_Sensor.IsOpen)
