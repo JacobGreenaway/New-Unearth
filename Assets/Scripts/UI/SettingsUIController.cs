@@ -23,6 +23,9 @@ public class SettingsUIController : MonoBehaviour
     }
 
     [SerializeField]
+    private ButtonSetting m_QuitButton;
+
+    [SerializeField]
     private ButtonSetting m_FlipVertical;
 
     [SerializeField]
@@ -54,6 +57,7 @@ public class SettingsUIController : MonoBehaviour
     private SettingsInputQuadButton m_Lava;
 
 
+
     private float m_TrackingRangeMin;
     private float m_TrackingRangeMax;
     private const float RangeChangeSpeed = 10f;
@@ -71,6 +75,8 @@ public class SettingsUIController : MonoBehaviour
 
     private void InitEvents()
     {
+        m_QuitButton.Button.onClick.AddListener(HandleQuitClicked);
+
         m_Current.FlipVerticalChanged += HandleFlipVerticalChanged;
         m_FlipVertical.Button.onClick.AddListener(HandleFlipVerticalClick);
 
@@ -244,6 +250,14 @@ public class SettingsUIController : MonoBehaviour
     private void HandleFlipVerticalChanged(bool flipped)
     {
         m_FlipVertical.Text.text = "Vertical : " + (flipped ? "Flipped" : "Normal");
+    }
+
+    private void HandleQuitClicked()
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     private void InitValues()
