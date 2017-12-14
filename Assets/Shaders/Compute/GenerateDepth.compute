@@ -43,13 +43,13 @@ void GenerateDepth (uint3 id : SV_DispatchThreadID)
 	float darray[4];
 	darray[0] = KinectDepth0[id.y * width + id.x]; //AvgDepth(KinectDepth0, id, width, height);
 	// If the value is within range, convert to 0-1 depth value then flip, else if value is above min range, use the existing texture value, othewise force to 0
-	darray[0] = (darray[0] > rangeMin && darray[0] <= rangeMax) ? 1.0 - ((darray[0] - rangeMin)/(rangeMax - rangeMin)) : ((darray[0] < rangeMin) ? Result[id.xy].x : 0);
+	darray[0] = (darray[0] > rangeMin && darray[0] <= rangeMax) ? 1.0 - ((darray[0] - rangeMin)/(rangeMax - rangeMin)) : Result[id.xy].x;
 	darray[1] = KinectDepth1[id.y * width + id.x]; //AvgDepth(KinectDepth1, id, width, height);
-	darray[1] = (darray[1] > rangeMin && darray[1] <= rangeMax) ? 1.0 - ((darray[1] - rangeMin)/(rangeMax - rangeMin)) : ((darray[1] < rangeMin) ? Result[id.xy].x : 0);
+	darray[1] = (darray[1] > rangeMin && darray[1] <= rangeMax) ? 1.0 - ((darray[1] - rangeMin)/(rangeMax - rangeMin)) : Result[id.xy].x;
 	darray[2] = KinectDepth2[id.y * width + id.x]; // AvgDepth(KinectDepth2, id, width, height);
-	darray[2] = (darray[2] > rangeMin && darray[2] <= rangeMax) ? 1.0 - ((darray[2] - rangeMin)/(rangeMax - rangeMin)) : ((darray[2] < rangeMin) ? Result[id.xy].x : 0);
+	darray[2] = (darray[2] > rangeMin && darray[2] <= rangeMax) ? 1.0 - ((darray[2] - rangeMin)/(rangeMax - rangeMin)) : Result[id.xy].x;
 	darray[3] = KinectDepth3[id.y * width + id.x]; // AvgDepth(KinectDepth3, id, width, height);
-	darray[3] = (darray[3] > rangeMin && darray[3] <= rangeMax) ? 1.0 - ((darray[3] - rangeMin)/(rangeMax - rangeMin)) : ((darray[3] < rangeMin) ? Result[id.xy].x : 0);
+	darray[3] = (darray[3] > rangeMin && darray[3] <= rangeMax) ? 1.0 - ((darray[3] - rangeMin)/(rangeMax - rangeMin)) : Result[id.xy].x;
 
 	int denominator = 0;
 	int count = 1;
