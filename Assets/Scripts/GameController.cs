@@ -15,11 +15,15 @@ public class GameController : MonoBehaviour {
     private const int _Speed = 10;
 
     //Camera zoom speed
-    private const int _Zoom = 30;
+    private const int _Zoom = 10;
+
+    [SerializeField]
+    private Camera m_Cam;
 
     // Use this for initialization
     void Start () {
-
+        transform.position = SettingsController.Instance.Current.CamPos;
+        UpdateClipValues();
     }
 	
 	// Update is called once per frame
@@ -33,11 +37,26 @@ public class GameController : MonoBehaviour {
         //Input for zooming the camera
         var z = Input.GetAxis("Zoom") * Time.deltaTime * _Zoom;
         transform.Translate(0, 0, z);
+
+        if(Mathf.Abs(x) > 0f || Mathf.Abs(y) > 0f || Mathf.Abs(z) > 0f)
+        {
+            SettingsController.Instance.Current.CamPos = transform.position;
+            UpdateClipValues();
+        }
     }
 
-    // Zoom in and out according to keyboard control
-    void Zoom ()
+    private void UpdateClipValues()
     {
+        // Recalcuate clipping
+        // Bottom Left
+        var bl = m_Cam.ViewportToWorldPoint(new Vector3(0f, 0f, transform.position.y));
+        // Top Right
+        var tr = m_Cam.ViewportToWorldPoint(new Vector3(1f, 1f, transform.position.y));
 
+        var settings = SettingsController.Instance.Current;
+        settings.ClipBottom = bl.z;
+        settings.ClipTop = tr.z;
+        settings.ClipLeft = bl.x;
+        settings.ClipRight = tr.x;
     }
 }

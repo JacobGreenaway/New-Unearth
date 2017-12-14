@@ -89,12 +89,7 @@ public class SpawnManager : MonoBehaviour {
                         fish.GetComponent<Spawnable>().IsOriginal = false;
                         fish.transform.SetParent(spawnObjectParent.transform);
                     }
-
-
-
-
                     
-
                     // Manually setting the position in the matrix before spawning - should be able to control position from within the spawnable after that
                     // DepthPoints have references to left right top bottom points - can refreence these for positions 
                     

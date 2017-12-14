@@ -6,7 +6,7 @@ public class ColorView : MonoBehaviour
 {
 	public GameObject textureManager;
 	private TextureManager _TextureManager;
-	private int count = 0;
+	//private int count = 0;
 
 	void Start ()
 	{

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DepthPoint {
     
-	public int x;
-	public int y;
+	//public int x;
+	//public int y;
 
 	public LayerManager layerManager;
 
@@ -23,24 +23,31 @@ public class DepthPoint {
 
 	public DepthPoint(int xPos, int yPos, ushort value, LayerManager layerManager)
 	{
-		this.x = xPos;
-        this.y = yPos;
-        this.value = value;
-
-		this.layerManager = layerManager;
-
-
-
+        this.layerManager = layerManager;
         //Converts position on the matrix into world position vector
-        int posX = y;
-        int posZ = x;
-        int xModifier = (512 / 2) * 1;
-        int zModifier = (424 / 2) * 1;
-        this.position = new Vector3(xModifier - posX, -10, zModifier - posZ);
+        //int posX = y;
+        //int posZ = x;
+        int xModifier = 256;//(512 / 2) * 1;
+        int zModifier = 212;// (424 / 2) * 1;
+        this.position = new Vector3(xModifier - xPos, -10, zModifier - yPos);
+        SetNewData(value);
     }
 
-	public Layer getLayer() {
-		return this.layerManager.layerMap[this.value];
+    public void SetNewData(ushort value)
+    {
+        this.value = value;
+    }
+
+
+    public Layer getLayer() {
+        if (layerManager.layerMap.ContainsKey(value))
+        {
+            return this.layerManager.layerMap[this.value];
+        }
+        else
+        {
+            return null;
+        }
 	}
 
 	public void AverageWithSurroundingPoints()

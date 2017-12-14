@@ -47,29 +47,12 @@ public class LayerManager : MonoBehaviour {
 		SetupLayers ();
 			
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 	public void SetupLayers(){
-		if (layerGap == null) 
-		{
-			layerGap = (ushort)0;
-		}
+		//if (layerGap == null) 
+		//{
+		//	layerGap = (ushort)0;
+		//}
 
 		// Initialise layer array
 		//arrLayers = new Layer[arrLayerNames.Length];

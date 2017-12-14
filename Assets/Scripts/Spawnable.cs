@@ -109,7 +109,7 @@ public class Spawnable : MonoBehaviour {
             return true;
         }
         //Debug.Log("Found matrix!");
-        DepthFeedManager depthFeedManager = GameObject.Find("DepthFeedManager").GetComponent<DepthFeedManager>();
+       // DepthFeedManager depthFeedManager = GameObject.Find("DepthFeedManager").GetComponent<DepthFeedManager>();
 
         //Layer layer = positionInMatrix.getLayer();
 
