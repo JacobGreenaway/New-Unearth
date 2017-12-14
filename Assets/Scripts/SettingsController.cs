@@ -1,16 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
 using System.IO;
+using UnityEngine;
 
+/// <summary>
+/// Controls global settings for the application and saves them to disk
+/// </summary>
 [Serializable]
 public class SettingsController : MonoBehaviour
 {
+    /// <summary>
+    /// Settings storage class that is serialized to disk
+    /// </summary>
     [Serializable]
     public class Settings
     {
+        // Are any of the current settings not saved?
         public bool Dirty;
+
+        /* 
+         * NOTE : Each item here has a serialized field so it is visible in the editor, and the Unity JSON parser can read and set.
+         * For other code, it accesses the value via the property.  When a value is changed via the property the object is marked as dirty,
+         * and the SettingsController will save to disk when it is next ready.
+         * */
 
         [Header("Camera Settings")]
         [SerializeField]
@@ -316,8 +327,12 @@ public class SettingsController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by Unity on Object creation
+    /// </summary>
     private void Awake()
     {
+        // Make sure there isn't a second instance
         if (m_Instance != null && m_Instance != this)
         {
             Debug.LogError("Already an instance of Settings Controller, destroying this one...");
@@ -325,16 +340,20 @@ public class SettingsController : MonoBehaviour
             return;
         }
 
+        // Load!
         LoadFromDisk();
         m_Instance = this;
     }
 
+    // Our settings object
     [SerializeField]
     private Settings m_Settings;
     public Settings Current { get { return m_Settings; } }
+    // How often we will check for Dirty
     private const float SaveTime = 5f;
     private float m_Timer = 0f;
 
+    // Called by Unity once per frame
     private void Update()
     {
         m_Timer += Time.deltaTime;
@@ -345,16 +364,25 @@ public class SettingsController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks to see if the settings object is dirty, then writes it to disk.
+    /// </summary>
     private void WriteToDisk()
     {
         if (m_Settings.Dirty)
         {
+            // Convert settings object to JSON
             var json = JsonUtility.ToJson(m_Settings, true);
+            // Write JSON to file
             File.WriteAllText(GetFilePath(), json);
+            // Mark settings clean
             m_Settings.Dirty = false;
         }
     }
 
+    /// <summary>
+    /// Loads the JSON data from disk if available, or creates a fresh settings object.
+    /// </summary>
     private void LoadFromDisk()
     {
         var path = GetFilePath();
@@ -370,10 +398,15 @@ public class SettingsController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the full file path for the settings.json file.
+    /// </summary>
+    /// <returns></returns>
     private string GetFilePath()
     {
         string path = Path.Combine(Application.dataPath, "settings.json");
 #if UNITY_EDITOR
+        // If we're in the Unity Editor, we need to remove the /Assets from the path.
         path = path.Replace("/Assets", "");
 #endif
         return path;

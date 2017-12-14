@@ -4,10 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
+/// <summary>
+/// Controls the UI related to settings.
+/// </summary>
 public class SettingsUIController : MonoBehaviour
 {
     private SettingsController.Settings m_Current;
 
+    // Convenience class for Settings with a single button.
     [Serializable]
     public class ButtonSetting
     {
@@ -15,56 +19,69 @@ public class SettingsUIController : MonoBehaviour
         public Button Button;
     }
 
-    [Serializable]
-    public class InputSetting
-    {
-        public Text Text;
-        public InputField Input;
-    }
-
+    // Button for quitting the application
     [SerializeField]
     private ButtonSetting m_QuitButton;
 
+    // Button for flipping the vertical screen setting
     [SerializeField]
     private ButtonSetting m_FlipVertical;
 
+    // Button for flipped the horizontal screen setting
     [SerializeField]
     private ButtonSetting m_FlipHorizontal;
 
+    // Button group for setting the Depth Range Max setting 
     [SerializeField]
     private SettingsInputQuadButton m_DepthRangeMax;
 
+    // Button group for setting the Depth Range Min setting 
     [SerializeField]
     private SettingsInputQuadButton m_DepthRangeMin;
 
+    // Button group for setting the Deep Water Layer Max
     [SerializeField]
     private SettingsInputQuadButton m_DeepWater;
+    // Button group for setting the Water Layer Max
     [SerializeField]
     private SettingsInputQuadButton m_Water;
+    // Button group for setting the Shallows Layer Max
     [SerializeField]
     private SettingsInputQuadButton m_Shallows;
+    // Button group for setting the Sand Layer Max
     [SerializeField]
     private SettingsInputQuadButton m_Sand;
+    // Button group for setting Grass Layer Max
     [SerializeField]
     private SettingsInputQuadButton m_Grass;
+    // Button group for setting the Forest Layer Max
     [SerializeField]
     private SettingsInputQuadButton m_Forest;
+    // Button group for setting the Rock Layer Max
     [SerializeField]
     private SettingsInputQuadButton m_Rock;
+    // Button group for setting the Snow Layer Max
     [SerializeField]
     private SettingsInputQuadButton m_Snow;
+    // Button group for setting the Lava Layer Max
     [SerializeField]
     private SettingsInputQuadButton m_Lava;
 
-
-
+    // Float value for RangeMin for smooth transitions
     private float m_TrackingRangeMin;
+    // Float value for RangeMax for smooth transitions
     private float m_TrackingRangeMax;
+    // Speed for changing Range Values while buttons are pressed
     private const float RangeChangeSpeed = 10f;
 
+    // Amount to shift with small quad buttons
     private const float LayerShiftSmall = 0.001f;
+    // Amount to shift with large quad buttons
     private const float LayerShiftLarge = 0.01f;
 
+    /// <summary>
+    /// Called by Unity on object creation
+    /// </summary>
     private void Awake()
     {
         m_Current = SettingsController.Instance.Current;
@@ -73,6 +90,9 @@ public class SettingsUIController : MonoBehaviour
         InitEvents();
     }
 
+    /// <summary>
+    /// Initializes all event listeners for UI
+    /// </summary>
     private void InitEvents()
     {
         m_QuitButton.Button.onClick.AddListener(HandleQuitClicked);
@@ -281,5 +301,3 @@ public class SettingsUIController : MonoBehaviour
         HandleLavaMaxChanged(m_Current.LavaMax);
     }
 }
-
-
