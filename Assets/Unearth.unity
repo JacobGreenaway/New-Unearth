@@ -724,16 +724,16 @@ MonoBehaviour:
     LayerTexture: {fileID: 2800000, guid: bfd675cc0db1d4656b75dc6d6ba91142, type: 3}
   - Layer: 32
     LayerColor: {r: 0.37008718, g: 0.8235294, b: 0.28460205, a: 1}
-    LayerTexture: {fileID: 2800000, guid: c6e0767b1f8c34890ac245217f4b9731, type: 3}
+    LayerTexture: {fileID: 2800000, guid: 4c0e5ad676552a348b2a32ddef53ff3d, type: 3}
   - Layer: 64
     LayerColor: {r: 0.15803418, g: 0.5808823, b: 0.28343052, a: 1}
-    LayerTexture: {fileID: 2800000, guid: 440eb36db91ca410f800ff3cfe43572f, type: 3}
+    LayerTexture: {fileID: 2800000, guid: 5d0b56b831395d44ca59fbf3788bf97d, type: 3}
   - Layer: 128
     LayerColor: {r: 0.42647058, g: 0.42647058, b: 0.42647058, a: 1}
-    LayerTexture: {fileID: 2800000, guid: 18214e9d6af6248559d501391856f1c7, type: 3}
+    LayerTexture: {fileID: 2800000, guid: 555bae988f9ad9c469fdb9720e91e710, type: 3}
   - Layer: 256
     LayerColor: {r: 0.9264706, g: 0.9264706, b: 0.9264706, a: 1}
-    LayerTexture: {fileID: 2800000, guid: d670322ecf93124438d7d5ba2cd85df6, type: 3}
+    LayerTexture: {fileID: 2800000, guid: 93a645999d7988b438253d4ee5429faa, type: 3}
   - Layer: 512
     LayerColor: {r: 0.7794118, g: 0.25789362, b: 0.25789362, a: 1}
     LayerTexture: {fileID: 2800000, guid: 93a726948508cc14eab67fb1abe2daa8, type: 3}
@@ -1070,7 +1070,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -54.509277, y: -535.6231}
+  m_AnchoredPosition: {x: -54.509277, y: -535.62305}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &387431714
@@ -1327,7 +1327,7 @@ Prefab:
     - target: {fileID: 224465690855593326, guid: a7e24663a9b469f4ba36954c5e07b519,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -465.00006
+      value: -465
       objectReference: {fileID: 0}
     - target: {fileID: 224465690855593326, guid: a7e24663a9b469f4ba36954c5e07b519,
         type: 2}
@@ -2714,7 +2714,7 @@ Prefab:
     - target: {fileID: 224110988333139718, guid: efa353cd40016ec40919edb8714acfbf,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 34.99997
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 224110988333139718, guid: efa353cd40016ec40919edb8714acfbf,
         type: 2}
@@ -3386,7 +3386,7 @@ Prefab:
     - target: {fileID: 224110988333139718, guid: efa353cd40016ec40919edb8714acfbf,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224110988333139718, guid: efa353cd40016ec40919edb8714acfbf,
         type: 2}
@@ -4201,7 +4201,7 @@ Prefab:
     - target: {fileID: 224465690855593326, guid: a7e24663a9b469f4ba36954c5e07b519,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 134.99997
+      value: 135
       objectReference: {fileID: 0}
     - target: {fileID: 224465690855593326, guid: a7e24663a9b469f4ba36954c5e07b519,
         type: 2}
@@ -4668,7 +4668,7 @@ Prefab:
     - target: {fileID: 224465690855593326, guid: a7e24663a9b469f4ba36954c5e07b519,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -564.99994
+      value: -565
       objectReference: {fileID: 0}
     - target: {fileID: 224465690855593326, guid: a7e24663a9b469f4ba36954c5e07b519,
         type: 2}
@@ -4957,7 +4957,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 184.99998}
+  m_AnchoredPosition: {x: 0, y: 185}
   m_SizeDelta: {x: 1902.0027, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1927825255

@@ -71,7 +71,7 @@ public class UnearthVisualsController : MonoBehaviour
     private int m_Width;
     private int m_Height;
 
-    private const int OutputResolutionScale = 2;
+    private const int OutputResolutionScale = 3;
 
     private void Start()
     {
@@ -193,7 +193,7 @@ public class UnearthVisualsController : MonoBehaviour
             m_ContourTargetQuad.SetActive(true);
             if (m_ContourRenderTex == null)
             {
-                m_ContourRenderTex = new RenderTexture(m_DepthTex.width, m_DepthTex.height, 16);
+                m_ContourRenderTex = new RenderTexture(m_DepthTex.width * OutputResolutionScale, m_DepthTex.height * OutputResolutionScale, 16);
                 m_ContourTargetMaterial.mainTexture = m_ContourRenderTex;
             }
 
