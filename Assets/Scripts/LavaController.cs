@@ -10,56 +10,79 @@ public class LavaController : MonoBehaviour {
     public float targetTime = 20.0f;
     public float currentTime;
 
+    private bool m_lavaStart;
+
     // Use this for initialization
     void Start () {
-        setInitial();
+        //setInitial();
+        m_Current = SettingsController.Instance.Current;
+        m_lavaStart = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Count();
         //Debug.Log(Time.deltaTime/targetTime);
-        if (Input.GetAxis("Lava") > 0)
+        if (Input.GetButtonUp("Lava"))
         {
-            
-            lavaStart();
+            lavaToggle();
         }
+
+        lavaFlow();
     }
 
-    private void lavaStart()
+    private void lavaToggle()
     {
+        
+        if (m_lavaStart)
+        {
+            m_lavaStart = false;
+        } else
+        {
+            m_lavaStart = true;
+        }
+
         setInitial();
+    }
+
+    private void lavaFlow()
+    {
+        if (!m_lavaStart)
+        {
+            return;
+        }
+
         if (m_Current.LavaMax > m_Current.SnowMax)
         {
-            m_Current.LavaMax += (targetTime / Time.deltaTime);
+            m_Current.LavaMax -= (Time.deltaTime / targetTime);
         }
         else if (m_Current.SnowMax > m_Current.RockMax)
         {
-            m_Current.LavaMax += (targetTime / Time.deltaTime);
-            m_Current.SnowMax += (targetTime / Time.deltaTime);
+            m_Current.LavaMax -= (Time.deltaTime / targetTime);
+            m_Current.SnowMax -= (Time.deltaTime / targetTime);
         }
         else if (m_Current.RockMax > m_Current.ForestMax)
         {
-            m_Current.LavaMax += (targetTime / Time.deltaTime);
-            m_Current.SnowMax += (targetTime / Time.deltaTime);
-            m_Current.RockMax += (targetTime / Time.deltaTime);
+            m_Current.LavaMax -= (Time.deltaTime / targetTime);
+            m_Current.SnowMax -= (Time.deltaTime / targetTime);
+            m_Current.RockMax -= (Time.deltaTime / targetTime);
         }
         else if (m_Current.ForestMax > m_Current.GrassMax)
         {
-            m_Current.LavaMax += (targetTime / Time.deltaTime);
-            m_Current.SnowMax += (targetTime / Time.deltaTime);
-            m_Current.RockMax += (targetTime / Time.deltaTime);
-            m_Current.ForestMax += (targetTime / Time.deltaTime);
+            m_Current.LavaMax -= (Time.deltaTime / targetTime);
+            m_Current.SnowMax -= (Time.deltaTime / targetTime);
+            m_Current.RockMax -= (Time.deltaTime / targetTime);
+            m_Current.ForestMax -= (Time.deltaTime / targetTime);
         }
         else if (m_Current.GrassMax > m_Current.SandMax)
         {
-            m_Current.LavaMax += (targetTime / Time.deltaTime);
-            m_Current.SnowMax += (targetTime / Time.deltaTime);
-            m_Current.RockMax += (targetTime / Time.deltaTime);
-            m_Current.ForestMax += (targetTime / Time.deltaTime);
-            m_Current.GrassMax += (targetTime / Time.deltaTime);
-        } else
+            m_Current.LavaMax -= (Time.deltaTime / targetTime);
+            m_Current.SnowMax -= (Time.deltaTime / targetTime);
+            m_Current.RockMax -= (Time.deltaTime / targetTime);
+            m_Current.ForestMax -= (Time.deltaTime / targetTime);
+            m_Current.GrassMax -= (Time.deltaTime / targetTime);
+        }
+        else
         {
 
         }
@@ -71,9 +94,10 @@ public class LavaController : MonoBehaviour {
     {
 
         currentTime -= Time.deltaTime;
-
+        Debug.Log(currentTime);
         if (currentTime <= 0.0f)
         {
+            Debug.Log(currentTime);
             setInitial();
             return 0f;
         }

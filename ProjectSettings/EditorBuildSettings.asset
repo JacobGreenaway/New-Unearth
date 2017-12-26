@@ -8,3 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Unearth.unity
     guid: e6b5c92742eb9b541973c6ab1ddeb0c2
+  - enabled: 0
+    path: Assets/BlitTest.unity
+    guid: c58d279a8dcf5c84a92dfdd6ba2d193d
