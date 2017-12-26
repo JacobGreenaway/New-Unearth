@@ -3,78 +3,95 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LavaController : MonoBehaviour {
+    //Settings controller
+    private SettingsController.Settings m_Current;
 
-	public LayerManager layerManager;
+    //Simple timer
+    public float targetTime = 20.0f;
+    public float currentTime;
 
-	public Layer lavaLayer;
-	Layer currentLayer;
+    // Use this for initialization
+    void Start () {
+        setInitial();
+    }
 
-	int frameCount = 0;
-	int layerCount = 0;
-	bool bActivated = false;
+    // Update is called once per frame
+    void Update()
+    {
+        Count();
+        //Debug.Log(Time.deltaTime/targetTime);
+        if (Input.GetAxis("Lava") > 0)
+        {
+            
+            lavaStart();
+        }
+    }
 
-	public Layer[] arrAffectedLayers;
-	public Dictionary<Layer, ushort> origHeight = new Dictionary<Layer, ushort> ();
+    private void lavaStart()
+    {
+        setInitial();
+        if (m_Current.LavaMax > m_Current.SnowMax)
+        {
+            m_Current.LavaMax += (targetTime / Time.deltaTime);
+        }
+        else if (m_Current.SnowMax > m_Current.RockMax)
+        {
+            m_Current.LavaMax += (targetTime / Time.deltaTime);
+            m_Current.SnowMax += (targetTime / Time.deltaTime);
+        }
+        else if (m_Current.RockMax > m_Current.ForestMax)
+        {
+            m_Current.LavaMax += (targetTime / Time.deltaTime);
+            m_Current.SnowMax += (targetTime / Time.deltaTime);
+            m_Current.RockMax += (targetTime / Time.deltaTime);
+        }
+        else if (m_Current.ForestMax > m_Current.GrassMax)
+        {
+            m_Current.LavaMax += (targetTime / Time.deltaTime);
+            m_Current.SnowMax += (targetTime / Time.deltaTime);
+            m_Current.RockMax += (targetTime / Time.deltaTime);
+            m_Current.ForestMax += (targetTime / Time.deltaTime);
+        }
+        else if (m_Current.GrassMax > m_Current.SandMax)
+        {
+            m_Current.LavaMax += (targetTime / Time.deltaTime);
+            m_Current.SnowMax += (targetTime / Time.deltaTime);
+            m_Current.RockMax += (targetTime / Time.deltaTime);
+            m_Current.ForestMax += (targetTime / Time.deltaTime);
+            m_Current.GrassMax += (targetTime / Time.deltaTime);
+        } else
+        {
 
-	// Use this for initialization
-	void Start () {
+        }
+    }
 
-		// Set the final count
-		for (int i = 0; i < arrAffectedLayers.Length; i++) {
-			Layer layer = arrAffectedLayers [i];
+    //Returns time left or zero
+    //Upon returning zero, will reset
+    public float Count()
+    {
 
-			origHeight [layer] = layer.height;
-		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        currentTime -= Time.deltaTime;
 
-		//Input detection
-		if (Input.GetButtonUp ("Activate Lava") == true ) {
-			bActivated = true;
-		}
+        if (currentTime <= 0.0f)
+        {
+            setInitial();
+            return 0f;
+        }
+        return currentTime;
+    }
 
-		if (bActivated) {
-			flowLavaOverLayer (arrAffectedLayers [layerCount]);
 
-			if (arrAffectedLayers [0].height == 0) {
-				flowLavaOverLayer (arrAffectedLayers [1]);
-
-				if (arrAffectedLayers [1].height == 0) {
-					flowLavaOverLayer (arrAffectedLayers [2]);
-
-					if (arrAffectedLayers [2].height == 0) {
-						flowLavaOverLayer (arrAffectedLayers [3]);
-
-						if (arrAffectedLayers [3].height == 0) {
-
-							for (int i = 0; i < arrAffectedLayers.Length; i++) {
-								Layer layer = arrAffectedLayers [i];
-								layer.height = origHeight [layer];
-								lavaLayer.height = 30;
-
-							}
-
-							layerManager.SetupLayers ();
-							bActivated = false;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	void flowLavaOverLayer(Layer layer) {
-
-		frameCount++;
-
-		if (frameCount <= layer.height) {
-			layer.height--;
-			lavaLayer.height++;
-			layerManager.SetupLayers ();
-		} else {
-			frameCount = 0;
-		}
-	}
+    private void setInitial ()
+    {
+        currentTime = targetTime;
+        m_Current.DeepWaterMax = 0.1f;
+        m_Current.WaterMax = 0.2f;
+        m_Current.ShallowsMax = 0.25f;
+        m_Current.SandMax = 0.3f;
+        m_Current.GrassMax = 0.4f;
+        m_Current.ForestMax = 0.6f;
+        m_Current.RockMax = 0.75f;
+        m_Current.SnowMax = 0.9f;
+        m_Current.LavaMax = 1f;
+    }
 }

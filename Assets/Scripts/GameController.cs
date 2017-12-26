@@ -38,6 +38,7 @@ public class GameController : MonoBehaviour {
         var z = Input.GetAxis("Zoom") * Time.deltaTime * _Zoom;
         transform.Translate(0, 0, z);
 
+        //Updating clip range to settings when camera moves or zooms
         if(Mathf.Abs(x) > 0f || Mathf.Abs(y) > 0f || Mathf.Abs(z) > 0f)
         {
             SettingsController.Instance.Current.CamPos = transform.position;
