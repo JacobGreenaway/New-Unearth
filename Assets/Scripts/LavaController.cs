@@ -52,35 +52,35 @@ public class LavaController : MonoBehaviour {
             return;
         }
 
-        if (m_Current.LavaMax > m_Current.SnowMax)
+        if (m_Current.SnowMax > m_Current.RockMax)
         {
-            m_Current.LavaMax -= (Time.deltaTime / targetTime);
-        }
-        else if (m_Current.SnowMax > m_Current.RockMax)
-        {
-            m_Current.LavaMax -= (Time.deltaTime / targetTime);
             m_Current.SnowMax -= (Time.deltaTime / targetTime);
         }
         else if (m_Current.RockMax > m_Current.ForestMax)
         {
-            m_Current.LavaMax -= (Time.deltaTime / targetTime);
             m_Current.SnowMax -= (Time.deltaTime / targetTime);
             m_Current.RockMax -= (Time.deltaTime / targetTime);
         }
         else if (m_Current.ForestMax > m_Current.GrassMax)
         {
-            m_Current.LavaMax -= (Time.deltaTime / targetTime);
             m_Current.SnowMax -= (Time.deltaTime / targetTime);
             m_Current.RockMax -= (Time.deltaTime / targetTime);
             m_Current.ForestMax -= (Time.deltaTime / targetTime);
         }
         else if (m_Current.GrassMax > m_Current.SandMax)
         {
-            m_Current.LavaMax -= (Time.deltaTime / targetTime);
             m_Current.SnowMax -= (Time.deltaTime / targetTime);
             m_Current.RockMax -= (Time.deltaTime / targetTime);
             m_Current.ForestMax -= (Time.deltaTime / targetTime);
             m_Current.GrassMax -= (Time.deltaTime / targetTime);
+        }
+        else if (m_Current.SandMax > m_Current.ShallowMax)
+        {
+            m_Current.SnowMax -= (Time.deltaTime / targetTime);
+            m_Current.RockMax -= (Time.deltaTime / targetTime);
+            m_Current.ForestMax -= (Time.deltaTime / targetTime);
+            m_Current.GrassMax -= (Time.deltaTime / targetTime);
+            m_Current.SandMax -= (Time.deltaTime / targetTime);
         }
         else
         {
