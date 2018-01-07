@@ -45,6 +45,7 @@ public class LavaController : MonoBehaviour {
         setInitial();
     }
 
+    //Start of lava flow 
     private void lavaFlow()
     {
         if (!m_lavaStart)
@@ -74,7 +75,7 @@ public class LavaController : MonoBehaviour {
             m_Current.ForestMax -= (Time.deltaTime / targetTime);
             m_Current.GrassMax -= (Time.deltaTime / targetTime);
         }
-        else if (m_Current.SandMax > m_Current.ShallowMax)
+        else if (m_Current.SandMax > m_Current.ShallowsMax)
         {
             m_Current.SnowMax -= (Time.deltaTime / targetTime);
             m_Current.RockMax -= (Time.deltaTime / targetTime);
