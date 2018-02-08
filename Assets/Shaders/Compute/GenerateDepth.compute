@@ -1,5 +1,6 @@
 ﻿// Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel GenerateDepth
+#pragma enable_d3d11_debug_symbols
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture

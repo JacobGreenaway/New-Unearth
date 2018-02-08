@@ -141,7 +141,22 @@ public class UnearthDepthController : MonoBehaviour
         m_DepthComputeShader.SetInt("height", m_Height);
         m_DepthComputeShader.SetFloat("weight", m_SmoothingWeight);
         // Run the Compute Shader
+
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+        bool keyDown = false;
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            RenderDocComputeHooks.StartCapture();
+            keyDown = true;
+        }
+#endif
         m_DepthComputeShader.Dispatch(m_KernalHandle, m_DepthRenderTexture.width, m_DepthRenderTexture.height, 1);
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+        if(keyDown)
+        {
+            RenderDocComputeHooks.EndCapture();
+        }
+#endif
     }
 
     /// <summary>
